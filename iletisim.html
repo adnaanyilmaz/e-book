@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="İletişim — Lezzet Kütüphanesi">
+  <title>İletişim — Lezzet Kütüphanesi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-sayfa="iletisim">
+
+  <header class="site-ustu">
+    <div class="icerik">
+      <a class="logo" href="index.html"><span class="logo-isaret">🍳</span>Lezzet Kütüphanesi</a>
+      <nav class="site-nav" aria-label="Ana menü">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="kitaplar.html">E-Kitaplar</a>
+        <a href="hakkinda.html">Hakkımızda</a>
+        <a href="iletisim.html" class="aktif">İletişim</a>
+      </nav>
+      <div class="ust-araclar">
+        <button class="tema-dugmesi" type="button">🌙</button>
+        <a class="sepet-baglantisi" href="sepet.html" aria-label="Sepet">🛒<span class="sepet-rozeti" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="bolum">
+      <div class="icerik">
+        <div class="bolum-basligi">
+          <div>
+            <h1>Bize yazın</h1>
+            <p>Sorularınız, önerileriniz ya da bir tarifin fotoğrafı — hepsini
+              ilgilenerek okuyoruz. Genellikle 1 iş günü içinde yanıtlarız.</p>
+          </div>
+        </div>
+
+        <div class="iletisim-izgarasi">
+          <div class="iletisim-bilgi">
+            <div class="deger-karti">
+              <div class="ikon">✉️</div>
+              <h3>E-posta</h3>
+              <p><a href="mailto:merhaba@lezzetkutuphanesi.example">merhaba@lezzetkutuphanesi.example</a></p>
+            </div>
+            <div class="deger-karti">
+              <div class="ikon">💬</div>
+              <h3>Sıkça sorulan sorular</h3>
+              <p>E-kitabı başka cihaza indirebilir miyim? Evet — satın aldığınız her
+                e-kitabı dilediğiniz kadar cihaza, ömür boyu indirebilirsiniz.</p>
+            </div>
+            <div class="deger-karti">
+              <div class="ikon">↩️</div>
+              <h3>İade koşulları</h3>
+              <p>Dijital ürünlerde, indirme gerçekleşmediyse 14 gün içinde koşulsuz
+                iade yapılır. İndirme sonrası yasal istisnalar geçerlidir.</p>
+            </div>
+          </div>
+
+          <div class="ozet-kart">
+            <h2 style="font-size: 1.2rem">Mesaj gönder</h2>
+            <form id="iletisim-formu" class="odeme-formu" style="margin-top: 12px">
+              <div class="form-alani">
+                <label for="iletisim-ad">Ad Soyad</label>
+                <input id="iletisim-ad" type="text" required autocomplete="name" placeholder="Adınız">
+              </div>
+              <div class="form-alani">
+                <label for="iletisim-eposta">E-posta</label>
+                <input id="iletisim-eposta" type="email" required autocomplete="email" placeholder="ornek@eposta.com">
+              </div>
+              <div class="form-alani">
+                <label for="iletisim-konu">Konu</label>
+                <select id="iletisim-konu">
+                  <option>Sipariş desteği</option>
+                  <option>Teknik sorun / indirme</option>
+                  <option>İade talebi</option>
+                  <option>Yazarlık başvurusu</option>
+                  <option>Diğer</option>
+                </select>
+              </div>
+              <div class="form-alani">
+                <label for="iletisim-mesaj">Mesajınız</label>
+                <textarea id="iletisim-mesaj" rows="5" required placeholder="Bize nasıl yardımcı olabiliriz?"></textarea>
+              </div>
+              <p class="sekme-uyarisi">⚠️ Demo sitesi: mesajınız hiçbir sunucuya gönderilmez.</p>
+              <button class="buton" type="submit">Mesajı gönder</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-alti">
+    <div class="icerik">
+      <div>
+        <h4>Lezzet Kütüphanesi</h4>
+        <p>Türkiye'nin bağımsız yemek tarifi e-kitap yayıncısı. Her tarif, mutfağımızda
+          en az üç kez test edilir.</p>
+      </div>
+      <div>
+        <h4>Keşfet</h4>
+        <ul>
+          <li><a href="kitaplar.html">Tüm e-kitaplar</a></li>
+          <li><a href="hakkinda.html">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Yardım</h4>
+        <ul>
+          <li><a href="iletisim.html">Sıkça sorulan sorular</a></li>
+          <li><a href="iletisim.html">İade koşulları</a></li>
+          <li><a href="sepet.html">Sepetim</a></li>
+        </ul>
+      </div>
+      <p class="telif">© <span class="yil"></span> Lezzet Kütüphanesi. Tüm hakları saklıdır.
+        Bu site bir portföy çalışmasıdır; ödeme adımı simülasyondur.</p>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

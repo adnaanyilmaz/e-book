@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lezzet Kütüphanesi e-kitap kataloğu — Türk mutfağı, tatlı, vegan, dünya mutfakları ve daha fazlası.">
+  <title>E-Kitaplar — Lezzet Kütüphanesi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-sayfa="kitaplar">
+
+  <header class="site-ustu">
+    <div class="icerik">
+      <a class="logo" href="index.html"><span class="logo-isaret">🍳</span>Lezzet Kütüphanesi</a>
+      <nav class="site-nav" aria-label="Ana menü">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="kitaplar.html" class="aktif">E-Kitaplar</a>
+        <a href="hakkinda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+      <div class="ust-araclar">
+        <button class="tema-dugmesi" type="button">🌙</button>
+        <a class="sepet-baglantisi" href="sepet.html" aria-label="Sepet">🛒<span class="sepet-rozeti" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" style="padding: 48px 0 24px">
+      <div class="icerik">
+        <div>
+          <h1>E-kitap kataloğu</h1>
+          <p class="hero-ozet" style="max-width: none">Kategorilere göz at, ara, sevdiğin kitabı sepete ekle.
+            Tüm e-kitaplar PDF + EPUB olarak, satın alma sonrası anında teslim edilir.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bolum" style="padding-top: 12px">
+      <div class="icerik">
+        <!-- Filtre satırı: tek satır, kapsadığı listenin üstünde -->
+        <div class="filtre-satiri" role="search">
+          <label for="arama" class="gizli-metin">E-kitap ara</label>
+          <input type="search" id="arama" placeholder="Kitap, yazar veya kategori ara…">
+
+          <label for="kategori-sec">Kategori</label>
+          <select id="kategori-sec">
+            <option value="tumu">Tüm kategoriler</option>
+          </select>
+
+          <label for="siralama-sec">Sırala</label>
+          <select id="siralama-sec">
+            <option value="onerilen">Önerilen</option>
+            <option value="fiyat-artan">Fiyat: artan</option>
+            <option value="fiyat-azalan">Fiyat: azalan</option>
+            <option value="puan">Okur puanı</option>
+            <option value="isim">İsme göre (A–Z)</option>
+          </select>
+
+          <span class="sonuc-sayisi" id="sonuc-sayisi" aria-live="polite"></span>
+        </div>
+
+        <div class="kart-izgarasi" id="kitap-listesi"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-alti">
+    <div class="icerik">
+      <div>
+        <h4>Lezzet Kütüphanesi</h4>
+        <p>Türkiye'nin bağımsız yemek tarifi e-kitap yayıncısı. Her tarif, mutfağımızda
+          en az üç kez test edilir.</p>
+      </div>
+      <div>
+        <h4>Keşfet</h4>
+        <ul>
+          <li><a href="kitaplar.html">Tüm e-kitaplar</a></li>
+          <li><a href="hakkinda.html">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Yardım</h4>
+        <ul>
+          <li><a href="iletisim.html">Sıkça sorulan sorular</a></li>
+          <li><a href="iletisim.html">İade koşulları</a></li>
+          <li><a href="sepet.html">Sepetim</a></li>
+        </ul>
+      </div>
+      <p class="telif">© <span class="yil"></span> Lezzet Kütüphanesi. Tüm hakları saklıdır.
+        Bu site bir portföy çalışmasıdır; ödeme adımı simülasyondur.</p>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lezzet Kütüphanesi — denenmiş yemek tarifi e-kitapları. Türk mutfağından dünya mutfaklarına, anında indirme.">
+  <title>Lezzet Kütüphanesi — Yemek Tarifi E-Kitapları</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-sayfa="anasayfa">
+
+  <header class="site-ustu">
+    <div class="icerik">
+      <a class="logo" href="index.html"><span class="logo-isaret">🍳</span>Lezzet Kütüphanesi</a>
+      <nav class="site-nav" aria-label="Ana menü">
+        <a href="index.html" class="aktif">Ana Sayfa</a>
+        <a href="kitaplar.html">E-Kitaplar</a>
+        <a href="hakkinda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+      <div class="ust-araclar">
+        <button class="tema-dugmesi" type="button">🌙</button>
+        <a class="sepet-baglantisi" href="sepet.html" aria-label="Sepet">🛒<span class="sepet-rozeti" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="icerik">
+        <div>
+          <span class="hero-etiket">Dijital e-kitap · Anında indirme</span>
+          <h1>Mutfağınıza layık bir kütüphane</h1>
+          <p class="hero-ozet">Tarif mühendisliğiyle hazırlandı: her tarif mutfağımızda en az üç kez
+            test edildi, porsiyonları ölçüldü, malzeme listeleri alışveriş sepetinize göre
+            düzenlendi. Seç, indir, pişir.</p>
+          <div class="hero-eylemler">
+            <a class="buton" href="kitaplar.html">E-kitaplara göz at</a>
+            <a class="buton buton-ikincil" href="#nasil-calisir">Nasıl çalışır?</a>
+          </div>
+        </div>
+        <div class="hero-gorsel" aria-hidden="true">
+          <div class="hero-kitap-yigini"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI satırı + kategori grafiği -->
+    <section class="bolum">
+      <div class="icerik">
+        <div class="bolum-basligi">
+          <div>
+            <h2>Kütüphane bir bakışta</h2>
+            <p>Bütün rakamlar güncel katalogdan otomatik hesaplanır.</p>
+          </div>
+        </div>
+
+        <div class="kpi-satiri">
+          <div class="istatistik-kutusu">
+            <div class="deger" id="kpi-kitap">—</div>
+            <div class="etiket">e-kitap</div>
+          </div>
+          <div class="istatistik-kutusu">
+            <div class="deger" id="kpi-tarif">—</div>
+            <div class="etiket">denenmiş tarif</div>
+          </div>
+          <div class="istatistik-kutusu">
+            <div class="deger" id="kpi-puan">—</div>
+            <div class="etiket">ortalama okur puanı (5 üzerinden)</div>
+          </div>
+          <div class="istatistik-kutusu">
+            <div class="deger" id="kpi-kategori">—</div>
+            <div class="etiket">kategori</div>
+          </div>
+        </div>
+
+        <figure class="grafik-kart" id="kategori-grafigi">
+          <figcaption>
+            <h3>Kategorilere göre tarif sayısı</h3>
+            <p>Katalogdaki e-kitapların kategori bazında toplam tarif sayısı</p>
+          </figcaption>
+          <div class="grafik-govde"></div>
+          <details class="tablo-gorunumu">
+            <summary>Tablo görünümü</summary>
+            <table>
+              <thead><tr><th>Kategori</th><th>Tarif sayısı</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </details>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Öne çıkan kitaplar -->
+    <section class="bolum">
+      <div class="icerik">
+        <div class="bolum-basligi">
+          <div>
+            <h2>Öne çıkan e-kitaplar</h2>
+            <p>Okurlarımızın en çok sevdiği başlıklar</p>
+          </div>
+          <a class="buton buton-ikincil buton-kucuk" href="kitaplar.html">Tümünü gör →</a>
+        </div>
+        <div class="kart-izgarasi" id="one-cikan-kitaplar"></div>
+      </div>
+    </section>
+
+    <!-- Nasıl çalışır -->
+    <section class="bolum" id="nasil-calisir">
+      <div class="icerik">
+        <div class="bolum-basligi">
+          <div>
+            <h2>Nasıl çalışır?</h2>
+            <p>Ödemeyle indirme arasında yalnızca birkaç saniye var.</p>
+          </div>
+        </div>
+        <div class="deger-izgarasi">
+          <div class="deger-karti">
+            <div class="ikon">📚</div>
+            <h3>1. Kitabını seç</h3>
+            <p>Kataloğumuzda gez, kitabın içeriğini ve okur puanlarını incele.</p>
+          </div>
+          <div class="deger-karti">
+            <div class="ikon">💳</div>
+            <h3>2. Güvenle satın al</h3>
+            <p>Sepete ekle, ödemeni tamamla. Kütüphanen anında senin olur.</p>
+          </div>
+          <div class="deger-karti">
+            <div class="ikon">⬇️</div>
+            <h3>3. İndir ve pişir</h3>
+            <p>PDF ve EPUB dosyalarını istediğin cihaza indir; mutfağa geç.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bülten -->
+    <section class="bolum">
+      <div class="icerik">
+        <div class="bulten-karti">
+          <div>
+            <h2>Haftalık tarif bülteni</h2>
+            <p>Her cuma: bir tarif, bir teknik ve katalogdan bir öneri. Spam yok, tek tıkla ayrıl.</p>
+          </div>
+          <div>
+            <form class="bulten-formu">
+              <label class="gizli-metin" for="bulten-eposta">E-posta adresiniz</label>
+              <input id="bulten-eposta" type="email" placeholder="ornek@eposta.com" required>
+              <button class="buton" type="submit">Katıl</button>
+            </form>
+            <p class="bulten-notu">12.400+ okur bültenimize abone.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-alti">
+    <div class="icerik">
+      <div>
+        <h4>Lezzet Kütüphanesi</h4>
+        <p>Türkiye'nin bağımsız yemek tarifi e-kitap yayıncısı. Her tarif, mutfağımızda
+          en az üç kez test edilir.</p>
+      </div>
+      <div>
+        <h4>Keşfet</h4>
+        <ul>
+          <li><a href="kitaplar.html">Tüm e-kitaplar</a></li>
+          <li><a href="hakkinda.html">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Yardım</h4>
+        <ul>
+          <li><a href="iletisim.html">Sıkça sorulan sorular</a></li>
+          <li><a href="iletisim.html">İade koşulları</a></li>
+          <li><a href="sepet.html">Sepetim</a></li>
+        </ul>
+      </div>
+      <p class="telif">© <span class="yil"></span> Lezzet Kütüphanesi. Tüm hakları saklıdır.
+        Bu site bir portföy çalışmasıdır; ödeme adımı simülasyondur.</p>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <div class="grafik-ipucu" aria-hidden="true"><span class="ipucu-etiket"></span><span class="ipucu-deger"></span></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

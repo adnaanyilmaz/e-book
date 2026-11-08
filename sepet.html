@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sepetim — Lezzet Kütüphanesi">
+  <title>Sepetim — Lezzet Kütüphanesi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-sayfa="sepet">
+
+  <header class="site-ustu">
+    <div class="icerik">
+      <a class="logo" href="index.html"><span class="logo-isaret">🍳</span>Lezzet Kütüphanesi</a>
+      <nav class="site-nav" aria-label="Ana menü">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="kitaplar.html">E-Kitaplar</a>
+        <a href="hakkinda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+      <div class="ust-araclar">
+        <button class="tema-dugmesi" type="button">🌙</button>
+        <a class="sepet-baglantisi" href="sepet.html" aria-label="Sepet">🛒<span class="sepet-rozeti" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="bolum">
+      <div class="icerik">
+        <div class="bolum-basligi">
+          <div>
+            <h1>Sepetim</h1>
+            <p>Dijital ürünlerde teslimat anında gerçekleşir, kargo yok.</p>
+          </div>
+        </div>
+
+        <div id="basari-paneli" class="basarili-panel" hidden>
+          <div class="ikon">🎉</div>
+          <h2>Siparişiniz tamamlandı!</h2>
+          <p>Teşekkürler <strong id="basari-adi">değerli okur</strong>! Satın aldığın e-kitapların
+            indirme bağlantıları e-posta adresine gönderildi. Afiyet olsun!</p>
+          <a class="buton buton-ikincil" href="kitaplar.html">Alışverişe devam et</a>
+        </div>
+
+        <div class="sepet-izgarasi">
+          <div>
+            <div id="sepet-listesi"></div>
+          </div>
+
+          <aside>
+            <div class="ozet-kart">
+              <h2 style="font-size: 1.2rem">Sipariş özeti</h2>
+              <div id="sepet-ozeti"></div>
+            </div>
+
+            <div id="odeme-alani" class="ozet-kart" style="position: static; margin-top: 20px">
+              <h2 style="font-size: 1.2rem">Ödeme</h2>
+              <form id="odeme-formu" class="odeme-formu">
+                <div class="form-alani">
+                  <label for="odeme-ad">Ad Soyad</label>
+                  <input id="odeme-ad" type="text" required autocomplete="name" placeholder="Ayşe Yılmaz">
+                </div>
+                <div class="form-alani">
+                  <label for="odeme-eposta">E-posta (indirme bağlantısı buraya gelir)</label>
+                  <input id="odeme-eposta" type="email" required autocomplete="email" placeholder="ornek@eposta.com">
+                </div>
+                <div class="form-alani">
+                  <label for="odeme-kart">Kart numarası</label>
+                  <input id="odeme-kart" type="text" inputmode="numeric" required
+                         placeholder="0000 0000 0000 0000" autocomplete="cc-number">
+                </div>
+                <p class="sekme-uyarisi">⚠️ Demo sitesi: gerçek ödeme alınmaz, girdiğiniz
+                  bilgiler hiçbir yere gönderilmez.</p>
+                <button class="buton" type="submit">Satın almayı tamamla</button>
+              </form>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-alti">
+    <div class="icerik">
+      <div>
+        <h4>Lezzet Kütüphanesi</h4>
+        <p>Türkiye'nin bağımsız yemek tarifi e-kitap yayıncısı. Her tarif, mutfağımızda
+          en az üç kez test edilir.</p>
+      </div>
+      <div>
+        <h4>Keşfet</h4>
+        <ul>
+          <li><a href="kitaplar.html">Tüm e-kitaplar</a></li>
+          <li><a href="hakkinda.html">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Yardım</h4>
+        <ul>
+          <li><a href="iletisim.html">Sıkça sorulan sorular</a></li>
+          <li><a href="iletisim.html">İade koşulları</a></li>
+          <li><a href="sepet.html">Sepetim</a></li>
+        </ul>
+      </div>
+      <p class="telif">© <span class="yil"></span> Lezzet Kütüphanesi. Tüm hakları saklıdır.
+        Bu site bir portföy çalışmasıdır; ödeme adımı simülasyondur.</p>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
