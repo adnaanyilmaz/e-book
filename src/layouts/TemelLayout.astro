@@ -1,12 +1,17 @@
 ---
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/nunito';
+// Arapça yazı tipleri: unicode-range sayesinde yalnızca Arapça karakter görünen sayfada indirilir.
+import '@fontsource-variable/noto-naskh-arabic';
+import '@fontsource-variable/noto-sans-arabic';
 import '@/styles/global.css';
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
 import SEO, { type Props as SEOProps } from '@/components/SEO.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import { dilBilgisi, dilOneki } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
 
 interface Props extends Omit<SEOProps, 'gorsel'> {
   /** Yerel görsel verilirse 1200x630 OG görseli otomatik üretilir */
@@ -16,6 +21,9 @@ interface Props extends Omit<SEOProps, 'gorsel'> {
 }
 
 const { ogGorsel, jsonLd, ...seo } = Astro.props;
+const { dil, alternatifler = {} } = seo;
+const bilgi = dilBilgisi[dil];
+const t = ceviri(dil);
 
 let gorsel: string | undefined;
 if (ogGorsel) {
@@ -25,31 +33,31 @@ if (ogGorsel) {
 ---
 
 <!doctype html>
-<html lang="tr">
+<html lang={bilgi.bcp47} dir={bilgi.yon}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#fbf3e6" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="alternate" type="application/rss+xml" title="Naif Mutfak tarifleri" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`Naif Mutfak (${bilgi.ad})`} href={`${dilOneki(dil)}/rss.xml`} />
     <meta name="generator" content={Astro.generator} />
     <SEO {...seo} gorsel={gorsel} />
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
-    <a class="atla gizli" href="#icerik">İçeriğe geç</a>
-    <Header />
+    <a class="atla gizli" href="#icerik">{t.nav.icerigeGec}</a>
+    <Header dil={dil} alternatifler={alternatifler} />
     <main id="icerik">
       <slot />
     </main>
-    <Footer />
+    <Footer dil={dil} />
   </body>
 </html>
 
 <style>
   .atla:focus {
-    position: fixed; top: 0.5rem; left: 0.5rem; z-index: 50;
+    position: fixed; top: 0.5rem; inset-inline-start: 0.5rem; z-index: 50;
     width: auto; height: auto; clip: auto; padding: 0.75rem 1rem;
     background: var(--kahve); color: var(--kagit); border-radius: var(--yaricap-kucuk);
   }

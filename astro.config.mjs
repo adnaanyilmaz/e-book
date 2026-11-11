@@ -8,8 +8,7 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   integrations: [
-    sitemap({
-      i18n: { defaultLocale: 'tr', locales: { tr: 'tr-TR' } },
-    }),
+    // Dil eşleşmeleri (hreflang) her sayfanın <head>'inde; bkz. src/components/SEO.astro
+    sitemap(),
   ],
 });

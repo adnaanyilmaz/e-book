@@ -1,20 +1,23 @@
 ---
 import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import { kategoriAdlari, tarihBicimle } from '@/site.config';
+import { tarihBicimle } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import { tarifDili, tarifUrl, type Tarif } from '@/lib/tarifler';
 
 interface Props {
-  tarif: CollectionEntry<'blog'>;
+  tarif: Tarif;
   /** İlk ekranda görünen kartlar için true (LCP) */
   oncelikli?: boolean;
 }
 const { tarif, oncelikli = false } = Astro.props;
+const dil = tarifDili(tarif);
+const t = ceviri(dil);
 const { baslik, aciklama, kapak, kapakAlt, kategori, hazirlamaSuresi, pisirmeSuresi, tarih } = tarif.data;
 const toplam = hazirlamaSuresi + (pisirmeSuresi ?? 0);
 ---
 
 <article class="kart">
-  <a href={`/blog/${tarif.id}`} class="kart__link">
+  <a href={tarifUrl(tarif)} class="kart__link">
     <Image
       src={kapak}
       alt={kapakAlt}
@@ -25,12 +28,12 @@ const toplam = hazirlamaSuresi + (pisirmeSuresi ?? 0);
     />
     <div class="kart__govde">
       <div class="kart__rozetler">
-        <span class="rozet">{kategoriAdlari[kategori]}</span>
-        <span class="kart__sure">⏱ {toplam} dk</span>
+        <span class="rozet">{t.kategoriler[kategori]}</span>
+        <span class="kart__sure">⏱ {toplam} {t.tarif.dk}</span>
       </div>
       <h3 class="kart__baslik">{baslik}</h3>
       <p class="kart__ozet">{aciklama}</p>
-      <time class="kart__tarih" datetime={tarih.toISOString()}>{tarihBicimle(tarih)}</time>
+      <time class="kart__tarih" datetime={tarih.toISOString()}>{tarihBicimle(dil, tarih)}</time>
     </div>
   </a>
 </article>

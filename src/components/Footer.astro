@@ -1,6 +1,21 @@
 ---
-import { site, navigasyon, yasalSayfalar } from '@/site.config';
+import { site } from '@/site.config';
+import type { Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import { sayfaYolu, yasalAnahtarlar } from '@/i18n/yollar';
+
+interface Props {
+  dil: Dil;
+}
+const { dil } = Astro.props;
+const t = ceviri(dil);
 const yil = new Date().getFullYear();
+
+const sayfalar = (['ana', 'blog', 'ekitap', 'hakkimda', 'iletisim'] as const).map((k) => ({
+  href: sayfaYolu(dil, k),
+  etiket: t.nav[k],
+}));
+const yasal = yasalAnahtarlar.map((k) => ({ href: sayfaYolu(dil, k), etiket: t.yasalAdlar[k] }));
 ---
 
 <footer class="alt">
@@ -8,21 +23,21 @@ const yil = new Date().getFullYear();
   <div class="kapsayici alt__ic">
     <div class="alt__marka">
       <p class="alt__ad">{site.ad}</p>
-      <p>{site.slogan}. Yeni tarifler için Instagram'da buluşalım.</p>
+      <p>{t.site.slogan}. {t.altBilgi.metin}</p>
       <a class="buton buton--ikincil" href={site.instagram.url} target="_blank" rel="noopener">
-        Instagram: @{site.instagram.kullanici}
+        Instagram: <span dir="ltr">@{site.instagram.kullanici}</span>
       </a>
     </div>
-    <nav aria-label="Site haritası">
-      <p class="alt__baslik">Sayfalar</p>
-      <ul>{navigasyon.map((l) => <li><a href={l.href}>{l.etiket}</a></li>)}</ul>
+    <nav aria-label={t.altBilgi.siteHaritasi}>
+      <p class="alt__baslik">{t.altBilgi.sayfalar}</p>
+      <ul>{sayfalar.map((l) => <li><a href={l.href}>{l.etiket}</a></li>)}</ul>
     </nav>
-    <nav aria-label="Yasal">
-      <p class="alt__baslik">Yasal</p>
-      <ul>{yasalSayfalar.map((l) => <li><a href={l.href}>{l.etiket}</a></li>)}</ul>
+    <nav aria-label={t.altBilgi.yasal}>
+      <p class="alt__baslik">{t.altBilgi.yasal}</p>
+      <ul>{yasal.map((l) => <li><a href={l.href}>{l.etiket}</a></li>)}</ul>
     </nav>
   </div>
-  <p class="kapsayici alt__telif">© {yil} {site.ad}. Tüm hakları saklıdır.</p>
+  <p class="kapsayici alt__telif">© {yil} {site.ad}. {t.altBilgi.haklar}</p>
 </footer>
 
 <style>

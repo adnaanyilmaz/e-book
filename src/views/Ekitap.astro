@@ -2,22 +2,19 @@
 import { Image, getImage } from 'astro:assets';
 import TemelLayout from '@/layouts/TemelLayout.astro';
 import kapak from '@/assets/ekitap-kapak.jpg';
-import { ekitap, site, fiyatBicimle } from '@/site.config';
+import { ekitap, site } from '@/site.config';
+import { fiyatBicimle, type Dil } from '@/i18n/diller';
+import { ceviri, doldur, parcala } from '@/i18n/ceviriler';
+import { sayfaYolu, type Alternatifler } from '@/i18n/yollar';
 
-// [DOLDURULACAK] E-kitabın gerçek içeriğiyle güncelle.
-const bolumler = [
-  { baslik: 'Çorbalar', aciklama: 'Mercimekten tarhanaya, her mevsime 8 çorba.' },
-  { baslik: 'Zeytinyağlılar', aciklama: 'Ertesi gün daha güzel olan 10 klasik.' },
-  { baslik: 'Ana yemekler', aciklama: 'Tencere yemekleri ve fırın lezzetleri.' },
-  { baslik: 'Tatlılar', aciklama: 'Şerbetli, sütlü ve helva çeşitleri.' },
-  { baslik: 'Mutfak ipuçları', aciklama: 'Haftalık alışveriş listeleri ve saklama rehberi.' },
-];
-
-const sss = [
-  { s: 'E-kitap nasıl teslim ediliyor?', c: 'Ödeme sonrasında e-kitap PDF olarak e-posta adresine gönderilir. [DOLDURULACAK]' },
-  { s: 'Telefonda okuyabilir miyim?', c: 'Evet. PDF formatı telefon, tablet ve bilgisayarda açılır.' },
-  { s: 'İade yapılıyor mu?', c: 'Dijital içeriklerde iade koşulları için İade Koşulları sayfasına göz at.' },
-];
+interface Props {
+  dil: Dil;
+  alternatifler: Alternatifler;
+}
+const { dil, alternatifler } = Astro.props;
+const t = ceviri(dil);
+const e = t.ekitap;
+const kapakAlt = doldur(e.kapakAlt, { baslik: e.baslik });
 
 const satinAlHazir = !ekitap.odemeLinki.startsWith('#');
 const ogKapak = await getImage({ src: kapak, width: 1200, format: 'jpg' });
@@ -25,8 +22,8 @@ const ogKapak = await getImage({ src: kapak, width: 1200, format: 'jpg' });
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: ekitap.baslik,
-  description: ekitap.altBaslik,
+  name: e.baslik,
+  description: e.altBaslik,
   image: new URL(ogKapak.src, Astro.site).href,
   brand: { '@type': 'Brand', name: site.ad },
   offers: {
@@ -34,16 +31,23 @@ const jsonLd = {
     price: ekitap.fiyat,
     priceCurrency: 'TRY',
     availability: 'https://schema.org/InStock',
-    url: new URL('/e-kitap', Astro.site).href,
+    url: new URL(sayfaYolu(dil, 'ekitap'), Astro.site).href,
   },
 };
+
+const yasalLinkler = {
+  mesafeli: { href: sayfaYolu(dil, 'mesafeli'), etiket: t.yasalAdlar.mesafeli },
+  iade: { href: sayfaYolu(dil, 'iade'), etiket: t.yasalAdlar.iade },
+} as Record<string, { href: string; etiket: string }>;
 ---
 
 <TemelLayout
-  baslik={`${ekitap.baslik} E-Kitap`}
-  aciklama={`${ekitap.altBaslik}. ${site.ad} e-kitabı, ${ekitap.format} formatında hemen indir.`}
+  dil={dil}
+  alternatifler={alternatifler}
+  baslik={doldur(e.seoBaslik, { baslik: e.baslik })}
+  aciklama={doldur(e.seoAciklama, { altBaslik: e.altBaslik, format: ekitap.format })}
   ogGorsel={kapak}
-  gorselAlt={`${ekitap.baslik} e-kitap kapağı`}
+  gorselAlt={kapakAlt}
   tur="product"
   jsonLd={jsonLd}
 >
@@ -52,7 +56,7 @@ const jsonLd = {
       <div class="urun__kapak">
         <Image
           src={kapak}
-          alt={`${ekitap.baslik} e-kitap kapağı`}
+          alt={kapakAlt}
           widths={[320, 480, 640]}
           sizes="(min-width: 860px) 360px, 70vw"
           loading="eager"
@@ -60,13 +64,14 @@ const jsonLd = {
         />
       </div>
       <div class="urun__metin">
-        <span class="ust-baslik">E-kitap · {ekitap.format} · {ekitap.sayfaSayisi} sayfa</span>
-        <h1>{ekitap.baslik}</h1>
-        <p class="urun__alt">{ekitap.altBaslik}</p>
+        <span class="ust-baslik">{doldur(e.ust, { format: ekitap.format, sayfa: ekitap.sayfaSayisi })}</span>
+        <h1>{e.baslik}</h1>
+        <p class="urun__alt">{e.altBaslik}</p>
+        {e.dilNotu && <p class="urun__dil">{e.dilNotu}</p>}
         <div class="satin-al" id="satin-al">
           <p class="fiyat">
-            {ekitap.eskiFiyat && <s>{fiyatBicimle(ekitap.eskiFiyat)}</s>}
-            <strong>{fiyatBicimle(ekitap.fiyat)}</strong>
+            {ekitap.eskiFiyat && <s>{fiyatBicimle(dil, ekitap.eskiFiyat)}</s>}
+            <strong>{fiyatBicimle(dil, ekitap.fiyat)}</strong>
           </p>
           <a
             class="buton buton--tam"
@@ -75,14 +80,13 @@ const jsonLd = {
             rel={satinAlHazir ? 'noopener' : undefined}
             aria-disabled={satinAlHazir ? undefined : 'true'}
           >
-            Satın Al
+            {e.satinAl}
           </a>
-          <p class="guvence">
-            {satinAlHazir ? 'Güvenli ödeme sayfasına yönlendirileceksin.' : 'Satış çok yakında başlıyor!'}
-          </p>
+          <p class="guvence">{satinAlHazir ? e.guvenli : e.yakinda}</p>
           <p class="yasal-not">
-            Satın alarak <a href="/mesafeli-satis-sozlesmesi">Mesafeli Satış Sözleşmesi</a>'ni ve
-            <a href="/iade-kosullari">İade Koşulları</a>'nı kabul etmiş olursun.
+            {parcala(e.yasalNot).map((p) =>
+              'anahtar' in p ? <a href={yasalLinkler[p.anahtar!]!.href}>{yasalLinkler[p.anahtar!]!.etiket}</a> : p.metin,
+            )}
           </p>
         </div>
       </div>
@@ -90,10 +94,10 @@ const jsonLd = {
   </section>
 
   <section class="kapsayici bolum okuma" aria-labelledby="icindekiler">
-    <span class="ust-baslik">Neler var?</span>
-    <h2 id="icindekiler">İçindekiler</h2>
+    <span class="ust-baslik">{e.icindekilerUst}</span>
+    <h2 id="icindekiler">{e.icindekiler}</h2>
     <ol class="bolumler">
-      {bolumler.map((b) => (
+      {e.bolumler.map((b) => (
         <li>
           <strong>{b.baslik}</strong>
           <span>{b.aciklama}</span>
@@ -103,8 +107,8 @@ const jsonLd = {
   </section>
 
   <section class="kapsayici bolum okuma" aria-labelledby="sss">
-    <h2 id="sss">Sıkça sorulanlar</h2>
-    {sss.map(({ s, c }) => (
+    <h2 id="sss">{e.sssBaslik}</h2>
+    {e.sss.map(({ s, c }) => (
       <details class="sss">
         <summary>{s}</summary>
         <p>{c}</p>
@@ -115,8 +119,8 @@ const jsonLd = {
   {/* Mobilde fiyat ve buton hep görünür kalsın (sadece ödeme linki girildiyse) */}
   {satinAlHazir && (
     <div class="yapiskan">
-      <span class="yapiskan__fiyat">{fiyatBicimle(ekitap.fiyat)}</span>
-      <a class="buton" href={ekitap.odemeLinki} target="_blank" rel="noopener">Satın Al</a>
+      <span class="yapiskan__fiyat">{fiyatBicimle(dil, ekitap.fiyat)}</span>
+      <a class="buton" href={ekitap.odemeLinki} target="_blank" rel="noopener">{e.satinAl}</a>
     </div>
   )}
 </TemelLayout>
@@ -127,6 +131,7 @@ const jsonLd = {
   .urun__kapak { justify-self: center; width: min(70vw, 340px); }
   .urun__kapak img { border-radius: 6px 16px 16px 6px; box-shadow: 14px 16px 0 -4px rgb(91 58 41 / 0.15), var(--golge); }
   .urun__alt { font-size: 1.15rem; color: var(--metin-soluk); }
+  .urun__dil { font-size: 0.9rem; color: var(--metin-soluk); font-style: italic; }
 
   .satin-al { background: var(--kagit); border: 1px solid var(--cizgi); border-radius: var(--yaricap); padding: 1.25rem; box-shadow: var(--golge); max-width: 26rem; }
   .fiyat { font-family: var(--font-baslik); font-size: 2rem; color: var(--kahve); display: flex; gap: 0.75rem; align-items: baseline; margin-bottom: 0.75rem; }
@@ -138,10 +143,10 @@ const jsonLd = {
   .bolumler { list-style: none; counter-reset: b; padding: 0; margin: 0; }
   .bolumler li {
     counter-increment: b; display: grid; gap: 0.15rem;
-    padding: 1rem 0 1rem 3.25rem; position: relative; border-bottom: 1px dashed var(--cizgi);
+    padding-block: 1rem; padding-inline-start: 3.25rem; position: relative; border-bottom: 1px dashed var(--cizgi);
   }
   .bolumler li::before {
-    content: counter(b); position: absolute; left: 0; top: 1rem;
+    content: counter(b); position: absolute; inset-inline-start: 0; top: 1rem;
     width: 2.25rem; height: 2.25rem; border-radius: 50%; display: grid; place-items: center;
     background: var(--terakota); color: var(--kagit); font-family: var(--font-baslik); font-weight: 600;
   }
@@ -152,7 +157,7 @@ const jsonLd = {
   .sss p { color: var(--metin-soluk); }
 
   .yapiskan {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 15;
+    position: fixed; inset-inline: 0; bottom: 0; z-index: 15;
     display: flex; justify-content: space-between; align-items: center; gap: 1rem;
     padding: 0.6rem var(--kenar) calc(0.6rem + env(safe-area-inset-bottom));
     background: rgb(255 250 242 / 0.96); border-top: 1px solid var(--cizgi); backdrop-filter: blur(8px);

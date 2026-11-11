@@ -1,0 +1,46 @@
+---
+import { diller, dilBilgisi, type Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import { sayfaYolu, type Alternatifler } from '@/i18n/yollar';
+
+interface Props {
+  dil: Dil;
+  /** Bu sayfanın diğer dillerdeki adresi; yoksa o dilin ana sayfasına gidilir */
+  alternatifler: Alternatifler;
+}
+const { dil, alternatifler } = Astro.props;
+---
+
+<nav class="dil" aria-label={ceviri(dil).nav.dilSecimi}>
+  <ul>
+    {diller.map((d) => (
+      <li>
+        <a
+          href={alternatifler[d] ?? sayfaYolu(d, 'ana')}
+          hreflang={dilBilgisi[d].bcp47}
+          lang={dilBilgisi[d].bcp47}
+          aria-current={d === dil ? 'true' : undefined}
+          title={dilBilgisi[d].ad}
+        >
+          <span aria-hidden="true">{dilBilgisi[d].kisa}</span>
+          <span class="gizli">{dilBilgisi[d].ad}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .dil ul {
+    display: flex; list-style: none; margin: 0; padding: 3px; gap: 2px;
+    background: var(--krem-koyu); border-radius: 999px;
+  }
+  .dil a {
+    display: grid; place-items: center; min-width: 36px; height: 36px; padding-inline: 0.4rem;
+    border-radius: 999px; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.04em;
+    color: var(--metin-soluk); text-decoration: none;
+  }
+  .dil a:lang(ar) { font-size: 1.05rem; letter-spacing: 0; }
+  .dil a:hover { color: var(--kahve); background: var(--kagit); }
+  .dil a[aria-current='true'] { background: var(--terakota); color: var(--kagit); }
+</style>

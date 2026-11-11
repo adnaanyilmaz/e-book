@@ -1,22 +1,31 @@
 ---
 import { Image } from 'astro:assets';
 import kapak from '@/assets/ekitap-kapak.jpg';
-import { ekitap, fiyatBicimle } from '@/site.config';
+import { ekitap } from '@/site.config';
+import { fiyatBicimle, type Dil } from '@/i18n/diller';
+import { ceviri, doldur } from '@/i18n/ceviriler';
+import { sayfaYolu } from '@/i18n/yollar';
+
+interface Props {
+  dil: Dil;
+}
+const { dil } = Astro.props;
+const t = ceviri(dil);
 ---
 
 <section class="vitrin" aria-labelledby="vitrin-baslik">
   <div class="vitrin__kapak">
-    <Image src={kapak} alt={`${ekitap.baslik} e-kitap kapağı`} widths={[280, 420]} sizes="(min-width: 760px) 280px, 60vw" />
+    <Image src={kapak} alt={doldur(t.ekitap.kapakAlt, { baslik: t.ekitap.baslik })} widths={[280, 420]} sizes="(min-width: 760px) 280px, 60vw" />
   </div>
   <div class="vitrin__metin">
-    <span class="ust-baslik">Öne çıkan e-kitap</span>
-    <h2 id="vitrin-baslik">{ekitap.baslik}</h2>
-    <p>{ekitap.altBaslik}. Alışveriş listeleri, pratik ipuçları ve adım adım fotoğraflarla.</p>
+    <span class="ust-baslik">{t.vitrin.ust}</span>
+    <h2 id="vitrin-baslik">{t.ekitap.baslik}</h2>
+    <p>{t.ekitap.altBaslik}. {t.vitrin.ek}</p>
     <p class="vitrin__fiyat">
-      {ekitap.eskiFiyat && <s>{fiyatBicimle(ekitap.eskiFiyat)}</s>}
-      <strong>{fiyatBicimle(ekitap.fiyat)}</strong>
+      {ekitap.eskiFiyat && <s>{fiyatBicimle(dil, ekitap.eskiFiyat)}</s>}
+      <strong>{fiyatBicimle(dil, ekitap.fiyat)}</strong>
     </p>
-    <a class="buton" href="/e-kitap">E-kitabı incele</a>
+    <a class="buton" href={sayfaYolu(dil, 'ekitap')}>{t.vitrin.incele}</a>
   </div>
 </section>
 

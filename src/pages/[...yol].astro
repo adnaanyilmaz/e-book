@@ -1,0 +1,126 @@
+---
+/**
+ * Sitenin tüm sayfalarını, tüm dillerde üreten tek yönlendirici.
+ * Adresler src/i18n/yollar.ts'ten gelir; sayfaların içeriği src/views/ altındadır.
+ * Yeni bir sayfa eklemek için: yollar.ts → sayfaSluglari, views/ → yeni görünüm, burada → statikSayfalar.
+ */
+import type { GetStaticPaths } from 'astro';
+import AnaSayfa from '@/views/AnaSayfa.astro';
+import BlogListe from '@/views/BlogListe.astro';
+import TarifSayfasi from '@/views/TarifSayfasi.astro';
+import Ekitap from '@/views/Ekitap.astro';
+import Hakkimda from '@/views/Hakkimda.astro';
+import Iletisim from '@/views/Iletisim.astro';
+import YasalLayout from '@/layouts/YasalLayout.astro';
+import { kategoriler, type Kategori } from '@/site.config';
+import { diller, type Dil } from '@/i18n/diller';
+import {
+  kategoriYolu,
+  parametreye,
+  sayfaYolu,
+  yasalAnahtarlar,
+  type Alternatifler,
+  type SayfaAnahtari,
+  type YasalAnahtar,
+} from '@/i18n/yollar';
+import { tarifAlternatifleri, tarifUrl, yayindakiTarifler, type Tarif } from '@/lib/tarifler';
+
+type Sayfa =
+  | { tur: 'ana' | 'ekitap' | 'hakkimda' | 'iletisim' }
+  | { tur: 'yasal'; anahtar: YasalAnahtar }
+  | { tur: 'blog'; tarifler: Tarif[]; kullanilanKategoriler: Kategori[]; kategori?: Kategori }
+  | { tur: 'tarif'; tarif: Tarif; benzerler: Tarif[] };
+
+// `type` (interface değil): Astro'nun props tipi indeks imzası bekliyor.
+type SayfaProps = {
+  dil: Dil;
+  alternatifler: Alternatifler;
+  sayfa: Sayfa;
+};
+
+export const getStaticPaths = (async () => {
+  const yollar: { params: { yol: string | undefined }; props: SayfaProps }[] = [];
+  const ekle = (yol: string, props: SayfaProps) => yollar.push({ params: { yol: parametreye(yol) }, props });
+
+  const herDilde = (anahtar: SayfaAnahtari): Alternatifler =>
+    Object.fromEntries(diller.map((d) => [d, sayfaYolu(d, anahtar)]));
+
+  const tariflerDile = Object.fromEntries(
+    await Promise.all(diller.map(async (d) => [d, await yayindakiTarifler(d)] as const)),
+  ) as Record<Dil, Tarif[]>;
+  const kullanilan = (d: Dil) => kategoriler.filter((k) => tariflerDile[d].some((t) => t.data.kategori === k));
+
+  for (const dil of diller) {
+    // Sabit sayfalar
+    for (const tur of ['ana', 'ekitap', 'hakkimda', 'iletisim'] as const) {
+      ekle(sayfaYolu(dil, tur), { dil, alternatifler: herDilde(tur), sayfa: { tur } });
+    }
+    for (const anahtar of yasalAnahtarlar) {
+      ekle(sayfaYolu(dil, anahtar), { dil, alternatifler: herDilde(anahtar), sayfa: { tur: 'yasal', anahtar } });
+    }
+
+    // Blog listesi
+    const tarifler = tariflerDile[dil];
+    ekle(sayfaYolu(dil, 'blog'), {
+      dil,
+      alternatifler: herDilde('blog'),
+      sayfa: { tur: 'blog', tarifler, kullanilanKategoriler: kullanilan(dil) },
+    });
+
+    // Kategori sayfaları: yalnızca o dilde tarifi olan kategoriler (boş sayfa = kötü SEO)
+    for (const kategori of kullanilan(dil)) {
+      const alternatifler: Alternatifler = Object.fromEntries(
+        diller.filter((d) => kullanilan(d).includes(kategori)).map((d) => [d, kategoriYolu(d, kategori)]),
+      );
+      ekle(kategoriYolu(dil, kategori), {
+        dil,
+        alternatifler,
+        sayfa: {
+          tur: 'blog',
+          tarifler: tarifler.filter((t) => t.data.kategori === kategori),
+          kullanilanKategoriler: kullanilan(dil),
+          kategori,
+        },
+      });
+    }
+
+    // Tarifler
+    for (const tarif of tarifler) {
+      ekle(tarifUrl(tarif), {
+        dil,
+        alternatifler: await tarifAlternatifleri(tarif),
+        sayfa: {
+          tur: 'tarif',
+          tarif,
+          benzerler: tarifler.filter((t) => t.id !== tarif.id && t.data.kategori === tarif.data.kategori).slice(0, 3),
+        },
+      });
+    }
+  }
+
+  const gorulen = new Set<string | undefined>();
+  for (const y of yollar) {
+    if (gorulen.has(y.params.yol)) throw new Error(`Aynı adres iki kez üretildi: /${y.params.yol ?? ''}`);
+    gorulen.add(y.params.yol);
+  }
+  return yollar;
+}) satisfies GetStaticPaths;
+
+const { dil, alternatifler, sayfa } = Astro.props as SayfaProps;
+const ortak = { dil, alternatifler };
+---
+
+{sayfa.tur === 'ana' && <AnaSayfa {...ortak} />}
+{sayfa.tur === 'ekitap' && <Ekitap {...ortak} />}
+{sayfa.tur === 'hakkimda' && <Hakkimda {...ortak} />}
+{sayfa.tur === 'iletisim' && <Iletisim {...ortak} />}
+{sayfa.tur === 'yasal' && <YasalLayout {...ortak} anahtar={sayfa.anahtar} />}
+{sayfa.tur === 'blog' && (
+  <BlogListe
+    {...ortak}
+    tarifler={sayfa.tarifler}
+    kullanilanKategoriler={sayfa.kullanilanKategoriler}
+    kategori={sayfa.kategori}
+  />
+)}
+{sayfa.tur === 'tarif' && <TarifSayfasi {...ortak} tarif={sayfa.tarif} benzerler={sayfa.benzerler} />}

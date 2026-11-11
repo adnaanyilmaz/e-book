@@ -1,32 +1,44 @@
 ---
 import TemelLayout from './TemelLayout.astro';
-import { yasalSayfalar, tarihBicimle } from '@/site.config';
+import { tarihBicimle, type Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import { sayfaYolu, yasalAnahtarlar, type Alternatifler, type YasalAnahtar } from '@/i18n/yollar';
+import { yasalGuncelleme, yasalMetinler } from '@/i18n/yasal';
 
 interface Props {
-  baslik: string;
-  aciklama: string;
-  /** YYYY-AA-GG */
-  guncelleme: string;
+  dil: Dil;
+  anahtar: YasalAnahtar;
+  alternatifler: Alternatifler;
 }
-const { baslik, aciklama, guncelleme } = Astro.props;
-const yol = Astro.url.pathname.replace(/\/$/, '');
+const { dil, anahtar, alternatifler } = Astro.props;
+const t = ceviri(dil);
+const metin = yasalMetinler[anahtar][dil];
+const baslik = t.yasalAdlar[anahtar];
+const guncelleme = yasalGuncelleme[anahtar];
 ---
 
-<TemelLayout baslik={baslik} aciklama={aciklama}>
+<TemelLayout dil={dil} baslik={baslik} aciklama={metin.aciklama} alternatifler={alternatifler}>
   <article class="kapsayici bolum">
     <div class="okuma">
-      <span class="ust-baslik">Yasal</span>
+      <span class="ust-baslik">{t.yasal.ust}</span>
       <h1>{baslik}</h1>
-      <p class="tarih">Son güncelleme: <time datetime={guncelleme}>{tarihBicimle(new Date(guncelleme))}</time></p>
+      <p class="tarih">{t.yasal.guncelleme}: <time datetime={guncelleme}>{tarihBicimle(dil, new Date(guncelleme))}</time></p>
       <aside class="uyari" role="note">
-        <strong>Şablon metin.</strong> Bu sayfa henüz doldurulmadı. <code>[DOLDURULACAK]</code> alanları,
-        yayına almadan önce bir hukukçunun kontrol ettiği gerçek metinle değiştirilmelidir.
+        <strong>{t.yasal.uyariBaslik}</strong> {t.yasal.uyari}
+        {t.yasal.ceviriNotu && <p class="uyari__ceviri">{t.yasal.ceviriNotu}</p>}
       </aside>
-      <div class="icerik"><slot /></div>
-      <nav class="diger" aria-label="Diğer yasal metinler">
-        <p><strong>Diğer yasal metinler</strong></p>
+      <div class="icerik">
+        {metin.bolumler.map((b) => (
+          <>
+            <h2>{b.baslik}</h2>
+            <p>{b.metin}</p>
+          </>
+        ))}
+      </div>
+      <nav class="diger" aria-label={t.yasal.digerleri}>
+        <p><strong>{t.yasal.digerleri}</strong></p>
         <ul>
-          {yasalSayfalar.filter((s) => s.href !== yol).map((s) => <li><a href={s.href}>{s.etiket}</a></li>)}
+          {yasalAnahtarlar.filter((k) => k !== anahtar).map((k) => <li><a href={sayfaYolu(dil, k)}>{t.yasalAdlar[k]}</a></li>)}
         </ul>
       </nav>
     </div>
@@ -39,6 +51,7 @@ const yol = Astro.url.pathname.replace(/\/$/, '');
     margin: 1.5rem 0 2rem; padding: 1rem 1.25rem; border-radius: var(--yaricap-kucuk);
     background: #fdecdc; border: 2px dashed var(--terakota); font-size: 0.95rem;
   }
+  .uyari__ceviri { margin: 0.75rem 0 0; font-style: italic; }
   .diger { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--cizgi); }
-  .diger ul { padding-left: 1.2rem; }
+  .diger ul { padding-inline-start: 1.2rem; }
 </style>

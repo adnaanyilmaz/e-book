@@ -18,6 +18,9 @@ const blog = defineCollection({
       porsiyon: z.string().optional(),
       malzemeler: z.array(z.string()).optional(), // JSON-LD Recipe için
       taslak: z.boolean().default(false),
+      /** İsteğe bağlı URL adı (varsayılan: dosya adı). Örn. en/ için 'red-lentil-soup'.
+       *  Not: 'slug' adı kullanılamaz, Astro onu kayıt kimliği olarak kullanır. */
+      urlAdi: z.string().regex(/^[a-z0-9-]+$/).optional(),
     }),
 });
 

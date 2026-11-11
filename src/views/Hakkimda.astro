@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import TemelLayout from '@/layouts/TemelLayout.astro';
+import foto from '@/assets/hakkimda.jpg';
+import { site } from '@/site.config';
+import type { Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import type { Alternatifler } from '@/i18n/yollar';
+
+interface Props {
+  dil: Dil;
+  alternatifler: Alternatifler;
+}
+const { dil, alternatifler } = Astro.props;
+const t = ceviri(dil).hakkimda;
+---
+
+<TemelLayout dil={dil} alternatifler={alternatifler} baslik={ceviri(dil).nav.hakkimda} aciklama={t.seoAciklama} ogGorsel={foto}>
+  <section class="kapsayici bolum hakkimda">
+    <div class="hakkimda__foto">
+      <Image src={foto} alt={t.fotoAlt} widths={[360, 600, 800]} sizes="(min-width: 860px) 380px, 80vw" loading="eager" />
+    </div>
+    <div class="icerik">
+      <span class="ust-baslik">{t.ust}</span>
+      <h1>{t.baslik}</h1>
+      {t.paragraflar.map((p) => <p>{p}</p>)}
+      <blockquote><p>{t.alinti}</p></blockquote>
+      <p>{t.kapanis}</p>
+      <a class="buton" href={site.instagram.url} target="_blank" rel="noopener" dir="ltr">@{site.instagram.kullanici}</a>
+    </div>
+  </section>
+</TemelLayout>
+
+<style>
+  .hakkimda { display: grid; gap: 2rem; align-items: start; }
+  .hakkimda__foto { justify-self: center; width: min(80vw, 380px); }
+  .hakkimda__foto img { aspect-ratio: 5 / 6; object-fit: cover; border-radius: 50% 50% var(--yaricap) var(--yaricap); box-shadow: var(--golge); }
+  @media (min-width: 860px) { .hakkimda { grid-template-columns: 380px 1fr; gap: 4rem; } }
+</style>

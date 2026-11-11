@@ -1,7 +1,9 @@
 # Naif Mutfak — proje kuralları
 
-Instagram'daki @naifmutfakk yemek hesabının web sitesi. Astro ile üretilen, tamamen statik, Türkçe bir site.
-Ziyaretçilerin çoğu Instagram'dan telefonla geliyor: **her değişiklik önce mobilde (375px) doğru görünmeli.**
+Instagram'daki @naifmutfakk yemek hesabının web sitesi. Astro ile üretilen, tamamen statik,
+**üç dilli (Türkçe, İngilizce, Arapça)** bir site.
+Ziyaretçilerin çoğu Instagram'dan telefonla geliyor: **her değişiklik önce mobilde (360–375px) doğru görünmeli,
+ve Arapça (sağdan sola) sayfada da kontrol edilmeli.**
 
 ## Komutlar
 
@@ -25,33 +27,73 @@ npm run preview   # dist/ çıktısını yerelde sun
 
 ```
 src/
-  site.config.ts        TEK AYAR DOSYASI: site adı, URL, Instagram, e-posta,
-                        e-kitap fiyatı + ödeme linki, menü, kategoriler, biçimleyiciler
+  site.config.ts        dilden bağımsız ayarlar: URL, Instagram, e-posta, e-kitap fiyatı + ödeme linki, kategoriler
+  i18n/
+    diller.ts           desteklenen diller, yön (ltr/rtl), tarih + fiyat biçimleyiciler
+    yollar.ts           HER SAYFANIN HER DİLDEKİ ADRESİ (sayfaYolu, kategoriYolu, tarifYolu)
+    ceviriler.ts        tüm arayüz metinleri (tr / en / ar), doldur() ve parcala() yardımcıları
+    yasal.ts            yasal sayfaların şablon içeriği (3 dil)
+  pages/
+    [...yol].astro      TEK YÖNLENDİRİCİ: tüm sayfaları tüm dillerde üretir (getStaticPaths)
+    404.astro           tek 404 sayfası (3 dilde kısa mesaj)
+    rss.xml.ts, en/rss.xml.ts, ar/rss.xml.ts
+  views/                sayfaların içeriği (AnaSayfa, BlogListe, TarifSayfasi, Ekitap, Hakkimda, Iletisim)
+  layouts/              TemelLayout (her sayfa: <html lang dir>, SEO, header, footer), YasalLayout
+  components/           Header, DilSecici, Footer, SEO, TarifKarti, TarifListesi, EkitapVitrin
+  content/blog/<dil>/   tarifler: tr/, en/, ar/
   content.config.ts     blog koleksiyonu şeması (Zod)
-  content/blog/*.md     tarifler (dosya adı = URL: /blog/<dosya-adi>)
+  lib/tarifler.ts       tarif yardımcıları (dil, çeviri eşleştirme, URL)
   assets/               logo, hero, e-kitap kapağı, tarif görselleri (astro:assets ile optimize edilir)
-  components/           Header, Footer, SEO, TarifKarti, TarifListesi, EkitapVitrin
-  layouts/              TemelLayout (her sayfa), YasalLayout (yasal metinler)
-  lib/tarifler.ts       yayindakiTarifler(): taslakları eler, tarihe göre sıralar
-  pages/                her dosya bir URL
-  styles/global.css     tasarım değerleri (CSS değişkenleri) + ortak sınıflar
-public/                 favicon, robots.txt, og/varsayilan.jpg (dokunulmadan kopyalanır)
+  styles/global.css     tasarım değerleri (CSS değişkenleri) + ortak sınıflar + Arapça ayarları
+public/                 favicon, robots.txt, og/varsayilan.jpg
 ```
+
+## Çoklu dil
+
+- Türkçe varsayılan dildir ve önek almaz: `/hakkimda`. İngilizce `/en/about`, Arapça `/ar/about`.
+- **Adresleri asla elle yazma**; daima `sayfaYolu(dil, 'hakkimda')`, `kategoriYolu(...)`, `tarifUrl(tarif)` kullan.
+  Adres değiştirmek için yalnızca `src/i18n/yollar.ts`'i düzenle.
+- **Arayüzde sabit metin yazma**; metni `src/i18n/ceviriler.ts` içinde üç dile birden ekle,
+  bileşende `ceviri(dil).bolum.anahtar` ile kullan. `tr` kaynak yapıdır; `en`/`ar`'da eksik anahtar
+  build'de tip hatası verir.
+- Metin içine link/değer gerekiyorsa `{yer_tutucu}` kullan: düz metin için `doldur()`, link için `parcala()`.
+- Her sayfa `TemelLayout`'a `dil` ve `alternatifler` (diğer dillerdeki adresleri) verir; dil seçici ve
+  `hreflang` etiketleri buradan üretilir.
+- Yeni sayfa: `yollar.ts → sayfaSluglari` + `src/views/` altında görünüm + `[...yol].astro` içinde ekle.
+- Yeni dil: `diller.ts` (diller + dilBilgisi), `yollar.ts` (tüm slug tabloları), `ceviriler.ts`, `yasal.ts`,
+  `src/content/blog/<dil>/`, `src/pages/<dil>/rss.xml.ts`.
+
+### Arapça (RTL) kuralları
+
+- `<html dir="rtl">` otomatik gelir. CSS'te **yön bildiren özellik kullanma**:
+  `margin-left` → `margin-inline-start`, `padding-right` → `padding-inline-end`,
+  `left: 0` → `inset-inline-start: 0`, `text-align: left` → `text-align: start`, `border-left` → `border-inline-start`.
+- Arapça metin içindeki Latin parçaları (e-posta, `@kullanici`) `dir="ltr"` ile sarılır.
+- Arapça yazı tipleri: Noto Naskh Arabic (başlık), Noto Sans Arabic (metin); `:lang(ar)` ile devreye girer.
+  `unicode-range` sayesinde Türkçe/İngilizce sayfalarda indirilmezler.
+- Arapça'da italik ve büyük harf yoktur; `em` ve `.ust-baslik` için `:lang(ar)` istisnaları var.
+- Arapça metinlerde marka adı Latin harfle **"Naif Mutfak"** yazılır.
+- Site sahibinden bahseden Arapça metinler cinsiyet belirtmeyecek şekilde yazılır.
 
 ## Yeni tarif ekleme
 
-1. Kapak görselini `src/assets/tarifler/<slug>.jpg` olarak koy (yatay, en az 1200px genişlik).
-2. `src/content/blog/<slug>.md` oluştur. Frontmatter alanları:
+1. Kapak görselini `src/assets/tarifler/<anahtar>.jpg` olarak koy (yatay, en az 1200px genişlik).
+2. `src/content/blog/tr/<anahtar>.md` oluştur. Çevirileri **aynı dosya adıyla** `en/` ve `ar/` altına koy;
+   aynı adı taşıyan dosyalar birbirinin çevirisi sayılır ve dil seçici aralarında geçiş yapar.
+   Çevirisi olmayan tarif yalnızca kendi dilinde listelenir.
+3. Frontmatter alanları:
 
 ```yaml
 ---
 baslik: Mercimek Çorbası            # zorunlu, en fazla 80 karakter
+urlAdi: red-lentil-soup             # isteğe bağlı; URL'deki ad (varsayılan: dosya adı). en/ar için önerilir.
+                                    # DİKKAT: `slug` adı kullanılamaz (Astro onu kayıt kimliği yapar).
 aciklama: Tek cümlelik özet.        # zorunlu, en fazla 170 karakter (meta description)
 tarih: 2026-11-04                   # zorunlu
 guncelleme: 2026-11-20              # isteğe bağlı
-kapak: ../../assets/tarifler/<slug>.jpg   # zorunlu, göreli yol
+kapak: ../../../assets/tarifler/<anahtar>.jpg   # zorunlu, göreli yol (dil klasöründen 3 seviye yukarı)
 kapakAlt: Görselin açıklaması       # zorunlu (erişilebilirlik + SEO)
-kategori: corbalar                  # zorunlu, site.config.ts → kategoriler
+kategori: corbalar                  # zorunlu, site.config.ts → kategoriler (her dilde aynı anahtar)
 hazirlamaSuresi: 10                 # zorunlu, dakika (tam sayı)
 pisirmeSuresi: 30                   # isteğe bağlı, dakika
 porsiyon: 4 kişilik                 # isteğe bağlı
@@ -61,62 +103,68 @@ taslak: false                       # true ise yayınlanmaz
 ---
 ```
 
-3. Gövdeye hikâye + `## Hazırlanışı` (numaralı liste) + isteğe bağlı `## Püf noktası` yaz.
+4. İçinde `: ` (iki nokta + boşluk) geçen değerleri **tırnak içine al**: `aciklama: "Kış klasiği: ..."`.
+5. Gövdeye hikâye + `## Hazırlanışı` (numaralı liste) + isteğe bağlı `## Püf noktası` yaz.
    **Malzemeleri gövdede tekrar yazma**; frontmatter'daki liste sayfada otomatik gösterilir.
-4. Yeni kategori gerekirse `site.config.ts` içinde hem `kategoriler` dizisine hem `kategoriAdlari`na ekle.
+6. Yeni kategori: `site.config.ts → kategoriler`, `ceviriler.ts → kategoriler` (3 dil),
+   `yollar.ts → kategoriSluglari`.
 
 ## Adlandırma kuralları
 
-- URL / dosya adı (slug): küçük harf, Türkçe karakterden arındırılmış, kelimeler tireyle:
-  `zeytinyagli-taze-fasulye` (ç→c, ğ→g, ı→i, ö→o, ş→s, ü→u).
+- URL / dosya adı: küçük harf, Türkçe karakterden arındırılmış, kelimeler tireyle:
+  `zeytinyagli-taze-fasulye` (ç→c, ğ→g, ı→i, ö→o, ş→s, ü→u). en/ar adresleri İngilizce kelimelerle, Latin harfle.
 - Kod içindeki değişken ve bileşen adları Türkçe (`baslik`, `TarifKarti`); bu tutarlılık korunmalı.
-- Kullanıcıya görünen tüm metinler Türkçe ve samimi “sen” diliyle yazılır.
-- Tarih ve fiyatlar için daima `tarihBicimle()` / `fiyatBicimle()` kullan (tr-TR biçimi).
+- Türkçe ve İngilizce metinler samimi “sen / you” diliyle yazılır.
+- Tarih ve fiyatlar için daima `tarihBicimle(dil, ...)` / `fiyatBicimle(dil, ...)` kullan.
 
 ## Tasarım
 
 - Renk, yazı tipi, köşe ve gölge değerleri **yalnızca** `src/styles/global.css` içindeki `:root` değişkenlerinden
   alınır; bileşenlerde sabit renk kodu yazma.
 - Palet: krem zemin, terakota (ana vurgu), adaçayı yeşili (ikincil), kahve (başlıklar).
-- Yazı tipleri: Fraunces (başlık), Nunito (metin); `@fontsource-variable` ile siteyle birlikte barındırılır.
-  Google Fonts CDN **kullanma** (KVKK + hız).
+- Yazı tipleri `@fontsource-variable` ile siteyle birlikte barındırılır. Google Fonts CDN **kullanma** (KVKK + hız).
 - Mobil öncelikli: temel stil telefona göre yazılır, `min-width` medya sorgularıyla genişletilir.
-  Dokunma hedefleri en az 44px; yatay kaydırma olmamalı.
+  Dokunma hedefleri en az 44px (dil seçici 36px, çevresindeki boşlukla birlikte yeterli); yatay kaydırma olmamalı.
 - Görseller her zaman `astro:assets` `<Image>` ile, `alt` metni ve uygun `widths`/`sizes` ile kullanılır.
   İlk ekrandaki ana görsel `loading="eager" fetchpriority="high"`, diğerleri lazy.
-- Hareketler `prefers-reduced-motion` kullanıcısına saygı göstermeli.
 
 ## SEO
 
-- Her sayfa `TemelLayout`'u kullanır ve `baslik` + `aciklama` vermek **zorundadır**.
+- Her sayfa `TemelLayout`'u kullanır; `dil`, `baslik`, `aciklama` ve `alternatifler` vermek **zorundadır**.
+- `hreflang` (tr/en/ar + x-default=tr) ve `og:locale:alternate` etiketleri `alternatifler`'den otomatik üretilir.
+- Canonical adres `temizYol()` ile `.html` ekinden arındırılır (build `format: 'file'` kullanıyor).
 - OG görseli: yerel görsel `ogGorsel` prop'u ile verilir → 1200×630 JPG otomatik üretilir;
   verilmezse `public/og/varsayilan.jpg` kullanılır.
-- Tarif sayfaları `Recipe`, e-kitap sayfası `Product`, ana sayfa `WebSite` JSON-LD üretir.
-- Sitemap `@astrojs/sitemap` ile otomatik; RSS `/rss.xml`.
+- Tarif sayfaları `Recipe`, e-kitap sayfası `Product`, ana sayfa `WebSite` JSON-LD üretir (`inLanguage` ile).
+- Sitemap `@astrojs/sitemap` ile otomatik; RSS her dil için ayrı (`/rss.xml`, `/en/rss.xml`, `/ar/rss.xml`).
 - Alan adı değişirse 3 yeri güncelle: `astro.config.mjs` (`site`), `src/site.config.ts` (`url`),
   `public/robots.txt` (Sitemap satırı).
 
 ## E-kitap ve ödeme
 
-- Fiyat, eski fiyat, sayfa sayısı ve **ödeme linki** `src/site.config.ts` → `ekitap` içindedir.
+- Fiyat, eski fiyat, sayfa sayısı ve **ödeme linki** `src/site.config.ts` → `ekitap` içindedir;
+  başlık, alt başlık, içindekiler ve SSS her dil için `ceviriler.ts → ekitap` içindedir.
 - `odemeLinki` `#` ile başladığı sürece "Satın Al" butonu pasif görünür ve "Satış çok yakında" yazar.
-  Gerçek link girilince buton otomatik olarak yeni sekmede ödeme sayfasını açar.
+  Gerçek link girilince buton (ve mobildeki yapışkan satın alma çubuğu) yeni sekmede ödeme sayfasını açar.
+- E-kitap Türkçe ise en/ar sayfalarında `dilNotu` bunu belirtir.
 - Sitede ödeme formu, kart bilgisi veya kullanıcı verisi toplanmaz; ödeme tamamen harici sağlayıcıdadır.
 
 ## Yasal sayfalar
 
-- `kvkk`, `mesafeli-satis-sozlesmesi`, `iade-kosullari`, `cerez-politikasi` şu an **şablondur**.
+- KVKK, mesafeli satış sözleşmesi, iade koşulları ve çerez politikası şu an **şablondur** (`src/i18n/yasal.ts`).
   `[DOLDURULACAK]` alanları hukukçu kontrolünde doldurulmadan satışa başlanmamalı.
-- Doldurulduğunda `YasalLayout` içindeki "Şablon metin" uyarısını kaldır ve `guncelleme` tarihini güncelle.
+- Bağlayıcı metin Türkçedir; en/ar sayfaları bilgilendirme amaçlı çeviridir ve bunu belirten not gösterir.
+- Doldurulduğunda `YasalLayout` içindeki "Şablon metin" uyarısını kaldır ve `yasalGuncelleme` tarihini güncelle.
 - Siteye analitik/reklam aracı (çerez kullanan bir şey) eklenirse çerez politikası güncellenmeli ve onay bandı eklenmeli.
 
 ## Bekleyen işler
 
-- [ ] Gerçek logo ve görseller (`src/assets/` içindekiler şu an GEÇİCİ GÖRSEL yer tutucuları)
+- [ ] Gerçek logo ve fotoğraflar (`src/assets/` içindekiler şu an GEÇİCİ GÖRSEL yer tutucuları)
 - [ ] Alan adı
-- [ ] E-kitap adı, fiyatı, içindekiler ve SSS (`site.config.ts`, `pages/e-kitap.astro`)
+- [ ] E-kitap adı, fiyatı, içindekiler ve SSS (3 dilde, `ceviriler.ts` + `site.config.ts`)
 - [ ] Ödeme linki
-- [ ] İletişim e-postası, Hakkımda metni
+- [ ] İletişim e-postası, Hakkımda metni (3 dilde)
 - [ ] Yasal metinler
+- [ ] Arapça metinlerin anadili Arapça olan biri tarafından gözden geçirilmesi
 - [ ] Node 22 + Astro 7 yükseltmesi (yayın öncesi)
-- [ ] Örnek tarifleri (`> **Örnek tarif.**` notlu olanlar) gerçek tariflerle değiştir
+- [ ] Örnek tarifleri (`Örnek tarif` / `Sample recipe` / `وصفة تجريبية` notlu olanlar) gerçek tariflerle değiştir

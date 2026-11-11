@@ -12,8 +12,8 @@
   --metin-soluk: #75604f;
   --cizgi: #e6d3b8;
 
-  --font-baslik: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
-  --font-metin: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-baslik: 'Fraunces Variable', 'Noto Naskh Arabic Variable', Georgia, 'Times New Roman', serif;
+  --font-metin: 'Nunito Variable', 'Noto Sans Arabic Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --yaricap: 18px;
   --yaricap-kucuk: 10px;
@@ -103,15 +103,25 @@ a.rozet:hover { background: var(--adacayi); color: var(--kagit); }
 .icerik { font-size: 1.08rem; }
 .icerik h2 { margin-top: 2rem; }
 .icerik h3 { margin-top: 1.5rem; }
-.icerik ul, .icerik ol { padding-left: 1.3rem; margin: 0 0 1.2em; }
+.icerik ul, .icerik ol { padding-inline-start: 1.3rem; margin: 0 0 1.2em; }
 .icerik li { margin-bottom: 0.4em; }
 .icerik li::marker { color: var(--terakota); }
 .icerik blockquote {
   margin: 1.5rem 0; padding: 1rem 1.25rem;
   background: var(--adacayi-acik); border-radius: var(--yaricap-kucuk);
-  border-left: 4px solid var(--adacayi);
+  border-inline-start: 4px solid var(--adacayi);
 }
 .icerik blockquote p:last-child { margin: 0; }
 .icerik img { border-radius: var(--yaricap); }
 .icerik table { width: 100%; border-collapse: collapse; font-size: 0.95rem; display: block; overflow-x: auto; }
-.icerik th, .icerik td { border: 1px solid var(--cizgi); padding: 0.5rem; text-align: left; }
+.icerik th, .icerik td { border: 1px solid var(--cizgi); padding: 0.5rem; text-align: start; }
+
+/* ===== Arapça (sağdan sola) ===== */
+/* Arapça harfler Latin harflerinden daha küçük görünür; okunaklılık için büyütülür, harf aralığı kapatılır. */
+:lang(ar) {
+  --font-baslik: 'Noto Naskh Arabic Variable', 'Fraunces Variable', serif;
+  --font-metin: 'Noto Sans Arabic Variable', 'Nunito Variable', system-ui, sans-serif;
+}
+body:lang(ar) { font-size: 1.125rem; line-height: 1.85; }
+:lang(ar) h1, :lang(ar) h2, :lang(ar) h3 { line-height: 1.45; font-weight: 700; }
+:lang(ar) .ust-baslik { letter-spacing: 0; text-transform: none; font-size: 0.9rem; }

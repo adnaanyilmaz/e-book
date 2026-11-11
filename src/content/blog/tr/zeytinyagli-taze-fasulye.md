@@ -2,7 +2,7 @@
 baslik: Zeytinyağlı Taze Fasulye
 aciklama: Kendi suyunda, bol domatesli ve soğuk servis edilen yaz klasiği zeytinyağlı taze fasulye.
 tarih: 2026-10-21
-kapak: ../../assets/tarifler/zeytinyagli-taze-fasulye.jpg
+kapak: ../../../assets/tarifler/zeytinyagli-taze-fasulye.jpg
 kapakAlt: Servis tabağında domatesli zeytinyağlı taze fasulye
 kategori: zeytinyaglilar
 hazirlamaSuresi: 20

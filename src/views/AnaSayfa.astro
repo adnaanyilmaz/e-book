@@ -5,38 +5,45 @@ import TarifKarti from '@/components/TarifKarti.astro';
 import EkitapVitrin from '@/components/EkitapVitrin.astro';
 import hero from '@/assets/hero.jpg';
 import { site } from '@/site.config';
+import { dilBilgisi, type Dil } from '@/i18n/diller';
+import { ceviri, doldur } from '@/i18n/ceviriler';
+import { sayfaYolu, type Alternatifler } from '@/i18n/yollar';
 import { yayindakiTarifler } from '@/lib/tarifler';
 
-const sonTarifler = (await yayindakiTarifler()).slice(0, 3);
+interface Props {
+  dil: Dil;
+  alternatifler: Alternatifler;
+}
+const { dil, alternatifler } = Astro.props;
+const t = ceviri(dil);
+const sonTarifler = (await yayindakiTarifler(dil)).slice(0, 3);
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: site.ad,
-  url: site.url,
-  inLanguage: 'tr-TR',
+  url: new URL(sayfaYolu(dil, 'ana'), Astro.site).href,
+  inLanguage: dilBilgisi[dil].bcp47,
   sameAs: [site.instagram.url],
 };
 ---
 
-<TemelLayout baslik={site.ad} jsonLd={jsonLd}>
+<TemelLayout dil={dil} baslik={site.ad} alternatifler={alternatifler} jsonLd={jsonLd}>
   <section class="hero">
     <div class="kapsayici hero__ic">
       <div class="hero__metin">
-        <span class="ust-baslik">Merhaba, hoş geldin!</span>
-        <h1>Sade malzemeler, <em>samimi</em> tarifler</h1>
-        <p class="hero__giris">
-          Naif Mutfak'ta annelerimizden kalma ev yemeklerini, kolayca yapabileceğin sade tariflerle paylaşıyorum.
-        </p>
+        <span class="ust-baslik">{t.ana.ustBaslik}</span>
+        <h1>{t.ana.baslikOnce} <em>{t.ana.baslikVurgu}</em> {t.ana.baslikSonra}</h1>
+        <p class="hero__giris">{t.ana.giris}</p>
         <div class="hero__butonlar">
-          <a class="buton" href="/blog">Tariflere göz at</a>
-          <a class="buton buton--ikincil" href="/e-kitap">E-kitabı keşfet</a>
+          <a class="buton" href={sayfaYolu(dil, 'blog')}>{t.ana.tarifButon}</a>
+          <a class="buton buton--ikincil" href={sayfaYolu(dil, 'ekitap')}>{t.ana.ekitapButon}</a>
         </div>
       </div>
       <div class="hero__gorsel">
         <Image
           src={hero}
-          alt="Naif Mutfak'tan ev yemekleriyle kurulmuş bir sofra"
+          alt={t.ana.heroAlt}
           widths={[480, 800, 1200]}
           sizes="(min-width: 860px) 45vw, 92vw"
           loading="eager"
@@ -47,28 +54,30 @@ const jsonLd = {
   </section>
 
   <div class="kapsayici bolum">
-    <EkitapVitrin />
+    <EkitapVitrin dil={dil} />
   </div>
 
-  <section class="kapsayici bolum son" aria-labelledby="son-baslik">
-    <div class="bolum-baslik">
-      <div>
-        <span class="ust-baslik">Mutfaktan yeni çıktı</span>
-        <h2 id="son-baslik">Son tarifler</h2>
+  {sonTarifler.length > 0 && (
+    <section class="kapsayici bolum son" aria-labelledby="son-baslik">
+      <div class="bolum-baslik">
+        <div>
+          <span class="ust-baslik">{t.ana.sonUst}</span>
+          <h2 id="son-baslik">{t.ana.sonBaslik}</h2>
+        </div>
+        <a href={sayfaYolu(dil, 'blog')} class="tumu">{t.ana.tumu}</a>
       </div>
-      <a href="/blog" class="tumu">Tüm tarifler →</a>
-    </div>
-    <div class="izgara">
-      {sonTarifler.map((tarif) => <TarifKarti tarif={tarif} />)}
-    </div>
-  </section>
+      <div class="izgara">
+        {sonTarifler.map((tarif) => <TarifKarti tarif={tarif} />)}
+      </div>
+    </section>
+  )}
 
   <section class="kapsayici bolum">
     <div class="instagram">
       <p class="instagram__ikon" aria-hidden="true">📸</p>
-      <h2>Instagram'da birlikte pişirelim</h2>
-      <p>Günlük tarifler, kısa videolar ve mutfaktan sıcak anlar için takipte kal.</p>
-      <a class="buton" href={site.instagram.url} target="_blank" rel="noopener">@{site.instagram.kullanici} hesabını takip et</a>
+      <h2>{t.ana.igBaslik}</h2>
+      <p>{t.ana.igMetin}</p>
+      <a class="buton" href={site.instagram.url} target="_blank" rel="noopener">{doldur(t.ana.igButon, { kullanici: site.instagram.kullanici })}</a>
     </div>
   </section>
 </TemelLayout>
@@ -77,6 +86,7 @@ const jsonLd = {
   .hero { background: linear-gradient(180deg, var(--krem-koyu), var(--krem)); }
   .hero__ic { display: grid; gap: 2rem; padding-block: 2rem 1rem; align-items: center; }
   .hero h1 em { font-style: italic; color: var(--terakota); }
+  :global(:lang(ar)) .hero h1 em { font-style: normal; }
   .hero__giris { font-size: 1.15rem; color: var(--metin-soluk); max-width: 34rem; }
   .hero__butonlar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
   .hero__butonlar .buton { flex: 1 1 12rem; }

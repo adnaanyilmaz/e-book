@@ -1,7 +1,11 @@
 ---
 import { site } from '@/site.config';
+import { diller, dilBilgisi, varsayilanDil, type Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import { temizYol, type Alternatifler } from '@/i18n/yollar';
 
 export interface Props {
+  dil: Dil;
   baslik: string;
   aciklama?: string;
   /** Mutlak veya kök-göreli görsel URL'si (1200x630 önerilir) */
@@ -11,22 +15,28 @@ export interface Props {
   yayinTarihi?: Date;
   guncellemeTarihi?: Date;
   indekslenmesin?: boolean;
+  /** Bu sayfanın diğer dillerdeki karşılıkları (hreflang) */
+  alternatifler?: Alternatifler;
 }
 
 const {
+  dil,
   baslik,
-  aciklama = site.aciklama,
+  aciklama = ceviri(dil).site.aciklama,
   gorsel = site.varsayilanOgGorseli,
   gorselAlt = site.ad,
   tur = 'website',
   yayinTarihi,
   guncellemeTarihi,
   indekslenmesin = false,
+  alternatifler = {},
 } = Astro.props;
 
-const tamBaslik = baslik === site.ad ? `${site.ad} | ${site.slogan}` : `${baslik} | ${site.ad}`;
-const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+const tamBaslik = baslik === site.ad ? `${site.ad} | ${ceviri(dil).site.slogan}` : `${baslik} | ${site.ad}`;
+const canonical = new URL(temizYol(Astro.url.pathname), Astro.site);
 const gorselUrl = new URL(gorsel, Astro.site).href;
+const mutlak = (yol: string) => new URL(yol, Astro.site).href;
+const alternatifDiller = diller.filter((d) => alternatifler[d]);
 ---
 
 <title>{tamBaslik}</title>
@@ -34,9 +44,17 @@ const gorselUrl = new URL(gorsel, Astro.site).href;
 <link rel="canonical" href={canonical.href} />
 {indekslenmesin && <meta name="robots" content="noindex, follow" />}
 
-<meta property="og:type" content={tur === 'product' ? 'product' : tur} />
+{alternatifDiller.length > 1 && alternatifDiller.map((d) => (
+  <link rel="alternate" hreflang={dilBilgisi[d].bcp47} href={mutlak(alternatifler[d]!)} />
+))}
+{alternatifDiller.length > 1 && alternatifler[varsayilanDil] && (
+  <link rel="alternate" hreflang="x-default" href={mutlak(alternatifler[varsayilanDil]!)} />
+)}
+
+<meta property="og:type" content={tur} />
 <meta property="og:site_name" content={site.ad} />
-<meta property="og:locale" content={site.locale} />
+<meta property="og:locale" content={dilBilgisi[dil].ogLocale} />
+{alternatifDiller.filter((d) => d !== dil).map((d) => <meta property="og:locale:alternate" content={dilBilgisi[d].ogLocale} />)}
 <meta property="og:title" content={tamBaslik} />
 <meta property="og:description" content={aciklama} />
 <meta property="og:url" content={canonical.href} />

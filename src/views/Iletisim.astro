@@ -1,34 +1,44 @@
 ---
 import TemelLayout from '@/layouts/TemelLayout.astro';
 import { site } from '@/site.config';
+import type { Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import type { Alternatifler } from '@/i18n/yollar';
+
+interface Props {
+  dil: Dil;
+  alternatifler: Alternatifler;
+}
+const { dil, alternatifler } = Astro.props;
+const t = ceviri(dil).iletisim;
 ---
 
-<TemelLayout baslik="İletişim" aciklama="Naif Mutfak ile iletişime geç: iş birlikleri, sorular ve e-kitap desteği için e-posta veya Instagram.">
+<TemelLayout dil={dil} alternatifler={alternatifler} baslik={t.baslik} aciklama={t.seoAciklama}>
   <section class="kapsayici bolum okuma">
-    <span class="ust-baslik">Bir mesaj uzağındayım</span>
-    <h1>İletişim</h1>
-    <p>Tariflerle ilgili soruların, iş birliği teklifleri ya da e-kitap siparişinle ilgili destek için bana yazabilirsin.</p>
+    <span class="ust-baslik">{t.ust}</span>
+    <h1>{t.baslik}</h1>
+    <p>{t.giris}</p>
 
     <div class="kanallar">
       <a class="kanal" href={`mailto:${site.eposta}`}>
         <span class="kanal__ikon" aria-hidden="true">✉️</span>
         <span>
-          <strong>E-posta</strong>
-          <span class="kanal__deger">{site.eposta}</span>
-          <span class="kanal__not">İş birlikleri ve e-kitap desteği</span>
+          <strong>{t.eposta}</strong>
+          <span class="kanal__deger" dir="ltr">{site.eposta}</span>
+          <span class="kanal__not">{t.epostaNot}</span>
         </span>
       </a>
       <a class="kanal" href={`https://ig.me/m/${site.instagram.kullanici}`} target="_blank" rel="noopener">
         <span class="kanal__ikon" aria-hidden="true">💬</span>
         <span>
-          <strong>Instagram DM</strong>
-          <span class="kanal__deger">@{site.instagram.kullanici}</span>
-          <span class="kanal__not">Tarif soruları için en hızlı yol</span>
+          <strong>{t.dm}</strong>
+          <span class="kanal__deger" dir="ltr">@{site.instagram.kullanici}</span>
+          <span class="kanal__not">{t.dmNot}</span>
         </span>
       </a>
     </div>
 
-    <p class="not">Genellikle 1-2 iş günü içinde dönüş yapıyorum.</p>
+    <p class="not">{t.yanit}</p>
   </section>
 </TemelLayout>
 
@@ -43,7 +53,8 @@ import { site } from '@/site.config';
   .kanal:hover { transform: translateY(-2px); color: inherit; }
   .kanal > span:last-child { display: grid; min-width: 0; }
   .kanal__ikon { font-size: 1.75rem; width: 3.25rem; height: 3.25rem; display: grid; place-items: center; background: var(--krem-koyu); border-radius: 50%; flex-shrink: 0; }
-  .kanal__deger { color: var(--terakota-koyu); font-weight: 700; overflow-wrap: anywhere; }
+  .kanal__deger { color: var(--terakota-koyu); font-weight: 700; overflow-wrap: anywhere; text-align: start; }
+  :global([dir='rtl']) .kanal__deger { text-align: end; }
   .kanal__not { font-size: 0.9rem; color: var(--metin-soluk); }
   .not { color: var(--metin-soluk); font-size: 0.95rem; }
   @media (min-width: 640px) { .kanallar { grid-template-columns: 1fr 1fr; } }

@@ -1,32 +1,55 @@
 ---
 import { Image } from 'astro:assets';
 import logo from '@/assets/logo.svg';
-import { navigasyon, site } from '@/site.config';
+import { site } from '@/site.config';
+import type { Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import { sayfaYolu, temizYol, type Alternatifler } from '@/i18n/yollar';
+import DilSecici from './DilSecici.astro';
 
-const yol = Astro.url.pathname.replace(/\/$/, '') || '/';
-const aktif = (href: string) => (href === '/' ? yol === '/' : yol === href || yol.startsWith(href + '/'));
+interface Props {
+  dil: Dil;
+  alternatifler: Alternatifler;
+}
+const { dil, alternatifler } = Astro.props;
+const t = ceviri(dil);
+
+const menu = [
+  { href: sayfaYolu(dil, 'ana'), etiket: t.nav.ana, ana: true },
+  { href: sayfaYolu(dil, 'blog'), etiket: t.nav.blog },
+  { href: sayfaYolu(dil, 'ekitap'), etiket: t.nav.ekitap },
+  { href: sayfaYolu(dil, 'hakkimda'), etiket: t.nav.hakkimda },
+  { href: sayfaYolu(dil, 'iletisim'), etiket: t.nav.iletisim },
+];
+
+const yol = temizYol(Astro.url.pathname);
+const aktif = (l: (typeof menu)[number]) => (l.ana ? yol === l.href : yol === l.href || yol.startsWith(l.href + '/'));
 ---
 
 <header class="ust">
   <div class="kapsayici ust__ic">
-    <a href="/" class="ust__logo" aria-label={`${site.ad} ana sayfa`}>
+    <a href={sayfaYolu(dil, 'ana')} class="ust__logo" aria-label={`${site.ad} ${t.nav.anaSayfaya}`}>
       <Image src={logo} alt="" width={176} height={45} loading="eager" />
     </a>
 
-    <button class="menu-dugme" type="button" aria-expanded="false" aria-controls="ana-menu">
-      <span class="menu-dugme__cizgi" aria-hidden="true"></span>
-      <span class="gizli">Menüyü aç</span>
-    </button>
+    <div class="ust__sag">
+      <DilSecici dil={dil} alternatifler={alternatifler} />
 
-    <nav id="ana-menu" class="menu" aria-label="Ana menü">
+      <button class="menu-dugme" type="button" aria-expanded="false" aria-controls="ana-menu">
+        <span class="menu-dugme__cizgi" aria-hidden="true"></span>
+        <span class="gizli">{t.nav.menuAc}</span>
+      </button>
+    </div>
+
+    <nav id="ana-menu" class="menu" aria-label={t.nav.anaMenu}>
       <ul>
-        {navigasyon.map((l) => (
+        {menu.map((l) => (
           <li>
-            <a href={l.href} aria-current={aktif(l.href) ? 'page' : undefined}>{l.etiket}</a>
+            <a href={l.href} aria-current={aktif(l) ? 'page' : undefined}>{l.etiket}</a>
           </li>
         ))}
         <li>
-          <a href={site.instagram.url} class="menu__instagram" target="_blank" rel="noopener">
+          <a href={site.instagram.url} class="menu__instagram" target="_blank" rel="noopener" dir="ltr">
             @{site.instagram.kullanici}
           </a>
         </li>
@@ -55,13 +78,14 @@ const aktif = (href: string) => (href === '/' ? yol === '/' : yol === href || yo
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--cizgi);
   }
-  .ust__ic { display: flex; align-items: center; justify-content: space-between; min-height: 64px; }
-  .ust__logo { display: flex; padding-block: 0.5rem; }
-  .ust__logo img { width: 150px; height: auto; }
+  .ust__ic { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; min-height: 64px; }
+  .ust__logo { display: flex; padding-block: 0.5rem; flex-shrink: 0; }
+  .ust__logo img { width: 136px; height: auto; }
+  .ust__sag { display: flex; align-items: center; gap: 0.25rem; }
 
   .menu-dugme {
     width: 48px; height: 48px; display: grid; place-items: center;
-    background: transparent; border: 0; cursor: pointer; margin-right: -0.5rem;
+    background: transparent; border: 0; cursor: pointer; margin-inline-end: -0.5rem;
   }
   .menu-dugme__cizgi, .menu-dugme__cizgi::before, .menu-dugme__cizgi::after {
     display: block; width: 24px; height: 2.5px; border-radius: 2px; background: var(--kahve);
@@ -76,7 +100,7 @@ const aktif = (href: string) => (href === '/' ? yol === '/' : yol === href || yo
 
   .menu {
     display: none;
-    position: absolute; left: 0; right: 0; top: 100%;
+    position: absolute; inset-inline: 0; top: 100%;
     background: var(--krem); border-bottom: 1px solid var(--cizgi);
     box-shadow: var(--golge);
   }
@@ -89,12 +113,17 @@ const aktif = (href: string) => (href === '/' ? yol === '/' : yol === href || yo
     border-bottom: 1px dashed var(--cizgi);
   }
   .menu a[aria-current='page'] { color: var(--terakota); }
-  .menu .menu__instagram { font-family: var(--font-metin); font-size: 1rem; font-weight: 700; color: var(--terakota-koyu); border: 0; }
+  .menu .menu__instagram { font-family: var(--font-metin); font-size: 1rem; font-weight: 700; color: var(--terakota-koyu); border: 0; justify-content: flex-end; }
+  :global([dir='ltr']) .menu .menu__instagram { justify-content: flex-start; }
 
-  @media (min-width: 860px) {
+  @media (min-width: 380px) { .ust__logo img { width: 150px; } }
+
+  @media (min-width: 960px) {
+    .ust__ic { flex-wrap: nowrap; }
+    .ust__sag { order: 3; }
     .menu-dugme { display: none; }
-    .menu { display: block; position: static; background: none; border: 0; box-shadow: none; }
-    .menu ul { display: flex; gap: 1.5rem; padding: 0; align-items: center; }
+    .menu { display: block; position: static; background: none; border: 0; box-shadow: none; margin-inline-start: auto; }
+    .menu ul { display: flex; gap: 1.25rem; padding: 0; align-items: center; }
     .menu a { border: 0; font-family: var(--font-metin); font-size: 1rem; font-weight: 700; min-height: 44px; }
     .menu a[aria-current='page'] { text-decoration: underline wavy var(--terakota) 1.5px; text-underline-offset: 6px; }
     .menu .menu__instagram { padding: 0 1rem; border: 2px solid var(--terakota); border-radius: 999px; min-height: 40px; }

@@ -1,0 +1,37 @@
+---
+import TemelLayout from '@/layouts/TemelLayout.astro';
+import TarifListesi from '@/components/TarifListesi.astro';
+import type { Kategori } from '@/site.config';
+import type { Dil } from '@/i18n/diller';
+import { ceviri, doldur } from '@/i18n/ceviriler';
+import type { Alternatifler } from '@/i18n/yollar';
+import type { Tarif } from '@/lib/tarifler';
+
+interface Props {
+  dil: Dil;
+  alternatifler: Alternatifler;
+  tarifler: Tarif[];
+  kullanilanKategoriler: Kategori[];
+  /** Verilirse kategori sayfası olarak gösterilir */
+  kategori?: Kategori;
+}
+const { dil, alternatifler, tarifler, kullanilanKategoriler, kategori } = Astro.props;
+const t = ceviri(dil).blog;
+const ad = kategori ? ceviri(dil).kategoriler[kategori] : '';
+---
+
+<TemelLayout
+  dil={dil}
+  alternatifler={alternatifler}
+  baslik={kategori ? doldur(t.kategoriSeoBaslik, { kategori: ad }) : t.seoBaslik}
+  aciklama={kategori ? doldur(t.kategoriSeoAciklama, { kategori: ad.toLocaleLowerCase(dil) }) : t.seoAciklama}
+>
+  <TarifListesi
+    dil={dil}
+    baslik={kategori ? ad : t.baslik}
+    giris={kategori ? doldur(t.kategoriGiris, { kategori: ad }) : t.giris}
+    tarifler={tarifler}
+    kullanilanKategoriler={kullanilanKategoriler}
+    aktifKategori={kategori}
+  />
+</TemelLayout>

@@ -1,30 +1,35 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import TarifKarti from './TarifKarti.astro';
-import { kategoriler, kategoriAdlari, type Kategori } from '@/site.config';
+import { kategoriler, type Kategori } from '@/site.config';
+import type { Dil } from '@/i18n/diller';
+import { ceviri } from '@/i18n/ceviriler';
+import { kategoriYolu, sayfaYolu } from '@/i18n/yollar';
+import type { Tarif } from '@/lib/tarifler';
 
 interface Props {
+  dil: Dil;
   baslik: string;
   giris: string;
-  tarifler: CollectionEntry<'blog'>[];
-  /** Tüm tarifler için tanımlı kategoriler (filtre butonları) */
+  tarifler: Tarif[];
+  /** Bu dilde en az bir tarifi olan kategoriler (filtre butonları) */
   kullanilanKategoriler: Kategori[];
   aktifKategori?: Kategori;
 }
-const { baslik, giris, tarifler, kullanilanKategoriler, aktifKategori } = Astro.props;
+const { dil, baslik, giris, tarifler, kullanilanKategoriler, aktifKategori } = Astro.props;
+const t = ceviri(dil);
 const filtreler = kategoriler.filter((k) => kullanilanKategoriler.includes(k));
 ---
 
 <section class="kapsayici bolum">
-  <span class="ust-baslik">Tarif defteri</span>
+  <span class="ust-baslik">{t.blog.ust}</span>
   <h1>{baslik}</h1>
   <p class="giris">{giris}</p>
 
-  <nav class="filtre" aria-label="Kategoriler">
-    <a href="/blog" class="rozet" aria-current={!aktifKategori ? 'page' : undefined}>Tümü</a>
+  <nav class="filtre" aria-label={t.blog.kategorilerEtiket}>
+    <a href={sayfaYolu(dil, 'blog')} class="rozet" aria-current={!aktifKategori ? 'page' : undefined}>{t.blog.tumu}</a>
     {filtreler.map((k) => (
-      <a href={`/blog/kategori/${k}`} class="rozet" aria-current={aktifKategori === k ? 'page' : undefined}>
-        {kategoriAdlari[k]}
+      <a href={kategoriYolu(dil, k)} class="rozet" aria-current={aktifKategori === k ? 'page' : undefined}>
+        {t.kategoriler[k]}
       </a>
     ))}
   </nav>
@@ -34,7 +39,7 @@ const filtreler = kategoriler.filter((k) => kullanilanKategoriler.includes(k));
       {tarifler.map((tarif, i) => <TarifKarti tarif={tarif} oncelikli={i === 0} />)}
     </div>
   ) : (
-    <p>Bu kategoride henüz tarif yok. Yakında!</p>
+    <p>{t.blog.bos}</p>
   )}
 </section>
 

@@ -1,14 +1,20 @@
 ---
 import TemelLayout from '@/layouts/TemelLayout.astro';
+import { sayfaYolu } from '@/i18n/yollar';
+// 404 tek sayfadır (sunucu her dil için aynı dosyayı gösterir); bu yüzden üç dilde kısa mesaj içerir.
 ---
 
-<TemelLayout baslik="Sayfa bulunamadı" aciklama="Aradığın sayfa bulunamadı." indekslenmesin>
+<TemelLayout dil="tr" baslik="Sayfa bulunamadı" aciklama="Aradığın sayfa bulunamadı." indekslenmesin>
   <section class="kapsayici bolum okuma bulunamadi">
     <p class="ikon" aria-hidden="true">🍳</p>
     <h1>Bu tencere boş çıktı</h1>
     <p>Aradığın sayfa taşınmış ya da hiç pişmemiş olabilir.</p>
-    <a class="buton" href="/">Ana sayfaya dön</a>
-    <a class="buton buton--ikincil" href="/blog">Tariflere göz at</a>
+    <a class="buton" href={sayfaYolu('tr', 'ana')}>Ana sayfaya dön</a>
+    <a class="buton buton--ikincil" href={sayfaYolu('tr', 'blog')}>Tariflere göz at</a>
+
+    <hr class="ayirici" />
+    <p lang="en">Page not found. <a href={sayfaYolu('en', 'ana')}>Go to the English home page</a></p>
+    <p lang="ar" dir="rtl">الصفحة غير موجودة. <a href={sayfaYolu('ar', 'ana')}>اذهب إلى الصفحة الرئيسية العربية</a></p>
   </section>
 </TemelLayout>
 
@@ -16,4 +22,5 @@ import TemelLayout from '@/layouts/TemelLayout.astro';
   .bulunamadi { text-align: center; }
   .ikon { font-size: 4rem; margin: 0; }
   .buton { margin: 0.35rem; }
+  .ayirici { margin-block: 2rem 1.5rem; }
 </style>
