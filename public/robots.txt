@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://naifmutfak.com/sitemap-index.xml

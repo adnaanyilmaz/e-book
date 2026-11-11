@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import TemelLayout from '@/layouts/TemelLayout.astro';
+import TarifKarti from '@/components/TarifKarti.astro';
+import EkitapVitrin from '@/components/EkitapVitrin.astro';
+import hero from '@/assets/hero.jpg';
+import { site } from '@/site.config';
+import { yayindakiTarifler } from '@/lib/tarifler';
+
+const sonTarifler = (await yayindakiTarifler()).slice(0, 3);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.ad,
+  url: site.url,
+  inLanguage: 'tr-TR',
+  sameAs: [site.instagram.url],
+};
+---
+
+<TemelLayout baslik={site.ad} jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="kapsayici hero__ic">
+      <div class="hero__metin">
+        <span class="ust-baslik">Merhaba, hoş geldin!</span>
+        <h1>Sade malzemeler, <em>samimi</em> tarifler</h1>
+        <p class="hero__giris">
+          Naif Mutfak'ta annelerimizden kalma ev yemeklerini, kolayca yapabileceğin sade tariflerle paylaşıyorum.
+        </p>
+        <div class="hero__butonlar">
+          <a class="buton" href="/blog">Tariflere göz at</a>
+          <a class="buton buton--ikincil" href="/e-kitap">E-kitabı keşfet</a>
+        </div>
+      </div>
+      <div class="hero__gorsel">
+        <Image
+          src={hero}
+          alt="Naif Mutfak'tan ev yemekleriyle kurulmuş bir sofra"
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 860px) 45vw, 92vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <div class="kapsayici bolum">
+    <EkitapVitrin />
+  </div>
+
+  <section class="kapsayici bolum son" aria-labelledby="son-baslik">
+    <div class="bolum-baslik">
+      <div>
+        <span class="ust-baslik">Mutfaktan yeni çıktı</span>
+        <h2 id="son-baslik">Son tarifler</h2>
+      </div>
+      <a href="/blog" class="tumu">Tüm tarifler →</a>
+    </div>
+    <div class="izgara">
+      {sonTarifler.map((tarif) => <TarifKarti tarif={tarif} />)}
+    </div>
+  </section>
+
+  <section class="kapsayici bolum">
+    <div class="instagram">
+      <p class="instagram__ikon" aria-hidden="true">📸</p>
+      <h2>Instagram'da birlikte pişirelim</h2>
+      <p>Günlük tarifler, kısa videolar ve mutfaktan sıcak anlar için takipte kal.</p>
+      <a class="buton" href={site.instagram.url} target="_blank" rel="noopener">@{site.instagram.kullanici} hesabını takip et</a>
+    </div>
+  </section>
+</TemelLayout>
+
+<style>
+  .hero { background: linear-gradient(180deg, var(--krem-koyu), var(--krem)); }
+  .hero__ic { display: grid; gap: 2rem; padding-block: 2rem 1rem; align-items: center; }
+  .hero h1 em { font-style: italic; color: var(--terakota); }
+  .hero__giris { font-size: 1.15rem; color: var(--metin-soluk); max-width: 34rem; }
+  .hero__butonlar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+  .hero__butonlar .buton { flex: 1 1 12rem; }
+  .hero__gorsel img {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%;
+    box-shadow: var(--golge);
+  }
+  @media (min-width: 860px) {
+    .hero__ic { grid-template-columns: 1.1fr 1fr; padding-block: 4rem 2rem; }
+    .hero__butonlar .buton { flex: 0 0 auto; }
+  }
+
+  .bolum-baslik { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1.5rem; }
+  .bolum-baslik h2 { margin: 0; }
+  .tumu { font-weight: 700; white-space: nowrap; min-height: 44px; display: inline-flex; align-items: center; }
+
+  .instagram {
+    text-align: center; padding: clamp(2rem, 6vw, 3.5rem) 1.25rem;
+    background: var(--kagit); border: 2px dashed var(--cizgi); border-radius: calc(var(--yaricap) * 1.5);
+  }
+  .instagram p { max-width: 30rem; margin-inline: auto; }
+  .instagram__ikon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .instagram .buton { margin-top: 0.5rem; }
+</style>

@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import TarifKarti from './TarifKarti.astro';
+import { kategoriler, kategoriAdlari, type Kategori } from '@/site.config';
+
+interface Props {
+  baslik: string;
+  giris: string;
+  tarifler: CollectionEntry<'blog'>[];
+  /** Tüm tarifler için tanımlı kategoriler (filtre butonları) */
+  kullanilanKategoriler: Kategori[];
+  aktifKategori?: Kategori;
+}
+const { baslik, giris, tarifler, kullanilanKategoriler, aktifKategori } = Astro.props;
+const filtreler = kategoriler.filter((k) => kullanilanKategoriler.includes(k));
+---
+
+<section class="kapsayici bolum">
+  <span class="ust-baslik">Tarif defteri</span>
+  <h1>{baslik}</h1>
+  <p class="giris">{giris}</p>
+
+  <nav class="filtre" aria-label="Kategoriler">
+    <a href="/blog" class="rozet" aria-current={!aktifKategori ? 'page' : undefined}>Tümü</a>
+    {filtreler.map((k) => (
+      <a href={`/blog/kategori/${k}`} class="rozet" aria-current={aktifKategori === k ? 'page' : undefined}>
+        {kategoriAdlari[k]}
+      </a>
+    ))}
+  </nav>
+
+  {tarifler.length > 0 ? (
+    <div class="izgara">
+      {tarifler.map((tarif, i) => <TarifKarti tarif={tarif} oncelikli={i === 0} />)}
+    </div>
+  ) : (
+    <p>Bu kategoride henüz tarif yok. Yakında!</p>
+  )}
+</section>
+
+<style>
+  .giris { color: var(--metin-soluk); max-width: 36rem; }
+  .filtre {
+    display: flex; gap: 0.5rem; margin: 1.5rem 0 2rem;
+    overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: none;
+    margin-inline: calc(var(--kenar) * -1); padding-inline: var(--kenar);
+  }
+  .filtre::-webkit-scrollbar { display: none; }
+  .filtre .rozet { min-height: 40px; padding-inline: 1rem; white-space: nowrap; flex-shrink: 0; }
+  .filtre .rozet[aria-current='page'] { background: var(--terakota); color: var(--kagit); }
+</style>

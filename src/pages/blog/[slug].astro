@@ -1,0 +1,159 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import TemelLayout from '@/layouts/TemelLayout.astro';
+import TarifKarti from '@/components/TarifKarti.astro';
+import { yayindakiTarifler } from '@/lib/tarifler';
+import { site, kategoriAdlari, tarihBicimle } from '@/site.config';
+
+export const getStaticPaths = (async () => {
+  const tarifler = await yayindakiTarifler();
+  return tarifler.map((tarif) => ({
+    params: { slug: tarif.id },
+    props: {
+      tarif,
+      benzerler: tarifler.filter((t) => t.id !== tarif.id && t.data.kategori === tarif.data.kategori).slice(0, 3),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+type Tarifler = Awaited<ReturnType<typeof yayindakiTarifler>>;
+const { tarif, benzerler } = Astro.props as { tarif: Tarifler[number]; benzerler: Tarifler };
+const { Content } = await render(tarif);
+const d = tarif.data;
+const toplam = d.hazirlamaSuresi + (d.pisirmeSuresi ?? 0);
+
+const jsonGorsel = await getImage({ src: d.kapak, width: 1200, format: 'jpg' });
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Recipe',
+  name: d.baslik,
+  description: d.aciklama,
+  image: [new URL(jsonGorsel.src, Astro.site).href],
+  datePublished: d.tarih.toISOString(),
+  ...(d.guncelleme && { dateModified: d.guncelleme.toISOString() }),
+  author: { '@type': 'Person', name: site.ad, url: site.instagram.url },
+  recipeCategory: kategoriAdlari[d.kategori],
+  recipeCuisine: 'Türk mutfağı',
+  prepTime: `PT${d.hazirlamaSuresi}M`,
+  ...(d.pisirmeSuresi !== undefined && { cookTime: `PT${d.pisirmeSuresi}M` }),
+  totalTime: `PT${toplam}M`,
+  ...(d.porsiyon && { recipeYield: d.porsiyon }),
+  ...(d.malzemeler && { recipeIngredient: d.malzemeler }),
+  inLanguage: 'tr-TR',
+};
+---
+
+<TemelLayout
+  baslik={d.baslik}
+  aciklama={d.aciklama}
+  ogGorsel={d.kapak}
+  gorselAlt={d.kapakAlt}
+  tur="article"
+  yayinTarihi={d.tarih}
+  guncellemeTarihi={d.guncelleme}
+  jsonLd={jsonLd}
+>
+  <article class="tarif">
+    <header class="kapsayici tarif__ust">
+      <nav class="ekmek" aria-label="Konum">
+        <a href="/blog">Tarifler</a> / <a href={`/blog/kategori/${d.kategori}`}>{kategoriAdlari[d.kategori]}</a>
+      </nav>
+      <h1>{d.baslik}</h1>
+      <p class="tarif__ozet">{d.aciklama}</p>
+      <p class="tarif__tarih">
+        <time datetime={d.tarih.toISOString()}>{tarihBicimle(d.tarih)}</time>
+      </p>
+    </header>
+
+    <div class="kapsayici">
+      <Image
+        src={d.kapak}
+        alt={d.kapakAlt}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1100px) 1040px, 100vw"
+        class="tarif__kapak"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <div class="kapsayici">
+      <dl class="bilgi">
+        <div><dt>Hazırlık</dt><dd>{d.hazirlamaSuresi} dk</dd></div>
+        {d.pisirmeSuresi !== undefined && <div><dt>Pişirme</dt><dd>{d.pisirmeSuresi} dk</dd></div>}
+        <div><dt>Toplam</dt><dd>{toplam} dk</dd></div>
+        {d.porsiyon && <div><dt>Porsiyon</dt><dd>{d.porsiyon}</dd></div>}
+      </dl>
+    </div>
+
+    <div class="kapsayici tarif__govde">
+      {d.malzemeler && (
+        <aside class="malzemeler" aria-labelledby="malzeme-baslik">
+          <h2 id="malzeme-baslik">Malzemeler</h2>
+          <ul>{d.malzemeler.map((m) => <li>{m}</li>)}</ul>
+        </aside>
+      )}
+      <div class="icerik">
+        <Content />
+      </div>
+    </div>
+
+    <div class="kapsayici">
+      <div class="paylas">
+        <p>Bu tarifi denedin mi? Fotoğrafını <strong>@{site.instagram.kullanici}</strong> etiketiyle paylaş, hikâyemde paylaşayım!</p>
+        <a class="buton" href={site.instagram.url} target="_blank" rel="noopener">Instagram'a git</a>
+      </div>
+    </div>
+  </article>
+
+  {benzerler.length > 0 && (
+    <section class="kapsayici bolum" aria-labelledby="benzer-baslik">
+      <h2 id="benzer-baslik">Bunları da sevebilirsin</h2>
+      <div class="izgara">{benzerler.map((t) => <TarifKarti tarif={t} />)}</div>
+    </section>
+  )}
+</TemelLayout>
+
+<style>
+  .tarif__ust { padding-block: 1.5rem 1.25rem; max-width: 52rem; }
+  .ekmek { font-size: 0.9rem; color: var(--metin-soluk); margin-bottom: 0.75rem; }
+  .ekmek a { color: inherit; }
+  .tarif__ozet { font-size: 1.15rem; color: var(--metin-soluk); }
+  .tarif__tarih { font-size: 0.9rem; color: var(--metin-soluk); margin: 0; }
+  .tarif__kapak {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--yaricap);
+    margin-inline: auto; max-width: 65rem;
+  }
+  @media (min-width: 760px) { .tarif__kapak { aspect-ratio: 16 / 9; } }
+
+  .bilgi {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr)); gap: 0.5rem;
+    margin: -1.5rem auto 2rem; position: relative; max-width: 40rem;
+    background: var(--kagit); border: 1px solid var(--cizgi); border-radius: var(--yaricap);
+    padding: 0.9rem; box-shadow: var(--golge); text-align: center;
+    width: calc(100% - 1.5rem);
+  }
+  .bilgi dt { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--metin-soluk); font-weight: 800; }
+  .bilgi dd { margin: 0; font-family: var(--font-baslik); font-size: 1.15rem; color: var(--kahve); }
+
+  .tarif__govde { display: grid; gap: 2rem; max-width: 60rem; }
+  .malzemeler {
+    background: var(--adacayi-acik); border-radius: var(--yaricap); padding: 1.25rem 1.5rem;
+    align-self: start;
+  }
+  .malzemeler h2 { font-size: 1.35rem; }
+  .malzemeler ul { padding-left: 1.1rem; margin: 0; }
+  .malzemeler li { margin-bottom: 0.45rem; }
+  .malzemeler li::marker { color: var(--adacayi); }
+  @media (min-width: 860px) {
+    .tarif__govde { grid-template-columns: 18rem 1fr; }
+    .malzemeler { position: sticky; top: 5.5rem; }
+  }
+
+  .paylas {
+    margin: 2.5rem auto 0; max-width: 60rem; text-align: center;
+    padding: 1.5rem; border: 2px dashed var(--cizgi); border-radius: var(--yaricap);
+  }
+</style>

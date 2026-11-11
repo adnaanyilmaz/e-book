@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { kategoriAdlari, tarihBicimle } from '@/site.config';
+
+interface Props {
+  tarif: CollectionEntry<'blog'>;
+  /** İlk ekranda görünen kartlar için true (LCP) */
+  oncelikli?: boolean;
+}
+const { tarif, oncelikli = false } = Astro.props;
+const { baslik, aciklama, kapak, kapakAlt, kategori, hazirlamaSuresi, pisirmeSuresi, tarih } = tarif.data;
+const toplam = hazirlamaSuresi + (pisirmeSuresi ?? 0);
+---
+
+<article class="kart">
+  <a href={`/blog/${tarif.id}`} class="kart__link">
+    <Image
+      src={kapak}
+      alt={kapakAlt}
+      widths={[400, 640, 900]}
+      sizes="(min-width: 960px) 30vw, (min-width: 600px) 45vw, 92vw"
+      class="kart__gorsel"
+      loading={oncelikli ? 'eager' : 'lazy'}
+    />
+    <div class="kart__govde">
+      <div class="kart__rozetler">
+        <span class="rozet">{kategoriAdlari[kategori]}</span>
+        <span class="kart__sure">⏱ {toplam} dk</span>
+      </div>
+      <h3 class="kart__baslik">{baslik}</h3>
+      <p class="kart__ozet">{aciklama}</p>
+      <time class="kart__tarih" datetime={tarih.toISOString()}>{tarihBicimle(tarih)}</time>
+    </div>
+  </a>
+</article>
+
+<style>
+  .kart {
+    background: var(--kagit); border-radius: var(--yaricap); overflow: hidden;
+    border: 1px solid var(--cizgi); box-shadow: var(--golge);
+    transition: transform 0.15s ease;
+  }
+  .kart:hover { transform: translateY(-3px) rotate(-0.3deg); }
+  .kart__link { display: block; color: inherit; text-decoration: none; height: 100%; }
+  .kart__gorsel { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .kart__govde { padding: 1rem 1.15rem 1.25rem; }
+  .kart__rozetler { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .kart__sure { font-size: 0.85rem; font-weight: 700; color: var(--metin-soluk); }
+  .kart__baslik { margin-bottom: 0.35rem; }
+  .kart__ozet { font-size: 0.95rem; color: var(--metin-soluk); margin-bottom: 0.6rem; }
+  .kart__tarih { font-size: 0.8rem; color: var(--metin-soluk); }
+  @media (prefers-reduced-motion: reduce) { .kart, .kart:hover { transition: none; transform: none; } }
+</style>

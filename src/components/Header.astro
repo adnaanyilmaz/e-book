@@ -1,0 +1,102 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/logo.svg';
+import { navigasyon, site } from '@/site.config';
+
+const yol = Astro.url.pathname.replace(/\/$/, '') || '/';
+const aktif = (href: string) => (href === '/' ? yol === '/' : yol === href || yol.startsWith(href + '/'));
+---
+
+<header class="ust">
+  <div class="kapsayici ust__ic">
+    <a href="/" class="ust__logo" aria-label={`${site.ad} ana sayfa`}>
+      <Image src={logo} alt="" width={176} height={45} loading="eager" />
+    </a>
+
+    <button class="menu-dugme" type="button" aria-expanded="false" aria-controls="ana-menu">
+      <span class="menu-dugme__cizgi" aria-hidden="true"></span>
+      <span class="gizli">Menüyü aç</span>
+    </button>
+
+    <nav id="ana-menu" class="menu" aria-label="Ana menü">
+      <ul>
+        {navigasyon.map((l) => (
+          <li>
+            <a href={l.href} aria-current={aktif(l.href) ? 'page' : undefined}>{l.etiket}</a>
+          </li>
+        ))}
+        <li>
+          <a href={site.instagram.url} class="menu__instagram" target="_blank" rel="noopener">
+            @{site.instagram.kullanici}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const dugme = document.querySelector<HTMLButtonElement>('.menu-dugme');
+  const menu = document.getElementById('ana-menu');
+  dugme?.addEventListener('click', () => {
+    const acik = dugme.getAttribute('aria-expanded') === 'true';
+    dugme.setAttribute('aria-expanded', String(!acik));
+    menu?.classList.toggle('menu--acik', !acik);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && dugme?.getAttribute('aria-expanded') === 'true') dugme.click();
+  });
+</script>
+
+<style>
+  .ust {
+    position: sticky; top: 0; z-index: 20;
+    background: rgb(251 243 230 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--cizgi);
+  }
+  .ust__ic { display: flex; align-items: center; justify-content: space-between; min-height: 64px; }
+  .ust__logo { display: flex; padding-block: 0.5rem; }
+  .ust__logo img { width: 150px; height: auto; }
+
+  .menu-dugme {
+    width: 48px; height: 48px; display: grid; place-items: center;
+    background: transparent; border: 0; cursor: pointer; margin-right: -0.5rem;
+  }
+  .menu-dugme__cizgi, .menu-dugme__cizgi::before, .menu-dugme__cizgi::after {
+    display: block; width: 24px; height: 2.5px; border-radius: 2px; background: var(--kahve);
+    transition: transform 0.2s ease; content: '';
+  }
+  .menu-dugme__cizgi { position: relative; }
+  .menu-dugme__cizgi::before { position: absolute; top: -7px; }
+  .menu-dugme__cizgi::after { position: absolute; top: 7px; }
+  .menu-dugme[aria-expanded='true'] .menu-dugme__cizgi { background: transparent; }
+  .menu-dugme[aria-expanded='true'] .menu-dugme__cizgi::before { transform: translateY(7px) rotate(45deg); }
+  .menu-dugme[aria-expanded='true'] .menu-dugme__cizgi::after { transform: translateY(-7px) rotate(-45deg); }
+
+  .menu {
+    display: none;
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: var(--krem); border-bottom: 1px solid var(--cizgi);
+    box-shadow: var(--golge);
+  }
+  .menu--acik { display: block; }
+  .menu ul { list-style: none; margin: 0; padding: 0.5rem var(--kenar) 1rem; }
+  .menu a {
+    display: flex; align-items: center; min-height: 48px;
+    font-family: var(--font-baslik); font-size: 1.25rem;
+    color: var(--kahve); text-decoration: none;
+    border-bottom: 1px dashed var(--cizgi);
+  }
+  .menu a[aria-current='page'] { color: var(--terakota); }
+  .menu .menu__instagram { font-family: var(--font-metin); font-size: 1rem; font-weight: 700; color: var(--terakota-koyu); border: 0; }
+
+  @media (min-width: 860px) {
+    .menu-dugme { display: none; }
+    .menu { display: block; position: static; background: none; border: 0; box-shadow: none; }
+    .menu ul { display: flex; gap: 1.5rem; padding: 0; align-items: center; }
+    .menu a { border: 0; font-family: var(--font-metin); font-size: 1rem; font-weight: 700; min-height: 44px; }
+    .menu a[aria-current='page'] { text-decoration: underline wavy var(--terakota) 1.5px; text-underline-offset: 6px; }
+    .menu .menu__instagram { padding: 0 1rem; border: 2px solid var(--terakota); border-radius: 999px; min-height: 40px; }
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import TemelLayout from '@/layouts/TemelLayout.astro';
+import { site } from '@/site.config';
+---
+
+<TemelLayout baslik="İletişim" aciklama="Naif Mutfak ile iletişime geç: iş birlikleri, sorular ve e-kitap desteği için e-posta veya Instagram.">
+  <section class="kapsayici bolum okuma">
+    <span class="ust-baslik">Bir mesaj uzağındayım</span>
+    <h1>İletişim</h1>
+    <p>Tariflerle ilgili soruların, iş birliği teklifleri ya da e-kitap siparişinle ilgili destek için bana yazabilirsin.</p>
+
+    <div class="kanallar">
+      <a class="kanal" href={`mailto:${site.eposta}`}>
+        <span class="kanal__ikon" aria-hidden="true">✉️</span>
+        <span>
+          <strong>E-posta</strong>
+          <span class="kanal__deger">{site.eposta}</span>
+          <span class="kanal__not">İş birlikleri ve e-kitap desteği</span>
+        </span>
+      </a>
+      <a class="kanal" href={`https://ig.me/m/${site.instagram.kullanici}`} target="_blank" rel="noopener">
+        <span class="kanal__ikon" aria-hidden="true">💬</span>
+        <span>
+          <strong>Instagram DM</strong>
+          <span class="kanal__deger">@{site.instagram.kullanici}</span>
+          <span class="kanal__not">Tarif soruları için en hızlı yol</span>
+        </span>
+      </a>
+    </div>
+
+    <p class="not">Genellikle 1-2 iş günü içinde dönüş yapıyorum.</p>
+  </section>
+</TemelLayout>
+
+<style>
+  .kanallar { display: grid; gap: 1rem; margin: 2rem 0; }
+  .kanal {
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1.25rem; border-radius: var(--yaricap);
+    background: var(--kagit); border: 1px solid var(--cizgi); box-shadow: var(--golge);
+    color: inherit; text-decoration: none; transition: transform 0.15s ease;
+  }
+  .kanal:hover { transform: translateY(-2px); color: inherit; }
+  .kanal > span:last-child { display: grid; min-width: 0; }
+  .kanal__ikon { font-size: 1.75rem; width: 3.25rem; height: 3.25rem; display: grid; place-items: center; background: var(--krem-koyu); border-radius: 50%; flex-shrink: 0; }
+  .kanal__deger { color: var(--terakota-koyu); font-weight: 700; overflow-wrap: anywhere; }
+  .kanal__not { font-size: 0.9rem; color: var(--metin-soluk); }
+  .not { color: var(--metin-soluk); font-size: 0.95rem; }
+  @media (min-width: 640px) { .kanallar { grid-template-columns: 1fr 1fr; } }
+</style>

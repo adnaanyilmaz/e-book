@@ -1,0 +1,51 @@
+---
+import { site } from '@/site.config';
+
+export interface Props {
+  baslik: string;
+  aciklama?: string;
+  /** Mutlak veya kök-göreli görsel URL'si (1200x630 önerilir) */
+  gorsel?: string;
+  gorselAlt?: string;
+  tur?: 'website' | 'article' | 'product';
+  yayinTarihi?: Date;
+  guncellemeTarihi?: Date;
+  indekslenmesin?: boolean;
+}
+
+const {
+  baslik,
+  aciklama = site.aciklama,
+  gorsel = site.varsayilanOgGorseli,
+  gorselAlt = site.ad,
+  tur = 'website',
+  yayinTarihi,
+  guncellemeTarihi,
+  indekslenmesin = false,
+} = Astro.props;
+
+const tamBaslik = baslik === site.ad ? `${site.ad} | ${site.slogan}` : `${baslik} | ${site.ad}`;
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+const gorselUrl = new URL(gorsel, Astro.site).href;
+---
+
+<title>{tamBaslik}</title>
+<meta name="description" content={aciklama} />
+<link rel="canonical" href={canonical.href} />
+{indekslenmesin && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={tur === 'product' ? 'product' : tur} />
+<meta property="og:site_name" content={site.ad} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:title" content={tamBaslik} />
+<meta property="og:description" content={aciklama} />
+<meta property="og:url" content={canonical.href} />
+<meta property="og:image" content={gorselUrl} />
+<meta property="og:image:alt" content={gorselAlt} />
+{yayinTarihi && <meta property="article:published_time" content={yayinTarihi.toISOString()} />}
+{guncellemeTarihi && <meta property="article:modified_time" content={guncellemeTarihi.toISOString()} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={tamBaslik} />
+<meta name="twitter:description" content={aciklama} />
+<meta name="twitter:image" content={gorselUrl} />

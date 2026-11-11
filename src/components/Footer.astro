@@ -1,0 +1,38 @@
+---
+import { site, navigasyon, yasalSayfalar } from '@/site.config';
+const yil = new Date().getFullYear();
+---
+
+<footer class="alt">
+  <hr class="ayirici" />
+  <div class="kapsayici alt__ic">
+    <div class="alt__marka">
+      <p class="alt__ad">{site.ad}</p>
+      <p>{site.slogan}. Yeni tarifler için Instagram'da buluşalım.</p>
+      <a class="buton buton--ikincil" href={site.instagram.url} target="_blank" rel="noopener">
+        Instagram: @{site.instagram.kullanici}
+      </a>
+    </div>
+    <nav aria-label="Site haritası">
+      <p class="alt__baslik">Sayfalar</p>
+      <ul>{navigasyon.map((l) => <li><a href={l.href}>{l.etiket}</a></li>)}</ul>
+    </nav>
+    <nav aria-label="Yasal">
+      <p class="alt__baslik">Yasal</p>
+      <ul>{yasalSayfalar.map((l) => <li><a href={l.href}>{l.etiket}</a></li>)}</ul>
+    </nav>
+  </div>
+  <p class="kapsayici alt__telif">© {yil} {site.ad}. Tüm hakları saklıdır.</p>
+</footer>
+
+<style>
+  .alt { margin-top: 3rem; background: var(--krem-koyu); }
+  .alt__ic { display: grid; gap: 2rem; padding-block: 2.5rem 1.5rem; }
+  .alt__ad { font-family: var(--font-baslik); font-size: 1.5rem; color: var(--kahve); margin-bottom: 0.25rem; }
+  .alt__baslik { font-weight: 800; color: var(--kahve); margin-bottom: 0.25rem; }
+  .alt ul { list-style: none; padding: 0; margin: 0; }
+  .alt li a { display: inline-flex; align-items: center; min-height: 40px; color: var(--metin); text-decoration: none; }
+  .alt li a:hover { color: var(--terakota-koyu); text-decoration: underline; }
+  .alt__telif { font-size: 0.85rem; color: var(--metin-soluk); padding-block: 1rem 2rem; margin: 0; }
+  @media (min-width: 760px) { .alt__ic { grid-template-columns: 2fr 1fr 1fr; } }
+</style>

@@ -1,0 +1,168 @@
+---
+import { Image, getImage } from 'astro:assets';
+import TemelLayout from '@/layouts/TemelLayout.astro';
+import kapak from '@/assets/ekitap-kapak.jpg';
+import { ekitap, site, fiyatBicimle } from '@/site.config';
+
+// [DOLDURULACAK] E-kitabın gerçek içeriğiyle güncelle.
+const bolumler = [
+  { baslik: 'Çorbalar', aciklama: 'Mercimekten tarhanaya, her mevsime 8 çorba.' },
+  { baslik: 'Zeytinyağlılar', aciklama: 'Ertesi gün daha güzel olan 10 klasik.' },
+  { baslik: 'Ana yemekler', aciklama: 'Tencere yemekleri ve fırın lezzetleri.' },
+  { baslik: 'Tatlılar', aciklama: 'Şerbetli, sütlü ve helva çeşitleri.' },
+  { baslik: 'Mutfak ipuçları', aciklama: 'Haftalık alışveriş listeleri ve saklama rehberi.' },
+];
+
+const sss = [
+  { s: 'E-kitap nasıl teslim ediliyor?', c: 'Ödeme sonrasında e-kitap PDF olarak e-posta adresine gönderilir. [DOLDURULACAK]' },
+  { s: 'Telefonda okuyabilir miyim?', c: 'Evet. PDF formatı telefon, tablet ve bilgisayarda açılır.' },
+  { s: 'İade yapılıyor mu?', c: 'Dijital içeriklerde iade koşulları için İade Koşulları sayfasına göz at.' },
+];
+
+const satinAlHazir = !ekitap.odemeLinki.startsWith('#');
+const ogKapak = await getImage({ src: kapak, width: 1200, format: 'jpg' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: ekitap.baslik,
+  description: ekitap.altBaslik,
+  image: new URL(ogKapak.src, Astro.site).href,
+  brand: { '@type': 'Brand', name: site.ad },
+  offers: {
+    '@type': 'Offer',
+    price: ekitap.fiyat,
+    priceCurrency: 'TRY',
+    availability: 'https://schema.org/InStock',
+    url: new URL('/e-kitap', Astro.site).href,
+  },
+};
+---
+
+<TemelLayout
+  baslik={`${ekitap.baslik} E-Kitap`}
+  aciklama={`${ekitap.altBaslik}. ${site.ad} e-kitabı, ${ekitap.format} formatında hemen indir.`}
+  ogGorsel={kapak}
+  gorselAlt={`${ekitap.baslik} e-kitap kapağı`}
+  tur="product"
+  jsonLd={jsonLd}
+>
+  <section class="urun">
+    <div class="kapsayici urun__ic">
+      <div class="urun__kapak">
+        <Image
+          src={kapak}
+          alt={`${ekitap.baslik} e-kitap kapağı`}
+          widths={[320, 480, 640]}
+          sizes="(min-width: 860px) 360px, 70vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <div class="urun__metin">
+        <span class="ust-baslik">E-kitap · {ekitap.format} · {ekitap.sayfaSayisi} sayfa</span>
+        <h1>{ekitap.baslik}</h1>
+        <p class="urun__alt">{ekitap.altBaslik}</p>
+        <div class="satin-al" id="satin-al">
+          <p class="fiyat">
+            {ekitap.eskiFiyat && <s>{fiyatBicimle(ekitap.eskiFiyat)}</s>}
+            <strong>{fiyatBicimle(ekitap.fiyat)}</strong>
+          </p>
+          <a
+            class="buton buton--tam"
+            href={ekitap.odemeLinki}
+            target={satinAlHazir ? '_blank' : undefined}
+            rel={satinAlHazir ? 'noopener' : undefined}
+            aria-disabled={satinAlHazir ? undefined : 'true'}
+          >
+            Satın Al
+          </a>
+          <p class="guvence">
+            {satinAlHazir ? 'Güvenli ödeme sayfasına yönlendirileceksin.' : 'Satış çok yakında başlıyor!'}
+          </p>
+          <p class="yasal-not">
+            Satın alarak <a href="/mesafeli-satis-sozlesmesi">Mesafeli Satış Sözleşmesi</a>'ni ve
+            <a href="/iade-kosullari">İade Koşulları</a>'nı kabul etmiş olursun.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kapsayici bolum okuma" aria-labelledby="icindekiler">
+    <span class="ust-baslik">Neler var?</span>
+    <h2 id="icindekiler">İçindekiler</h2>
+    <ol class="bolumler">
+      {bolumler.map((b) => (
+        <li>
+          <strong>{b.baslik}</strong>
+          <span>{b.aciklama}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="kapsayici bolum okuma" aria-labelledby="sss">
+    <h2 id="sss">Sıkça sorulanlar</h2>
+    {sss.map(({ s, c }) => (
+      <details class="sss">
+        <summary>{s}</summary>
+        <p>{c}</p>
+      </details>
+    ))}
+  </section>
+
+  {/* Mobilde fiyat ve buton hep görünür kalsın (sadece ödeme linki girildiyse) */}
+  {satinAlHazir && (
+    <div class="yapiskan">
+      <span class="yapiskan__fiyat">{fiyatBicimle(ekitap.fiyat)}</span>
+      <a class="buton" href={ekitap.odemeLinki} target="_blank" rel="noopener">Satın Al</a>
+    </div>
+  )}
+</TemelLayout>
+
+<style>
+  .urun { background: linear-gradient(180deg, var(--krem-koyu), var(--krem)); }
+  .urun__ic { display: grid; gap: 2rem; padding-block: 2rem; align-items: center; }
+  .urun__kapak { justify-self: center; width: min(70vw, 340px); }
+  .urun__kapak img { border-radius: 6px 16px 16px 6px; box-shadow: 14px 16px 0 -4px rgb(91 58 41 / 0.15), var(--golge); }
+  .urun__alt { font-size: 1.15rem; color: var(--metin-soluk); }
+
+  .satin-al { background: var(--kagit); border: 1px solid var(--cizgi); border-radius: var(--yaricap); padding: 1.25rem; box-shadow: var(--golge); max-width: 26rem; }
+  .fiyat { font-family: var(--font-baslik); font-size: 2rem; color: var(--kahve); display: flex; gap: 0.75rem; align-items: baseline; margin-bottom: 0.75rem; }
+  .fiyat s { font-size: 1.2rem; color: var(--metin-soluk); }
+  .satin-al .buton[aria-disabled='true'] { opacity: 0.6; pointer-events: none; }
+  .guvence { font-size: 0.9rem; color: var(--metin-soluk); text-align: center; margin: 0.6rem 0 0.4rem; }
+  .yasal-not { font-size: 0.8rem; color: var(--metin-soluk); margin: 0; }
+
+  .bolumler { list-style: none; counter-reset: b; padding: 0; margin: 0; }
+  .bolumler li {
+    counter-increment: b; display: grid; gap: 0.15rem;
+    padding: 1rem 0 1rem 3.25rem; position: relative; border-bottom: 1px dashed var(--cizgi);
+  }
+  .bolumler li::before {
+    content: counter(b); position: absolute; left: 0; top: 1rem;
+    width: 2.25rem; height: 2.25rem; border-radius: 50%; display: grid; place-items: center;
+    background: var(--terakota); color: var(--kagit); font-family: var(--font-baslik); font-weight: 600;
+  }
+  .bolumler span { color: var(--metin-soluk); }
+
+  .sss { border-bottom: 1px solid var(--cizgi); }
+  .sss summary { cursor: pointer; font-weight: 700; padding: 0.9rem 0; min-height: 48px; color: var(--kahve); }
+  .sss p { color: var(--metin-soluk); }
+
+  .yapiskan {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 15;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 0.6rem var(--kenar) calc(0.6rem + env(safe-area-inset-bottom));
+    background: rgb(255 250 242 / 0.96); border-top: 1px solid var(--cizgi); backdrop-filter: blur(8px);
+  }
+  .yapiskan__fiyat { font-family: var(--font-baslik); font-size: 1.35rem; color: var(--kahve); }
+  :global(body:has(.yapiskan)) { padding-bottom: 72px; }
+
+  @media (min-width: 860px) {
+    .urun__ic { grid-template-columns: auto 1fr; gap: 4rem; padding-block: 4rem; }
+    .yapiskan { display: none; }
+    :global(body:has(.yapiskan)) { padding-bottom: 0; }
+  }
+</style>

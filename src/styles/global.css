@@ -1,0 +1,117 @@
+/* ===== Tasarım değerleri (renkler, yazı, boşluk) — tek kaynak burası ===== */
+:root {
+  --krem: #fbf3e6;
+  --krem-koyu: #f3e4cc;
+  --kagit: #fffaf2;
+  --terakota: #c8653f;
+  --terakota-koyu: #a64e2c;
+  --adacayi: #8a9a6b;
+  --adacayi-acik: #e3e9d5;
+  --kahve: #5b3a29;
+  --metin: #3d2a1f;
+  --metin-soluk: #75604f;
+  --cizgi: #e6d3b8;
+
+  --font-baslik: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-metin: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --yaricap: 18px;
+  --yaricap-kucuk: 10px;
+  --golge: 0 6px 20px -8px rgb(91 58 41 / 0.25);
+  --icerik-genislik: 68rem;
+  --okuma-genislik: 42rem;
+  --kenar: clamp(1rem, 4vw, 2rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  font-family: var(--font-metin);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--metin);
+  background: var(--krem);
+  overflow-x: hidden;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--terakota-koyu); text-underline-offset: 3px; }
+a:hover { color: var(--kahve); }
+:focus-visible { outline: 3px solid var(--terakota); outline-offset: 3px; border-radius: 4px; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-baslik);
+  color: var(--kahve);
+  line-height: 1.2;
+  font-weight: 600;
+  margin: 0 0 0.6em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2rem, 7vw, 3.25rem); }
+h2 { font-size: clamp(1.5rem, 5vw, 2.1rem); }
+h3 { font-size: 1.25rem; }
+p { margin: 0 0 1em; }
+
+.kapsayici { width: 100%; max-width: var(--icerik-genislik); margin-inline: auto; padding-inline: var(--kenar); }
+.okuma { max-width: var(--okuma-genislik); margin-inline: auto; }
+.bolum { padding-block: clamp(2.5rem, 8vw, 4.5rem); }
+.gizli { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* El yapımı hissi veren dalgalı ayırıcı */
+.ayirici {
+  height: 14px; border: 0; margin: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14'%3E%3Cpath d='M0 7 Q10 0 20 7 T40 7' fill='none' stroke='%23e6d3b8' stroke-width='2'/%3E%3C/svg%3E") repeat-x center;
+}
+
+.ust-baslik {
+  display: inline-block;
+  font-size: 0.8rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--adacayi); margin-bottom: 0.5rem;
+}
+
+/* Butonlar — en az 44px dokunma alanı */
+.buton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 48px; padding: 0.75rem 1.5rem;
+  font: 700 1rem/1.2 var(--font-metin);
+  color: var(--kagit); background: var(--terakota);
+  border: 2px solid var(--terakota); border-radius: 999px;
+  text-decoration: none; cursor: pointer;
+  box-shadow: 0 3px 0 var(--terakota-koyu);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.buton:hover { color: var(--kagit); background: var(--terakota-koyu); }
+.buton:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--terakota-koyu); }
+.buton--ikincil { background: transparent; color: var(--terakota-koyu); box-shadow: none; }
+.buton--ikincil:hover { background: var(--krem-koyu); color: var(--kahve); }
+.buton--tam { width: 100%; }
+
+.rozet {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.82rem; font-weight: 700;
+  padding: 0.25rem 0.7rem; border-radius: 999px;
+  background: var(--adacayi-acik); color: #4a5636; text-decoration: none;
+}
+a.rozet:hover { background: var(--adacayi); color: var(--kagit); }
+
+.izgara { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+@media (min-width: 600px) { .izgara { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .izgara { grid-template-columns: repeat(3, 1fr); } }
+
+/* Markdown içeriği (tarifler, yasal metinler) */
+.icerik { font-size: 1.08rem; }
+.icerik h2 { margin-top: 2rem; }
+.icerik h3 { margin-top: 1.5rem; }
+.icerik ul, .icerik ol { padding-left: 1.3rem; margin: 0 0 1.2em; }
+.icerik li { margin-bottom: 0.4em; }
+.icerik li::marker { color: var(--terakota); }
+.icerik blockquote {
+  margin: 1.5rem 0; padding: 1rem 1.25rem;
+  background: var(--adacayi-acik); border-radius: var(--yaricap-kucuk);
+  border-left: 4px solid var(--adacayi);
+}
+.icerik blockquote p:last-child { margin: 0; }
+.icerik img { border-radius: var(--yaricap); }
+.icerik table { width: 100%; border-collapse: collapse; font-size: 0.95rem; display: block; overflow-x: auto; }
+.icerik th, .icerik td { border: 1px solid var(--cizgi); padding: 0.5rem; text-align: left; }

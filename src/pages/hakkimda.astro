@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import TemelLayout from '@/layouts/TemelLayout.astro';
+import foto from '@/assets/hakkimda.jpg';
+import { site } from '@/site.config';
+---
+
+<TemelLayout
+  baslik="Hakkımda"
+  aciklama="Naif Mutfak'ın arkasındaki hikâye: sade malzemelerle, samimi ev yemekleri pişirmeyi seven bir mutfak tutkunu."
+  ogGorsel={foto}
+>
+  <section class="kapsayici bolum hakkimda">
+    <div class="hakkimda__foto">
+      <Image src={foto} alt="Naif Mutfak'ın sahibi mutfakta" widths={[360, 600, 800]} sizes="(min-width: 860px) 380px, 80vw" loading="eager" />
+    </div>
+    <div class="icerik">
+      <span class="ust-baslik">Merhaba</span>
+      <h1>Naif Mutfak'a hoş geldin</h1>
+      <!-- [DOLDURULACAK] Kendi hikâyeni buraya yaz. -->
+      <p>
+        Ben [Adın]. Mutfağa annemin yanında, tezgâha yetişmek için tabureye çıkarak başladım. Naif Mutfak, o
+        günlerden kalan sade ve samimi tarifleri bugünün telaşlı hayatına uyarlama çabam.
+      </p>
+      <p>
+        Burada gösterişli sunumlar yerine, her evde bulunan malzemelerle yapılabilen, ölçüleri denenmiş tarifler
+        bulacaksın. Amacım, mutfağa girmeye çekinen herkesin “ben de yapabilirim” demesi.
+      </p>
+      <blockquote><p>“Yemek, paylaşınca çoğalan tek şeydir.”</p></blockquote>
+      <p>Her gün yeni bir tarif ve mutfak anısı için Instagram'da buluşalım.</p>
+      <a class="buton" href={site.instagram.url} target="_blank" rel="noopener">@{site.instagram.kullanici}</a>
+    </div>
+  </section>
+</TemelLayout>
+
+<style>
+  .hakkimda { display: grid; gap: 2rem; align-items: start; }
+  .hakkimda__foto { justify-self: center; width: min(80vw, 380px); }
+  .hakkimda__foto img { aspect-ratio: 5 / 6; object-fit: cover; border-radius: 50% 50% var(--yaricap) var(--yaricap); box-shadow: var(--golge); }
+  @media (min-width: 860px) { .hakkimda { grid-template-columns: 380px 1fr; gap: 4rem; } }
+</style>

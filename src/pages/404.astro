@@ -1,0 +1,19 @@
+---
+import TemelLayout from '@/layouts/TemelLayout.astro';
+---
+
+<TemelLayout baslik="Sayfa bulunamadı" aciklama="Aradığın sayfa bulunamadı." indekslenmesin>
+  <section class="kapsayici bolum okuma bulunamadi">
+    <p class="ikon" aria-hidden="true">🍳</p>
+    <h1>Bu tencere boş çıktı</h1>
+    <p>Aradığın sayfa taşınmış ya da hiç pişmemiş olabilir.</p>
+    <a class="buton" href="/">Ana sayfaya dön</a>
+    <a class="buton buton--ikincil" href="/blog">Tariflere göz at</a>
+  </section>
+</TemelLayout>
+
+<style>
+  .bulunamadi { text-align: center; }
+  .ikon { font-size: 4rem; margin: 0; }
+  .buton { margin: 0.35rem; }
+</style>

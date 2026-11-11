@@ -1,0 +1,44 @@
+---
+import TemelLayout from './TemelLayout.astro';
+import { yasalSayfalar, tarihBicimle } from '@/site.config';
+
+interface Props {
+  baslik: string;
+  aciklama: string;
+  /** YYYY-AA-GG */
+  guncelleme: string;
+}
+const { baslik, aciklama, guncelleme } = Astro.props;
+const yol = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<TemelLayout baslik={baslik} aciklama={aciklama}>
+  <article class="kapsayici bolum">
+    <div class="okuma">
+      <span class="ust-baslik">Yasal</span>
+      <h1>{baslik}</h1>
+      <p class="tarih">Son güncelleme: <time datetime={guncelleme}>{tarihBicimle(new Date(guncelleme))}</time></p>
+      <aside class="uyari" role="note">
+        <strong>Şablon metin.</strong> Bu sayfa henüz doldurulmadı. <code>[DOLDURULACAK]</code> alanları,
+        yayına almadan önce bir hukukçunun kontrol ettiği gerçek metinle değiştirilmelidir.
+      </aside>
+      <div class="icerik"><slot /></div>
+      <nav class="diger" aria-label="Diğer yasal metinler">
+        <p><strong>Diğer yasal metinler</strong></p>
+        <ul>
+          {yasalSayfalar.filter((s) => s.href !== yol).map((s) => <li><a href={s.href}>{s.etiket}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+  </article>
+</TemelLayout>
+
+<style>
+  .tarih { color: var(--metin-soluk); font-size: 0.95rem; }
+  .uyari {
+    margin: 1.5rem 0 2rem; padding: 1rem 1.25rem; border-radius: var(--yaricap-kucuk);
+    background: #fdecdc; border: 2px dashed var(--terakota); font-size: 0.95rem;
+  }
+  .diger { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--cizgi); }
+  .diger ul { padding-left: 1.2rem; }
+</style>
