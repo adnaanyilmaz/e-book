@@ -1,0 +1,31 @@
+{
+  "site": {
+    "slogan": "Sade, samimi ev yemekleri",
+    "aciklama": "Naif Mutfak: evde kolayca yapabileceğiniz sade ve samimi ev yemekleri tarifleri, ipuçları ve e-kitap."
+  },
+  "nav": {
+    "ana": "Ana Sayfa",
+    "blog": "Tarifler",
+    "ekitap": "E-Kitap",
+    "hakkimda": "Hakkımda",
+    "iletisim": "İletişim",
+    "anaMenu": "Ana menü",
+    "menuAc": "Menüyü aç",
+    "icerigeGec": "İçeriğe geç",
+    "anaSayfaya": "ana sayfa",
+    "dilSecimi": "Dil seçimi"
+  },
+  "altBilgi": {
+    "metin": "Yeni tarifler için Instagram'da buluşalım.",
+    "sayfalar": "Sayfalar",
+    "siteHaritasi": "Site haritası",
+    "yasal": "Yasal",
+    "haklar": "Tüm hakları saklıdır."
+  },
+  "yasalAdlar": {
+    "kvkk": "KVKK Aydınlatma Metni",
+    "mesafeli": "Mesafeli Satış Sözleşmesi",
+    "iade": "İade Koşulları",
+    "cerez": "Çerez Politikası"
+  }
+}

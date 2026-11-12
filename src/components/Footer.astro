@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '@/assets/logo.png';
 import { site } from '@/site.config';
 import type { Dil } from '@/i18n/diller';
 import { ceviri } from '@/i18n/ceviriler';
@@ -22,6 +24,7 @@ const yasal = yasalAnahtarlar.map((k) => ({ href: sayfaYolu(dil, k), etiket: t.y
   <hr class="ayirici" />
   <div class="kapsayici alt__ic">
     <div class="alt__marka">
+      <Image src={logo} alt="" width={88} height={88} densities={[1, 2]} class="alt__logo" />
       <p class="alt__ad">{site.ad}</p>
       <p>{t.site.slogan}. {t.altBilgi.metin}</p>
       <a class="buton buton--ikincil" href={site.instagram.url} target="_blank" rel="noopener">
@@ -43,6 +46,7 @@ const yasal = yasalAnahtarlar.map((k) => ({ href: sayfaYolu(dil, k), etiket: t.y
 <style>
   .alt { margin-top: 3rem; background: var(--krem-koyu); }
   .alt__ic { display: grid; gap: 2rem; padding-block: 2.5rem 1.5rem; }
+  .alt__logo { width: 88px; height: 88px; border-radius: 50%; margin-bottom: 0.75rem; }
   .alt__ad { font-family: var(--font-baslik); font-size: 1.5rem; color: var(--kahve); margin-bottom: 0.25rem; }
   .alt__baslik { font-weight: 800; color: var(--kahve); margin-bottom: 0.25rem; }
   .alt ul { list-style: none; padding: 0; margin: 0; }

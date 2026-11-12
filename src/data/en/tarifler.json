@@ -1,0 +1,29 @@
+{
+  "blog": {
+    "ust": "Recipe notebook",
+    "baslik": "All recipes",
+    "giris": "Home-cooked dishes made with simple ingredients that you can easily make at home.",
+    "seoBaslik": "Recipes",
+    "seoAciklama": "The Naif Mutfak recipe notebook: soups, olive oil dishes, mains and desserts. Simple Turkish home cooking you can easily make at home.",
+    "tumu": "All",
+    "kategorilerEtiket": "Categories",
+    "bos": "No recipes in this category yet. Coming soon!",
+    "kategoriSeoBaslik": "{kategori} Recipes",
+    "kategoriSeoAciklama": "Naif Mutfak {kategori} recipes: simple, delicious home cooking you can easily make at home.",
+    "kategoriGiris": "All recipes in the {kategori} category."
+  },
+  "tarif": {
+    "konum": "Breadcrumb",
+    "hazirlik": "Prep",
+    "pisirme": "Cook",
+    "toplam": "Total",
+    "porsiyon": "Serves",
+    "malzemeler": "Ingredients",
+    "dk": "min",
+    "paylas": "Tried this recipe? Share a photo and tag {kullanici}, I’ll repost it in my stories!",
+    "paylasButon": "Go to Instagram",
+    "benzer": "You might also like",
+    "mutfak": "Turkish",
+    "fotoKaynak": "Photo: {yazar} · {lisans} · cropped"
+  }
+}

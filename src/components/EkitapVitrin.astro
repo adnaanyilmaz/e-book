@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import kapak from '@/assets/ekitap-kapak.jpg';
+import { gorsel } from '@/lib/gorsel';
 import { ekitap } from '@/site.config';
 import { fiyatBicimle, type Dil } from '@/i18n/diller';
 import { ceviri, doldur } from '@/i18n/ceviriler';
@@ -11,6 +11,8 @@ interface Props {
 }
 const { dil } = Astro.props;
 const t = ceviri(dil);
+const kapak = gorsel(t.ekitap.kapak);
+const k = ekitap.satis[ekitap.dilKanali[dil]];
 ---
 
 <section class="vitrin" aria-labelledby="vitrin-baslik">
@@ -22,8 +24,8 @@ const t = ceviri(dil);
     <h2 id="vitrin-baslik">{t.ekitap.baslik}</h2>
     <p>{t.ekitap.altBaslik}. {t.vitrin.ek}</p>
     <p class="vitrin__fiyat">
-      {ekitap.eskiFiyat && <s>{fiyatBicimle(dil, ekitap.eskiFiyat)}</s>}
-      <strong>{fiyatBicimle(dil, ekitap.fiyat)}</strong>
+      {k.eskiFiyat && <s>{fiyatBicimle(dil, k.eskiFiyat, k.paraBirimi)}</s>}
+      <strong>{fiyatBicimle(dil, k.fiyat, k.paraBirimi)}</strong>
     </p>
     <a class="buton" href={sayfaYolu(dil, 'ekitap')}>{t.vitrin.incele}</a>
   </div>

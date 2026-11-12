@@ -1,0 +1,29 @@
+{
+  "blog": {
+    "ust": "Tarif defteri",
+    "baslik": "Tüm tarifler",
+    "giris": "Evde kolayca yapabileceğin, sade malzemelerle hazırlanan ev yemekleri.",
+    "seoBaslik": "Tarifler",
+    "seoAciklama": "Naif Mutfak tarif defteri: çorbalar, zeytinyağlılar, ana yemekler ve tatlılar. Evde kolayca yapabileceğin sade ev yemekleri.",
+    "tumu": "Tümü",
+    "kategorilerEtiket": "Kategoriler",
+    "bos": "Bu kategoride henüz tarif yok. Yakında!",
+    "kategoriSeoBaslik": "{kategori} Tarifleri",
+    "kategoriSeoAciklama": "Naif Mutfak {kategori} tarifleri: evde kolayca yapabileceğin sade ve lezzetli ev yemekleri.",
+    "kategoriGiris": "{kategori} kategorisindeki tüm tarifler."
+  },
+  "tarif": {
+    "konum": "Konum",
+    "hazirlik": "Hazırlık",
+    "pisirme": "Pişirme",
+    "toplam": "Toplam",
+    "porsiyon": "Porsiyon",
+    "malzemeler": "Malzemeler",
+    "dk": "dk",
+    "paylas": "Bu tarifi denedin mi? Fotoğrafını {kullanici} etiketiyle paylaş, hikâyemde paylaşayım!",
+    "paylasButon": "Instagram'a git",
+    "benzer": "Bunları da sevebilirsin",
+    "mutfak": "Türk mutfağı",
+    "fotoKaynak": "Fotoğraf: {yazar} · {lisans} · kırpıldı"
+  }
+}

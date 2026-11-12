@@ -1,0 +1,46 @@
+{
+  "liste": [
+    {
+      "anahtar": "corbalar",
+      "tr": "Çorbalar",
+      "en": "Soups",
+      "ar": "الشوربات",
+      "urlEn": "soups"
+    },
+    {
+      "anahtar": "ana-yemekler",
+      "tr": "Ana Yemekler",
+      "en": "Main Dishes",
+      "ar": "الأطباق الرئيسية",
+      "urlEn": "main-dishes"
+    },
+    {
+      "anahtar": "zeytinyaglilar",
+      "tr": "Zeytinyağlılar",
+      "en": "Olive Oil Dishes",
+      "ar": "أطباق زيت الزيتون",
+      "urlEn": "olive-oil-dishes"
+    },
+    {
+      "anahtar": "tatlilar",
+      "tr": "Tatlılar",
+      "en": "Desserts",
+      "ar": "الحلويات",
+      "urlEn": "desserts"
+    },
+    {
+      "anahtar": "kahvaltilik",
+      "tr": "Kahvaltılık",
+      "en": "Breakfast",
+      "ar": "الفطور",
+      "urlEn": "breakfast"
+    },
+    {
+      "anahtar": "hamur-isleri",
+      "tr": "Hamur İşleri",
+      "en": "Pastries",
+      "ar": "المعجنات",
+      "urlEn": "pastries"
+    }
+  ]
+}

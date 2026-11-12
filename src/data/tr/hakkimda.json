@@ -1,0 +1,15 @@
+{
+  "hakkimda": {
+    "seoAciklama": "Naif Mutfak'ın arkasındaki hikâye: sade malzemelerle, samimi ev yemekleri pişirmeyi seven bir mutfak tutkunu.",
+    "ust": "Merhaba",
+    "baslik": "Naif Mutfak'a hoş geldin",
+    "fotoAlt": "Unlu tezgâhta hamur yoğuran eller",
+    "paragraflar": [
+      "Ben [Adın]. Mutfağa annemin yanında, tezgâha yetişmek için tabureye çıkarak başladım. Naif Mutfak, o günlerden kalan sade ve samimi tarifleri bugünün telaşlı hayatına uyarlama çabam.",
+      "Burada gösterişli sunumlar yerine, her evde bulunan malzemelerle yapılabilen, ölçüleri denenmiş tarifler bulacaksın. Amacım, mutfağa girmeye çekinen herkesin “ben de yapabilirim” demesi."
+    ],
+    "alinti": "“Yemek, paylaşınca çoğalan tek şeydir.”",
+    "kapanis": "Her gün yeni bir tarif ve mutfak anısı için Instagram'da buluşalım.",
+    "foto": "@/assets/hakkimda.jpg"
+  }
+}

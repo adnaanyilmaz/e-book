@@ -1,0 +1,65 @@
+{
+  "ekitap": {
+    "baslik": "Naif Mutfak: Taste of Home",
+    "altBaslik": "40 simple home-cooked dishes for every day",
+    "ust": "E-book · {format} · {sayfa} pages",
+    "seoBaslik": "{baslik} E-Book",
+    "seoAciklama": "{altBaslik}. The Naif Mutfak e-book, instant {format} download.",
+    "kapakAlt": "{baslik} e-book cover",
+    "satinAl": "Buy Now",
+    "guvenli": "You will be redirected to the secure {saglayici} checkout.",
+    "yakinda": "Sales are opening very soon!",
+    "kisiyeOzel": "Each copy is personalised with the buyer’s email address and is for personal use only.",
+    "digerKanal": {
+      "turkiye": "Buying from Turkey?",
+      "yurtdisi": "Buying from outside Turkey?"
+    },
+    "digerOde": "Pay {fiyat} with {saglayici}",
+    "yasalNot": "By purchasing you accept the {mesafeli} and the {iade}.",
+    "icindekilerUst": "What's inside?",
+    "icindekiler": "Contents",
+    "bolumler": [
+      {
+        "baslik": "Soups",
+        "aciklama": "From lentil soup to tarhana: 8 soups for every season."
+      },
+      {
+        "baslik": "Olive oil dishes",
+        "aciklama": "10 classics that taste even better the next day."
+      },
+      {
+        "baslik": "Main dishes",
+        "aciklama": "One-pot stews and oven favourites."
+      },
+      {
+        "baslik": "Desserts",
+        "aciklama": "Syrup-soaked sweets, milk puddings and helva."
+      },
+      {
+        "baslik": "Kitchen tips",
+        "aciklama": "Weekly shopping lists and a storage guide."
+      }
+    ],
+    "sssBaslik": "Frequently asked questions",
+    "sss": [
+      {
+        "s": "How is the e-book delivered?",
+        "c": "If you buy on Gumroad, your download link arrives by email within a few minutes. If you buy on Shopier (Turkey), your personalised PDF is emailed to you within 24 hours. [TO BE COMPLETED: check timing]"
+      },
+      {
+        "s": "Can I read it on my phone?",
+        "c": "Yes. The PDF opens on phones, tablets and computers."
+      },
+      {
+        "s": "Can I share the e-book with a friend?",
+        "c": "Please don’t. This book is months of tested recipes and photography; every copy is marked with the buyer’s email address and is for personal use only. You can read it on all your own devices and print it for your own kitchen. If you love it, recommending it to a friend means the world to me."
+      },
+      {
+        "s": "Can I get a refund?",
+        "c": "For digital content, please see the Refund Policy page."
+      }
+    ],
+    "dilNotu": "Note: the e-book itself is written in Turkish.",
+    "kapak": "@/assets/ekitap-kapak.jpg"
+  }
+}

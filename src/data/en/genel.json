@@ -1,0 +1,31 @@
+{
+  "site": {
+    "slogan": "Simple, heartfelt home cooking",
+    "aciklama": "Naif Mutfak: simple, heartfelt Turkish home-cooking recipes you can easily make at home, plus tips and an e-book."
+  },
+  "nav": {
+    "ana": "Home",
+    "blog": "Recipes",
+    "ekitap": "E-Book",
+    "hakkimda": "About",
+    "iletisim": "Contact",
+    "anaMenu": "Main menu",
+    "menuAc": "Open menu",
+    "icerigeGec": "Skip to content",
+    "anaSayfaya": "home page",
+    "dilSecimi": "Language"
+  },
+  "altBilgi": {
+    "metin": "Let's meet on Instagram for new recipes.",
+    "sayfalar": "Pages",
+    "siteHaritasi": "Site map",
+    "yasal": "Legal",
+    "haklar": "All rights reserved."
+  },
+  "yasalAdlar": {
+    "kvkk": "Privacy Notice (KVKK)",
+    "mesafeli": "Distance Sales Agreement",
+    "iade": "Refund Policy",
+    "cerez": "Cookie Policy"
+  }
+}

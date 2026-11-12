@@ -1,0 +1,24 @@
+{
+  "ana": {
+    "ustBaslik": "Hello, welcome!",
+    "baslikOnce": "Simple ingredients,",
+    "baslikVurgu": "heartfelt",
+    "baslikSonra": "recipes",
+    "giris": "At Naif Mutfak I share the home-cooked dishes we grew up with, as simple recipes you can easily make yourself.",
+    "tarifButon": "Browse recipes",
+    "ekitapButon": "Discover the e-book",
+    "heroAlt": "A breakfast table with fried eggs in a copper pan, cheeses and fruit",
+    "sonUst": "Fresh from the kitchen",
+    "sonBaslik": "Latest recipes",
+    "tumu": "All recipes →",
+    "igBaslik": "Let's cook together on Instagram",
+    "igMetin": "Follow along for daily recipes, short videos and warm moments from the kitchen.",
+    "igButon": "Follow @{kullanici}",
+    "heroGorsel": "@/assets/hero.jpg"
+  },
+  "vitrin": {
+    "ust": "Featured e-book",
+    "ek": "With shopping lists, handy tips and step-by-step photos.",
+    "incele": "See the e-book"
+  }
+}

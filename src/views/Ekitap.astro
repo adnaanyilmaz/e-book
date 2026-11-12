@@ -1,8 +1,8 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import TemelLayout from '@/layouts/TemelLayout.astro';
-import kapak from '@/assets/ekitap-kapak.jpg';
-import { ekitap, site } from '@/site.config';
+import { gorsel } from '@/lib/gorsel';
+import { ekitap, satisHazir, site, type KanalAdi } from '@/site.config';
 import { fiyatBicimle, type Dil } from '@/i18n/diller';
 import { ceviri, doldur, parcala } from '@/i18n/ceviriler';
 import { sayfaYolu, type Alternatifler } from '@/i18n/yollar';
@@ -14,9 +14,16 @@ interface Props {
 const { dil, alternatifler } = Astro.props;
 const t = ceviri(dil);
 const e = t.ekitap;
+const kapak = gorsel(e.kapak);
 const kapakAlt = doldur(e.kapakAlt, { baslik: e.baslik });
 
-const satinAlHazir = !ekitap.odemeLinki.startsWith('#');
+// Bu dilin ana satış kanalı (tr → Shopier/TL, en/ar → Gumroad/$) ve alternatifi
+const kanalAdi = ekitap.dilKanali[dil];
+const digerAdi: KanalAdi = kanalAdi === 'turkiye' ? 'yurtdisi' : 'turkiye';
+const k = ekitap.satis[kanalAdi];
+const diger = ekitap.satis[digerAdi];
+const satinAlHazir = satisHazir(k);
+const fiyat = (tutar: number, kanal = k) => fiyatBicimle(dil, tutar, kanal.paraBirimi);
 const ogKapak = await getImage({ src: kapak, width: 1200, format: 'jpg' });
 
 const jsonLd = {
@@ -26,13 +33,13 @@ const jsonLd = {
   description: e.altBaslik,
   image: new URL(ogKapak.src, Astro.site).href,
   brand: { '@type': 'Brand', name: site.ad },
-  offers: {
+  offers: [k, diger].map((kanal) => ({
     '@type': 'Offer',
-    price: ekitap.fiyat,
-    priceCurrency: 'TRY',
-    availability: 'https://schema.org/InStock',
+    price: kanal.fiyat,
+    priceCurrency: kanal.paraBirimi,
+    availability: satisHazir(kanal) ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
     url: new URL(sayfaYolu(dil, 'ekitap'), Astro.site).href,
-  },
+  })),
 };
 
 const yasalLinkler = {
@@ -70,19 +77,28 @@ const yasalLinkler = {
         {e.dilNotu && <p class="urun__dil">{e.dilNotu}</p>}
         <div class="satin-al" id="satin-al">
           <p class="fiyat">
-            {ekitap.eskiFiyat && <s>{fiyatBicimle(dil, ekitap.eskiFiyat)}</s>}
-            <strong>{fiyatBicimle(dil, ekitap.fiyat)}</strong>
+            {k.eskiFiyat && <s>{fiyat(k.eskiFiyat)}</s>}
+            <strong>{fiyat(k.fiyat)}</strong>
           </p>
           <a
             class="buton buton--tam"
-            href={ekitap.odemeLinki}
+            href={k.link}
             target={satinAlHazir ? '_blank' : undefined}
             rel={satinAlHazir ? 'noopener' : undefined}
             aria-disabled={satinAlHazir ? undefined : 'true'}
           >
             {e.satinAl}
           </a>
-          <p class="guvence">{satinAlHazir ? e.guvenli : e.yakinda}</p>
+          <p class="guvence">{satinAlHazir ? doldur(e.guvenli, { saglayici: k.saglayici }) : e.yakinda}</p>
+          <p class="kisiye-ozel">{e.kisiyeOzel}</p>
+          {satisHazir(diger) && (
+            <p class="diger-kanal">
+              {e.digerKanal[digerAdi]}{' '}
+              <a href={diger.link} target="_blank" rel="noopener">
+                {doldur(e.digerOde, { saglayici: diger.saglayici, fiyat: fiyat(diger.fiyat, diger) })}
+              </a>
+            </p>
+          )}
           <p class="yasal-not">
             {parcala(e.yasalNot).map((p) =>
               'anahtar' in p ? <a href={yasalLinkler[p.anahtar!]!.href}>{yasalLinkler[p.anahtar!]!.etiket}</a> : p.metin,
@@ -119,8 +135,8 @@ const yasalLinkler = {
   {/* Mobilde fiyat ve buton hep görünür kalsın (sadece ödeme linki girildiyse) */}
   {satinAlHazir && (
     <div class="yapiskan">
-      <span class="yapiskan__fiyat">{fiyatBicimle(dil, ekitap.fiyat)}</span>
-      <a class="buton" href={ekitap.odemeLinki} target="_blank" rel="noopener">{e.satinAl}</a>
+      <span class="yapiskan__fiyat">{fiyat(k.fiyat)}</span>
+      <a class="buton" href={k.link} target="_blank" rel="noopener">{e.satinAl}</a>
     </div>
   )}
 </TemelLayout>
@@ -138,6 +154,9 @@ const yasalLinkler = {
   .fiyat s { font-size: 1.2rem; color: var(--metin-soluk); }
   .satin-al .buton[aria-disabled='true'] { opacity: 0.6; pointer-events: none; }
   .guvence { font-size: 0.9rem; color: var(--metin-soluk); text-align: center; margin: 0.6rem 0 0.4rem; }
+  .kisiye-ozel { font-size: 0.8rem; color: var(--metin-soluk); margin: 0 0 0.4rem; }
+  .diger-kanal { font-size: 0.85rem; margin: 0 0 0.4rem; }
+  .diger-kanal a { display: inline-block; padding-block: 0.6rem; } /* dokunma hedefi */
   .yasal-not { font-size: 0.8rem; color: var(--metin-soluk); margin: 0; }
 
   .bolumler { list-style: none; counter-reset: b; padding: 0; margin: 0; }

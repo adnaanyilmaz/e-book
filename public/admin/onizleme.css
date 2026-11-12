@@ -1,0 +1,53 @@
+/* Yönetim panelindeki tarif önizlemesi: sitenin görünümüne yakın (src/styles/global.css ile aynı renkler). */
+:root {
+  --krem: #fbf3e6;
+  --kagit: #fffaf2;
+  --terakota: #c8653f;
+  --terakota-koyu: #a64e2c;
+  --kahve: #5b3a29;
+  --metin: #3d2a1f;
+  --metin-soluk: #75604f;
+  --cizgi: #e6d3b8;
+}
+
+body {
+  background: var(--krem);
+  color: var(--metin);
+  font-family: 'Nunito Variable', 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  padding: 1.5rem;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+  color: var(--kahve);
+  line-height: 1.25;
+}
+h2 { border-bottom: 1px dashed var(--cizgi); padding-bottom: 0.3rem; margin-top: 2rem; }
+
+a { color: var(--terakota-koyu); }
+img { max-width: 100%; height: auto; border-radius: 14px; }
+
+ol { padding-inline-start: 1.4rem; }
+ol li::marker { color: var(--terakota); font-weight: 700; }
+ul li::marker { color: var(--terakota); }
+
+blockquote {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1rem;
+  background: var(--kagit);
+  border-inline-start: 4px solid var(--terakota);
+  border-radius: 0 10px 10px 0;
+  color: var(--metin-soluk);
+}
+
+/* Arapça önizleme: sağdan sola, Arapça yazı tipleri; italik ve büyük harf yok */
+:lang(ar), [dir='rtl'] {
+  direction: rtl;
+  font-family: 'Noto Sans Arabic Variable', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+}
+:lang(ar) :is(h1, h2, h3, h4), [dir='rtl'] :is(h1, h2, h3, h4) {
+  font-family: 'Noto Naskh Arabic Variable', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+}
+:lang(ar) em, [dir='rtl'] em { font-style: normal; font-weight: 700; }

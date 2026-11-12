@@ -3,8 +3,13 @@ baslik: شوربة العدس الأحمر على طريقة أمي
 urlAdi: red-lentil-soup
 aciklama: "رفيقة أمسيات الشتاء: شوربة عدس أحمر تركية كلاسيكية بقوام مخملي، تُقدَّم مع الليمون."
 tarih: 2026-11-04
-kapak: ../../../assets/tarifler/mercimek-corbasi.jpg
+kapak: "@/assets/tarifler/mercimek-corbasi.jpg"
 kapakAlt: شوربة عدس أحمر في وعاء مع شريحة ليمون
+kapakKaynak:
+  yazar: E4024
+  url: https://commons.wikimedia.org/wiki/File:Red_lentil_soup_from_Turkey.jpg
+  lisans: CC BY-SA 4.0
+  lisansUrl: https://creativecommons.org/licenses/by-sa/4.0/
 kategori: corbalar
 hazirlamaSuresi: 10
 pisirmeSuresi: 30

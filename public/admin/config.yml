@@ -1,0 +1,1238 @@
+# BU DOSYA OTOMATİK ÜRETİLİR: elle düzenleme.
+# Kaynak: scripts/panel-ayarlari.mjs  ·  Yeniden üret: npm run panel
+# Belgeler: https://sveltiacms.app/en/docs
+backend:
+  name: github
+  repo: adnaanyilmaz/e-book
+  branch: main
+  auth_methods:
+    - token
+  commit_messages:
+    create: 'Panel: "{{slug}}" eklendi ({{collection}})'
+    update: 'Panel: "{{slug}}" güncellendi ({{collection}})'
+    delete: 'Panel: "{{slug}}" silindi ({{collection}})'
+    uploadMedia: "Panel: görsel yüklendi ({{path}})"
+    deleteMedia: "Panel: görsel silindi ({{path}})"
+app_title: Naif Mutfak · Yönetim
+logo:
+  src: /icon-192.png
+site_url: https://naifmutfak.com
+media_folder: /src/assets
+public_folder: "@/assets"
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+  lowercase: true
+  trim: true
+output:
+  omit_empty_optional_fields: false
+  json:
+    indent_size: 2
+i18n:
+  structure: multiple_folders
+  locales:
+    - tr
+    - en
+    - ar
+  default_locale: tr
+  initial_locales: all
+collections:
+  - name: tarifler
+    label: Tarifler
+    label_singular: Tarif
+    icon: restaurant_menu
+    description: Türkçe kaynak dildir. Dil sekmeleriyle İngilizce ve Arapça çeviriyi aynı ekranda doldur. Kapak, tarih, kategori ve süreler tüm dillerde ortaktır; yalnızca Türkçede değiştirilir.
+    folder: src/content/blog
+    format: yaml-frontmatter
+    extension: md
+    create: true
+    i18n: true
+    identifier_field: baslik
+    slug:
+      template: "{{baslik}}"
+      editable:
+        - create
+    media_folder: /src/assets/tarifler
+    public_folder: "@/assets/tarifler"
+    thumbnail: kapak
+    summary: "{{baslik}}"
+    sortable_fields:
+      fields:
+        - tarih
+        - baslik
+        - kategori
+      default:
+        field: tarih
+        direction: descending
+    view_groups:
+      - label: Kategori
+        field: kategori
+    view_filters:
+      - label: Taslaklar
+        field: taslak
+        pattern: true
+    fields:
+      - name: baslik
+        label: Başlık
+        widget: string
+        maxlength: 80
+        i18n: true
+      - name: urlAdi
+        label: Adres (URL) adı
+        widget: string
+        required: false
+        i18n: true
+        hint: İngilizce ve Arapça için önerilir (ör. red-lentil-soup). Boş bırakırsan dosya adı kullanılır. Yalnızca küçük harf, rakam ve tire.
+        pattern:
+          - ^[a-z0-9-]+$
+          - Yalnızca küçük harf (a-z), rakam ve tire kullan.
+      - name: aciklama
+        label: Kısa açıklama
+        widget: text
+        maxlength: 170
+        i18n: true
+        hint: Google'da ve paylaşımlarda görünen tek cümlelik özet.
+      - name: kapak
+        label: Kapak fotoğrafı
+        widget: image
+        choose_url: false
+        i18n: duplicate
+        hint: Yatay, en az 1200 piksel genişlik.
+      - name: kapakAlt
+        label: Kapak fotoğrafının açıklaması
+        widget: string
+        i18n: true
+        hint: Görme engelliler ve Google için fotoğrafta ne olduğunu anlat.
+      - name: kategori
+        label: Kategori
+        widget: relation
+        collection: kategoriler
+        file: kategoriler
+        i18n: duplicate
+        value_field: "{{liste.*.anahtar}}"
+        display_fields:
+          - "{{liste.*.tr}}"
+        search_fields:
+          - "{{liste.*.tr}}"
+        hint: Yeni kategori için soldaki "Kategoriler" bölümünü kullan.
+      - name: hazirlamaSuresi
+        label: Hazırlama süresi (dakika)
+        widget: number
+        value_type: int
+        min: 1
+        i18n: duplicate
+      - name: pisirmeSuresi
+        label: Pişirme süresi (dakika)
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        i18n: duplicate
+      - name: porsiyon
+        label: Porsiyon
+        widget: string
+        required: false
+        i18n: true
+        hint: ör. 4 kişilik / Serves 4
+      - name: malzemeler
+        label: Malzemeler
+        label_singular: Malzeme
+        widget: list
+        required: false
+        i18n: true
+        hint: Her satıra bir malzeme. Tarif metninde malzemeleri tekrar yazma; sayfada otomatik gösterilir.
+      - name: body
+        label: Tarif metni
+        widget: richtext
+        i18n: true
+        hint: Kısa bir hikâye, ardından "Hazırlanışı" başlığı altında numaralı adımlar, isteğe bağlı "Püf noktası".
+        buttons:
+          - bold
+          - italic
+          - link
+          - heading-two
+          - heading-three
+          - bulleted-list
+          - numbered-list
+          - quote
+        editor_components: []
+      - name: tarih
+        label: Yayın tarihi
+        widget: datetime
+        type: date
+        picker_utc: true
+        i18n: duplicate
+      - name: guncelleme
+        label: Güncelleme tarihi
+        widget: datetime
+        type: date
+        picker_utc: true
+        required: false
+        i18n: duplicate
+        hint: Tarifi sonradan önemli ölçüde değiştirdiysen.
+      - name: taslak
+        label: Taslak (sitede gösterme)
+        widget: boolean
+        default: false
+        i18n: duplicate
+      - name: kapakKaynak
+        label: Fotoğraf kaynağı
+        widget: object
+        required: false
+        collapsed: true
+        i18n: duplicate
+        hint: Yalnızca başkasının (ör. Wikimedia, CC lisanslı) fotoğrafını kullanıyorsan doldur. Kendi fotoğrafın için boş bırak.
+        fields:
+          - name: yazar
+            label: Fotoğrafçı
+            widget: string
+          - name: url
+            label: Fotoğrafın kaynak sayfası
+            widget: string
+            pattern:
+              - ^https://
+              - https:// ile başlamalı.
+          - name: lisans
+            label: Lisans
+            widget: string
+            hint: ör. CC BY-SA 4.0
+          - name: lisansUrl
+            label: Lisans sayfası
+            widget: string
+            pattern:
+              - ^https://
+              - https:// ile başlamalı.
+  - divider: true
+  - name: sayfalar
+    label: Sayfalar
+    icon: web
+    i18n: true
+    editor:
+      preview: false
+    description: Sitenin sayfalarındaki tüm yazılar ve fotoğraflar. Her dil kendi sekmesinde.
+    files:
+      - name: anasayfa
+        label: Ana sayfa
+        icon: home
+        i18n: true
+        file: src/data/{{locale}}/anasayfa.json
+        fields:
+          - name: ana
+            label: Karşılama bölümü ve ana sayfa
+            widget: object
+            i18n: true
+            fields:
+              - name: ustBaslik
+                label: Üst küçük başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: baslikOnce
+                label: "Büyük başlık: başı"
+                hint: "Başlık üç parçadır: baş + vurgulu kelime + son."
+                widget: string
+                required: false
+                i18n: true
+              - name: baslikVurgu
+                label: "Büyük başlık: vurgulu kelime"
+                hint: Terakota renkte ve italik görünür.
+                widget: string
+                required: false
+                i18n: true
+              - name: baslikSonra
+                label: "Büyük başlık: son"
+                widget: string
+                required: false
+                i18n: true
+              - name: giris
+                label: Giriş paragrafı
+                widget: text
+                required: false
+                i18n: true
+              - name: tarifButon
+                label: Tarifler düğmesi
+                widget: string
+                required: false
+                i18n: true
+              - name: ekitapButon
+                label: E-kitap düğmesi
+                widget: string
+                required: false
+                i18n: true
+              - name: heroAlt
+                label: Fotoğrafın açıklaması
+                hint: Görme engelliler ve Google için fotoğrafta ne olduğunu anlat.
+                widget: string
+                required: false
+                i18n: true
+              - name: sonUst
+                label: '"Son tarifler" üst başlığı'
+                widget: string
+                required: false
+                i18n: true
+              - name: sonBaslik
+                label: '"Son tarifler" başlığı'
+                widget: string
+                required: false
+                i18n: true
+              - name: tumu
+                label: '"Tüm tarifler" bağlantısı'
+                widget: string
+                required: false
+                i18n: true
+              - name: igBaslik
+                label: Instagram bölümü başlığı
+                widget: string
+                required: false
+                i18n: true
+              - name: igMetin
+                label: Instagram bölümü metni
+                widget: text
+                required: false
+                i18n: true
+              - name: igButon
+                label: Instagram düğmesi
+                hint: "{kullanici} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+              - name: heroGorsel
+                label: Karşılama fotoğrafı
+                hint: Yatay, en az 1600 piksel genişlik. Tüm dillerde aynıdır.
+                widget: image
+                choose_url: false
+                i18n: duplicate
+            collapsed: false
+          - name: vitrin
+            label: E-kitap tanıtım kutusu
+            widget: object
+            i18n: true
+            fields:
+              - name: ust
+                label: Üst başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: ek
+                label: Ek açıklama
+                widget: text
+                required: false
+                i18n: true
+              - name: incele
+                label: Düğme
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+      - name: hakkimda
+        label: Hakkımda
+        icon: person
+        i18n: true
+        file: src/data/{{locale}}/hakkimda.json
+        fields:
+          - name: hakkimda
+            label: Hakkımda sayfası
+            widget: object
+            i18n: true
+            fields:
+              - name: seoAciklama
+                label: Açıklama
+                hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                widget: text
+                required: false
+                i18n: true
+              - name: ust
+                label: Üst başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: baslik
+                label: Başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: fotoAlt
+                label: Fotoğrafın açıklaması
+                widget: string
+                required: false
+                i18n: true
+              - name: paragraflar
+                label: Hikâye (paragraflar)
+                label_singular: Paragraf
+                widget: list
+                i18n: true
+                field:
+                  name: paragraflar
+                  label: Paragraf
+                  widget: text
+                  required: false
+                  i18n: true
+              - name: alinti
+                label: Alıntı
+                widget: text
+                required: false
+                i18n: true
+              - name: kapanis
+                label: Kapanış cümlesi
+                widget: text
+                required: false
+                i18n: true
+              - name: foto
+                label: Fotoğraf
+                hint: Dikey fotoğraf; sayfada kemer şeklinde kırpılır. Tüm dillerde aynıdır.
+                widget: image
+                choose_url: false
+                i18n: duplicate
+            collapsed: false
+      - name: iletisim
+        label: İletişim
+        icon: mail
+        i18n: true
+        file: src/data/{{locale}}/iletisim.json
+        fields:
+          - name: iletisim
+            label: İletişim sayfası
+            widget: object
+            i18n: true
+            fields:
+              - name: seoAciklama
+                label: Açıklama
+                hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                widget: text
+                required: false
+                i18n: true
+              - name: ust
+                label: Üst başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: baslik
+                label: Başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: giris
+                label: Giriş metni
+                widget: text
+                required: false
+                i18n: true
+              - name: eposta
+                label: E-posta kutusu başlığı
+                widget: string
+                required: false
+                i18n: true
+              - name: epostaNot
+                label: E-posta kutusu notu
+                widget: string
+                required: false
+                i18n: true
+              - name: dm
+                label: Instagram kutusu başlığı
+                widget: string
+                required: false
+                i18n: true
+              - name: dmNot
+                label: Instagram kutusu notu
+                widget: string
+                required: false
+                i18n: true
+              - name: yanit
+                label: Yanıt süresi notu
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+      - name: tarifler
+        label: Tarif sayfaları (ortak yazılar)
+        icon: menu_book
+        i18n: true
+        file: src/data/{{locale}}/tarifler.json
+        fields:
+          - name: blog
+            label: Tarif listesi sayfası
+            widget: object
+            i18n: true
+            fields:
+              - name: ust
+                label: Üst başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: baslik
+                label: Başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: giris
+                label: Giriş metni
+                widget: text
+                required: false
+                i18n: true
+              - name: seoBaslik
+                label: Sekme başlığı
+                hint: Tarayıcı sekmesinde ve Google'da görünür.
+                widget: string
+                required: false
+                i18n: true
+              - name: seoAciklama
+                label: Açıklama
+                hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                widget: text
+                required: false
+                i18n: true
+              - name: tumu
+                label: '"Tümü" filtre düğmesi'
+                widget: string
+                required: false
+                i18n: true
+              - name: kategorilerEtiket
+                label: Kategori filtresi adı (ekran okuyucu)
+                hint: Görünmez.
+                widget: string
+                required: false
+                i18n: true
+              - name: bos
+                label: Boş kategori mesajı
+                widget: string
+                required: false
+                i18n: true
+              - name: kategoriSeoBaslik
+                label: Kategori sayfası sekme başlığı
+                hint: "{kategori} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+              - name: kategoriSeoAciklama
+                label: Kategori sayfası açıklaması
+                hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter). {kategori} kısmını silme ve çevirme; sitede otomatik değerle değişir.
+                widget: text
+                required: false
+                i18n: true
+              - name: kategoriGiris
+                label: Kategori sayfası giriş metni
+                hint: "{kategori} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+          - name: tarif
+            label: Tarif sayfası
+            widget: object
+            i18n: true
+            fields:
+              - name: konum
+                label: Konum çubuğu adı (ekran okuyucu)
+                hint: Görünmez.
+                widget: string
+                required: false
+                i18n: true
+              - name: hazirlik
+                label: '"Hazırlık" etiketi'
+                widget: string
+                required: false
+                i18n: true
+              - name: pisirme
+                label: '"Pişirme" etiketi'
+                widget: string
+                required: false
+                i18n: true
+              - name: toplam
+                label: '"Toplam" etiketi'
+                widget: string
+                required: false
+                i18n: true
+              - name: porsiyon
+                label: '"Porsiyon" etiketi'
+                widget: string
+                required: false
+                i18n: true
+              - name: malzemeler
+                label: '"Malzemeler" başlığı'
+                widget: string
+                required: false
+                i18n: true
+              - name: dk
+                label: Dakika kısaltması
+                widget: string
+                required: false
+                i18n: true
+              - name: paylas
+                label: Paylaşım çağrısı
+                hint: "{kullanici} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: text
+                required: false
+                i18n: true
+              - name: paylasButon
+                label: Instagram düğmesi
+                widget: string
+                required: false
+                i18n: true
+              - name: benzer
+                label: '"Benzer tarifler" başlığı'
+                widget: string
+                required: false
+                i18n: true
+              - name: mutfak
+                label: Mutfak türü
+                hint: Google tarif bilgisinde kullanılır.
+                widget: string
+                required: false
+                i18n: true
+              - name: fotoKaynak
+                label: Fotoğraf kaynağı satırı
+                hint: "{yazar}, {lisans} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+      - name: genel
+        label: Menü ve alt bilgi
+        icon: segment
+        i18n: true
+        file: src/data/{{locale}}/genel.json
+        fields:
+          - name: site
+            label: Site
+            widget: object
+            i18n: true
+            fields:
+              - name: slogan
+                label: Slogan
+                hint: Alt bilgide ve sekme başlıklarında görünür.
+                widget: string
+                required: false
+                i18n: true
+              - name: aciklama
+                label: Site açıklaması
+                hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                widget: text
+                required: false
+                i18n: true
+            collapsed: false
+          - name: nav
+            label: Menü
+            widget: object
+            i18n: true
+            fields:
+              - name: ana
+                label: Ana sayfa
+                widget: string
+                required: false
+                i18n: true
+              - name: blog
+                label: Tarifler
+                widget: string
+                required: false
+                i18n: true
+              - name: ekitap
+                label: E-kitap
+                widget: string
+                required: false
+                i18n: true
+              - name: hakkimda
+                label: Hakkımda
+                widget: string
+                required: false
+                i18n: true
+              - name: iletisim
+                label: İletişim
+                widget: string
+                required: false
+                i18n: true
+              - name: anaMenu
+                label: Menü adı (ekran okuyucu)
+                hint: Görünmez; görme engelli ziyaretçiler için.
+                widget: string
+                required: false
+                i18n: true
+              - name: menuAc
+                label: '"Menüyü aç" düğmesi (ekran okuyucu)'
+                hint: Görünmez; görme engelli ziyaretçiler için.
+                widget: string
+                required: false
+                i18n: true
+              - name: icerigeGec
+                label: '"İçeriğe geç" bağlantısı'
+                hint: Klavyeyle gezenler için; normalde görünmez.
+                widget: string
+                required: false
+                i18n: true
+              - name: anaSayfaya
+                label: Logo bağlantısının açıklaması
+                hint: Görünmez; "Naif Mutfak ana sayfa" gibi okunur.
+                widget: string
+                required: false
+                i18n: true
+              - name: dilSecimi
+                label: Dil seçici adı (ekran okuyucu)
+                hint: Görünmez.
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+          - name: altBilgi
+            label: Alt bilgi (sayfanın en altı)
+            widget: object
+            i18n: true
+            fields:
+              - name: metin
+                label: Kısa metin
+                widget: text
+                required: false
+                i18n: true
+              - name: sayfalar
+                label: '"Sayfalar" başlığı'
+                widget: string
+                required: false
+                i18n: true
+              - name: siteHaritasi
+                label: Site haritası adı (ekran okuyucu)
+                hint: Görünmez.
+                widget: string
+                required: false
+                i18n: true
+              - name: yasal
+                label: '"Yasal" başlığı'
+                widget: string
+                required: false
+                i18n: true
+              - name: haklar
+                label: Telif satırı
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+          - name: yasalAdlar
+            label: Yasal sayfaların adları
+            widget: object
+            i18n: true
+            fields:
+              - name: kvkk
+                label: KVKK
+                widget: string
+                required: false
+                i18n: true
+              - name: mesafeli
+                label: Mesafeli satış sözleşmesi
+                widget: string
+                required: false
+                i18n: true
+              - name: iade
+                label: İade koşulları
+                widget: string
+                required: false
+                i18n: true
+              - name: cerez
+                label: Çerez politikası
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+  - name: ekitap
+    label: E-kitap
+    icon: auto_stories
+    i18n: true
+    editor:
+      preview: false
+    description: E-kitap sayfasının yazıları, içindekiler ve SSS. Fiyat ve satış linkleri "Satış ve fiyatlar"da.
+    files:
+      - name: ekitap
+        label: E-kitap sayfası
+        icon: auto_stories
+        i18n: true
+        file: src/data/{{locale}}/ekitap.json
+        fields:
+          - name: ekitap
+            label: E-kitap sayfası
+            widget: object
+            i18n: true
+            fields:
+              - name: baslik
+                label: Kitabın adı
+                widget: string
+                required: false
+                i18n: true
+              - name: altBaslik
+                label: Alt başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: ust
+                label: Üst satır (format, sayfa)
+                hint: "{format}, {sayfa} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+              - name: seoBaslik
+                label: Sekme başlığı
+                hint: "{baslik} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+              - name: seoAciklama
+                label: Açıklama
+                hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter). {altBaslik}, {format} kısmını silme ve çevirme; sitede otomatik değerle değişir.
+                widget: text
+                required: false
+                i18n: true
+              - name: kapakAlt
+                label: Kapağın açıklaması
+                hint: "{baslik} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+              - name: satinAl
+                label: Satın al düğmesi
+                widget: string
+                required: false
+                i18n: true
+              - name: guvenli
+                label: Ödeme yönlendirme notu
+                hint: "{saglayici} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: text
+                required: false
+                i18n: true
+              - name: yakinda
+                label: Satış başlamadan önceki not
+                widget: string
+                required: false
+                i18n: true
+              - name: kisiyeOzel
+                label: Kişiye özel kopya notu
+                widget: text
+                required: false
+                i18n: true
+              - name: digerKanal
+                label: Diğer ödeme seçeneği sorusu
+                widget: object
+                i18n: true
+                fields:
+                  - name: turkiye
+                    label: Türkiye'den alanlara
+                    widget: string
+                    required: false
+                    i18n: true
+                  - name: yurtdisi
+                    label: Yurt dışından alanlara
+                    widget: string
+                    required: false
+                    i18n: true
+              - name: digerOde
+                label: Diğer ödeme bağlantısı
+                hint: "{saglayici}, {fiyat} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: string
+                required: false
+                i18n: true
+              - name: yasalNot
+                label: Yasal onay notu
+                hint: "{mesafeli}, {iade} kısmını silme ve çevirme; sitede otomatik değerle değişir."
+                widget: text
+                required: false
+                i18n: true
+              - name: icindekilerUst
+                label: İçindekiler üst başlığı
+                widget: string
+                required: false
+                i18n: true
+              - name: icindekiler
+                label: İçindekiler başlığı
+                widget: string
+                required: false
+                i18n: true
+              - name: bolumler
+                label: Kitabın bölümleri
+                label_singular: Bölüm
+                widget: list
+                i18n: true
+                collapsed: auto
+                summary: "{{baslik}}"
+                fields:
+                  - name: baslik
+                    label: Bölüm adı
+                    widget: string
+                    required: false
+                    i18n: true
+                  - name: aciklama
+                    label: Kısa açıklama
+                    widget: text
+                    required: false
+                    i18n: true
+              - name: sssBaslik
+                label: SSS başlığı
+                widget: string
+                required: false
+                i18n: true
+              - name: sss
+                label: Sıkça sorulan sorular
+                label_singular: Soru
+                widget: list
+                i18n: true
+                collapsed: auto
+                summary: "{{s}}"
+                fields:
+                  - name: s
+                    label: Soru
+                    widget: string
+                    required: false
+                    i18n: true
+                  - name: c
+                    label: Cevap
+                    widget: text
+                    required: false
+                    i18n: true
+              - name: dilNotu
+                label: Kitabın dili notu
+                hint: Kitap bu dilde değilse belirt; gerek yoksa boş bırak.
+                widget: string
+                required: false
+                i18n: true
+              - name: kapak
+                label: Kapak görseli
+                hint: Dikey (yaklaşık 1000×1400). Tüm dillerde aynıdır.
+                widget: image
+                choose_url: false
+                i18n: duplicate
+            collapsed: false
+  - name: satis
+    label: Satış ve fiyatlar
+    icon: payments
+    editor:
+      preview: false
+    description: "E-kitabın fiyatları ve ödeme sayfası linkleri. Ayrıntılı kurulum: EKITAP-SATIS.md"
+    files:
+      - name: satis
+        label: Satış ve fiyatlar
+        file: src/data/satis.json
+        icon: payments
+        fields:
+          - name: sayfaSayisi
+            label: Kitabın sayfa sayısı
+            widget: number
+            value_type: int
+            min: 1
+          - name: turkiye
+            label: Türkiye satışı (Shopier, TL)
+            widget: object
+            collapsed: false
+            fields:
+              - name: fiyat
+                label: Fiyat (₺)
+                widget: number
+                value_type: float
+                step: 0.01
+                min: 0
+              - name: eskiFiyat
+                label: Eski fiyat (indirim varsa)
+                widget: number
+                value_type: float
+                step: 0.01
+                min: 0
+                required: false
+                hint: Doldurursan sitede üstü çizili gösterilir. İndirim bitince boşalt.
+              - name: link
+                label: Shopier ürün linki
+                widget: string
+                hint: 'Satış başlayana kadar # ile başlayan değeri bırak: buton pasif kalır ve "Satış çok yakında" yazar.'
+                pattern:
+                  - ^(https://|#)
+                  - "https:// ile (ya da henüz hazır değilse # ile) başlamalı."
+          - name: yurtdisi
+            label: Yurt dışı satışı (Gumroad, $)
+            widget: object
+            collapsed: false
+            fields:
+              - name: fiyat
+                label: Fiyat ($)
+                widget: number
+                value_type: float
+                step: 0.01
+                min: 0
+              - name: eskiFiyat
+                label: Eski fiyat (indirim varsa)
+                widget: number
+                value_type: float
+                step: 0.01
+                min: 0
+                required: false
+                hint: Doldurursan sitede üstü çizili gösterilir. İndirim bitince boşalt.
+              - name: link
+                label: Gumroad ürün linki
+                widget: string
+                hint: 'Satış başlayana kadar # ile başlayan değeri bırak: buton pasif kalır ve "Satış çok yakında" yazar.'
+                pattern:
+                  - ^(https://|#)
+                  - "https:// ile (ya da henüz hazır değilse # ile) başlamalı."
+  - name: yasal
+    label: Yasal metinler
+    icon: gavel
+    i18n: true
+    editor:
+      preview: false
+    description: KVKK, mesafeli satış, iade ve çerez metinleri. Bağlayıcı metin Türkçedir; değişiklikleri hukukçuna kontrol ettir.
+    files:
+      - name: yasal
+        label: Yasal metinler
+        icon: gavel
+        i18n: true
+        file: src/data/{{locale}}/yasal.json
+        fields:
+          - name: yasal
+            label: Yasal sayfaların ortak metinleri
+            widget: object
+            i18n: true
+            fields:
+              - name: sablonUyarisi
+                label: '"Şablon metin" uyarısını göster'
+                hint: Metinler hukukçu kontrolünden geçince kapat. Tüm dillerde aynıdır.
+                widget: boolean
+                i18n: duplicate
+              - name: ust
+                label: Üst başlık
+                widget: string
+                required: false
+                i18n: true
+              - name: guncelleme
+                label: '"Son güncelleme" etiketi'
+                widget: string
+                required: false
+                i18n: true
+              - name: uyariBaslik
+                label: Uyarı başlığı
+                widget: string
+                required: false
+                i18n: true
+              - name: uyari
+                label: Uyarı metni
+                widget: text
+                required: false
+                i18n: true
+              - name: ceviriNotu
+                label: Çeviri notu
+                hint: Türkçede boş bırak; diğer dillerde "bağlayıcı metin Türkçedir" notu.
+                widget: string
+                required: false
+                i18n: true
+              - name: digerleri
+                label: '"Diğer yasal metinler" başlığı'
+                widget: string
+                required: false
+                i18n: true
+            collapsed: false
+          - name: yasalMetinler
+            label: Metinler
+            widget: object
+            i18n: true
+            fields:
+              - name: kvkk
+                label: KVKK aydınlatma metni
+                widget: object
+                i18n: true
+                fields:
+                  - name: guncelleme
+                    label: Son güncelleme tarihi
+                    hint: Metni değiştirdiğinde güncelle. Tüm dillerde aynıdır.
+                    widget: datetime
+                    type: date
+                    picker_utc: true
+                    i18n: duplicate
+                  - name: aciklama
+                    label: Açıklama
+                    hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                    widget: text
+                    required: false
+                    i18n: true
+                  - name: bolumler
+                    label: Maddeler
+                    label_singular: Madde
+                    widget: list
+                    i18n: true
+                    collapsed: auto
+                    summary: "{{baslik}}"
+                    fields:
+                      - name: baslik
+                        label: Madde başlığı
+                        widget: string
+                        required: false
+                        i18n: true
+                      - name: metin
+                        label: Madde metni
+                        widget: text
+                        required: false
+                        i18n: true
+              - name: mesafeli
+                label: Mesafeli satış sözleşmesi
+                widget: object
+                i18n: true
+                fields:
+                  - name: guncelleme
+                    label: Son güncelleme tarihi
+                    hint: Metni değiştirdiğinde güncelle. Tüm dillerde aynıdır.
+                    widget: datetime
+                    type: date
+                    picker_utc: true
+                    i18n: duplicate
+                  - name: aciklama
+                    label: Açıklama
+                    hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                    widget: text
+                    required: false
+                    i18n: true
+                  - name: bolumler
+                    label: Maddeler
+                    label_singular: Madde
+                    widget: list
+                    i18n: true
+                    collapsed: auto
+                    summary: "{{baslik}}"
+                    fields:
+                      - name: baslik
+                        label: Madde başlığı
+                        widget: string
+                        required: false
+                        i18n: true
+                      - name: metin
+                        label: Madde metni
+                        widget: text
+                        required: false
+                        i18n: true
+              - name: iade
+                label: İade koşulları
+                widget: object
+                i18n: true
+                fields:
+                  - name: guncelleme
+                    label: Son güncelleme tarihi
+                    hint: Metni değiştirdiğinde güncelle. Tüm dillerde aynıdır.
+                    widget: datetime
+                    type: date
+                    picker_utc: true
+                    i18n: duplicate
+                  - name: aciklama
+                    label: Açıklama
+                    hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                    widget: text
+                    required: false
+                    i18n: true
+                  - name: bolumler
+                    label: Maddeler
+                    label_singular: Madde
+                    widget: list
+                    i18n: true
+                    collapsed: auto
+                    summary: "{{baslik}}"
+                    fields:
+                      - name: baslik
+                        label: Madde başlığı
+                        widget: string
+                        required: false
+                        i18n: true
+                      - name: metin
+                        label: Madde metni
+                        widget: text
+                        required: false
+                        i18n: true
+              - name: cerez
+                label: Çerez politikası
+                widget: object
+                i18n: true
+                fields:
+                  - name: guncelleme
+                    label: Son güncelleme tarihi
+                    hint: Metni değiştirdiğinde güncelle. Tüm dillerde aynıdır.
+                    widget: datetime
+                    type: date
+                    picker_utc: true
+                    i18n: duplicate
+                  - name: aciklama
+                    label: Açıklama
+                    hint: Google ve paylaşımlarda görünen kısa açıklama (en fazla ~160 karakter).
+                    widget: text
+                    required: false
+                    i18n: true
+                  - name: bolumler
+                    label: Maddeler
+                    label_singular: Madde
+                    widget: list
+                    i18n: true
+                    collapsed: auto
+                    summary: "{{baslik}}"
+                    fields:
+                      - name: baslik
+                        label: Madde başlığı
+                        widget: string
+                        required: false
+                        i18n: true
+                      - name: metin
+                        label: Madde metni
+                        widget: text
+                        required: false
+                        i18n: true
+            collapsed: false
+  - divider: true
+  - name: kategoriler
+    label: Kategoriler
+    icon: category
+    editor:
+      preview: false
+    description: Tarif kategorileri. Sıralama sitedeki filtre düğmelerinin sırasıdır.
+    files:
+      - name: kategoriler
+        label: Kategoriler
+        file: src/data/kategoriler.json
+        icon: category
+        fields:
+          - name: liste
+            label: Kategoriler
+            label_singular: Kategori
+            widget: list
+            collapsed: true
+            summary: "{{tr}} · {{en}} · {{ar}}"
+            fields:
+              - name: anahtar
+                label: Anahtar (Türkçe adres)
+                widget: string
+                hint: Türkçe adres ve tariflerdeki kategori kodu, ör. "corbalar". Küçük harf, Türkçe karaktersiz, tireli. Tarif bağlıyken DEĞİŞTİRME.
+                pattern:
+                  - ^[a-z0-9-]+$
+                  - Yalnızca küçük harf (a-z), rakam ve tire kullan.
+              - name: tr
+                label: Türkçe adı
+                widget: string
+              - name: en
+                label: İngilizce adı
+                widget: string
+              - name: ar
+                label: Arapça adı
+                widget: string
+              - name: urlEn
+                label: İngilizce/Arapça adres
+                widget: string
+                hint: ör. "soups". Latin harflerle.
+                pattern:
+                  - ^[a-z0-9-]+$
+                  - Yalnızca küçük harf (a-z), rakam ve tire kullan.
+  - name: ayarlar
+    label: Site ayarları
+    icon: settings
+    editor:
+      preview: false
+    files:
+      - name: ayarlar
+        label: İletişim ve sosyal medya
+        file: src/data/ayarlar.json
+        icon: contact_mail
+        fields:
+          - name: eposta
+            label: İletişim e-postası
+            widget: string
+            pattern:
+              - ^[^\s@]+@[^\s@]+\.[^\s@]+$
+              - Geçerli bir e-posta adresi yaz.
+          - name: instagram
+            label: Instagram kullanıcı adı
+            widget: string
+            hint: "@ işareti olmadan, ör. naifmutfakk"
+            pattern:
+              - ^[A-Za-z0-9._]+$
+              - "@ olmadan, yalnızca harf, rakam, nokta ve alt çizgi."

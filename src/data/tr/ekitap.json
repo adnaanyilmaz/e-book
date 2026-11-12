@@ -1,0 +1,65 @@
+{
+  "ekitap": {
+    "baslik": "Naif Mutfak: Evin Tadı",
+    "altBaslik": "Her gün yapılabilecek 40 sade ev yemeği",
+    "ust": "E-kitap · {format} · {sayfa} sayfa",
+    "seoBaslik": "{baslik} E-Kitap",
+    "seoAciklama": "{altBaslik}. Naif Mutfak e-kitabı, {format} formatında hemen indir.",
+    "kapakAlt": "{baslik} e-kitap kapağı",
+    "satinAl": "Satın Al",
+    "guvenli": "{saglayici} güvenli ödeme sayfasına yönlendirileceksin.",
+    "yakinda": "Satış çok yakında başlıyor!",
+    "kisiyeOzel": "Her kopya, alıcısının e-posta adresiyle kişiye özel işaretlenir ve yalnızca kişisel kullanım içindir.",
+    "digerKanal": {
+      "turkiye": "Türkiye'den mi alıyorsun?",
+      "yurtdisi": "Yurt dışından mı alıyorsun?"
+    },
+    "digerOde": "{saglayici} ile {fiyat} öde",
+    "yasalNot": "Satın alarak {mesafeli} ve {iade} metinlerini kabul etmiş olursun.",
+    "icindekilerUst": "Neler var?",
+    "icindekiler": "İçindekiler",
+    "bolumler": [
+      {
+        "baslik": "Çorbalar",
+        "aciklama": "Mercimekten tarhanaya, her mevsime 8 çorba."
+      },
+      {
+        "baslik": "Zeytinyağlılar",
+        "aciklama": "Ertesi gün daha güzel olan 10 klasik."
+      },
+      {
+        "baslik": "Ana yemekler",
+        "aciklama": "Tencere yemekleri ve fırın lezzetleri."
+      },
+      {
+        "baslik": "Tatlılar",
+        "aciklama": "Şerbetli, sütlü ve helva çeşitleri."
+      },
+      {
+        "baslik": "Mutfak ipuçları",
+        "aciklama": "Haftalık alışveriş listeleri ve saklama rehberi."
+      }
+    ],
+    "sssBaslik": "Sıkça sorulanlar",
+    "sss": [
+      {
+        "s": "E-kitap nasıl teslim ediliyor?",
+        "c": "Shopier'den aldıysan, sana özel hazırlanan PDF en geç 24 saat içinde e-posta adresine gönderilir. Gumroad'dan aldıysan indirme linki birkaç dakika içinde e-postana gelir. [DOLDURULACAK: süreyi kontrol et]"
+      },
+      {
+        "s": "Telefonda okuyabilir miyim?",
+        "c": "Evet. PDF formatı telefon, tablet ve bilgisayarda açılır."
+      },
+      {
+        "s": "E-kitabı arkadaşımla paylaşabilir miyim?",
+        "c": "Lütfen paylaşma. Bu kitap aylarca denenen tariflerin ve çekilen fotoğrafların emeği; her kopya, alıcısının e-posta adresiyle işaretlenir ve yalnızca kişisel kullanım içindir. Kendi cihazlarında okuyabilir, kendi mutfağın için yazdırabilirsin. Beğendiysen arkadaşına buradan bir kopya önermen beni çok mutlu eder."
+      },
+      {
+        "s": "İade yapılıyor mu?",
+        "c": "Dijital içeriklerde iade koşulları için İade Koşulları sayfasına göz at."
+      }
+    ],
+    "dilNotu": "",
+    "kapak": "@/assets/ekitap-kapak.jpg"
+  }
+}

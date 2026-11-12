@@ -1,456 +1,71 @@
 import type { Dil } from './diller';
-import type { Kategori } from '@/site.config';
+import { kategoriListesi } from '@/site.config';
 
 /**
- * Arayüz metinleri. Kaynak dil Türkçe (`tr`); `en` ve `ar` aynı yapıyı birebir izlemek zorunda
+ * Arayüz ve sayfa metinleri src/data/<dil>/*.json dosyalarındadır; yönetim panelinden düzenlenir.
+ * Kaynak dil Türkçe (`tr`); `en` ve `ar` aynı yapıyı birebir izlemek zorunda
  * (TypeScript eksik anahtarı build sırasında hata olarak gösterir).
  * Metin içinde {suslu} ile yazılan yerlere bileşen tarafından link vb. yerleştirilir.
  */
+import trGenel from '@/data/tr/genel.json';
+import trAnasayfa from '@/data/tr/anasayfa.json';
+import trTarifler from '@/data/tr/tarifler.json';
+import trEkitap from '@/data/tr/ekitap.json';
+import trHakkimda from '@/data/tr/hakkimda.json';
+import trIletisim from '@/data/tr/iletisim.json';
+import trYasal from '@/data/tr/yasal.json';
+import enGenel from '@/data/en/genel.json';
+import enAnasayfa from '@/data/en/anasayfa.json';
+import enTarifler from '@/data/en/tarifler.json';
+import enEkitap from '@/data/en/ekitap.json';
+import enHakkimda from '@/data/en/hakkimda.json';
+import enIletisim from '@/data/en/iletisim.json';
+import enYasal from '@/data/en/yasal.json';
+import arGenel from '@/data/ar/genel.json';
+import arAnasayfa from '@/data/ar/anasayfa.json';
+import arTarifler from '@/data/ar/tarifler.json';
+import arEkitap from '@/data/ar/ekitap.json';
+import arHakkimda from '@/data/ar/hakkimda.json';
+import arIletisim from '@/data/ar/iletisim.json';
+import arYasal from '@/data/ar/yasal.json';
+
+/** Kategori adları kategoriler.json'da üç dil yan yana durur: { corbalar: 'Çorbalar', ... } */
+const kategoriAdlari = (dil: Dil): Record<string, string> =>
+  Object.fromEntries(kategoriListesi.map((k) => [k.anahtar, k[dil]]));
+
 const tr = {
-  site: {
-    slogan: 'Sade, samimi ev yemekleri',
-    aciklama:
-      'Naif Mutfak: evde kolayca yapabileceğiniz sade ve samimi ev yemekleri tarifleri, ipuçları ve e-kitap.',
-  },
-  nav: {
-    ana: 'Ana Sayfa',
-    blog: 'Tarifler',
-    ekitap: 'E-Kitap',
-    hakkimda: 'Hakkımda',
-    iletisim: 'İletişim',
-    anaMenu: 'Ana menü',
-    menuAc: 'Menüyü aç',
-    icerigeGec: 'İçeriğe geç',
-    anaSayfaya: 'ana sayfa',
-    dilSecimi: 'Dil seçimi',
-  },
-  yasalAdlar: {
-    kvkk: 'KVKK Aydınlatma Metni',
-    mesafeli: 'Mesafeli Satış Sözleşmesi',
-    iade: 'İade Koşulları',
-    cerez: 'Çerez Politikası',
-  },
-  altBilgi: {
-    metin: "Yeni tarifler için Instagram'da buluşalım.",
-    sayfalar: 'Sayfalar',
-    siteHaritasi: 'Site haritası',
-    yasal: 'Yasal',
-    haklar: 'Tüm hakları saklıdır.',
-  },
-  ana: {
-    ustBaslik: 'Merhaba, hoş geldin!',
-    baslikOnce: 'Sade malzemeler,',
-    baslikVurgu: 'samimi',
-    baslikSonra: 'tarifler',
-    giris: "Naif Mutfak'ta annelerimizden kalma ev yemeklerini, kolayca yapabileceğin sade tariflerle paylaşıyorum.",
-    tarifButon: 'Tariflere göz at',
-    ekitapButon: 'E-kitabı keşfet',
-    heroAlt: "Naif Mutfak'tan ev yemekleriyle kurulmuş bir sofra",
-    sonUst: 'Mutfaktan yeni çıktı',
-    sonBaslik: 'Son tarifler',
-    tumu: 'Tüm tarifler →',
-    igBaslik: "Instagram'da birlikte pişirelim",
-    igMetin: 'Günlük tarifler, kısa videolar ve mutfaktan sıcak anlar için takipte kal.',
-    igButon: '@{kullanici} hesabını takip et',
-  },
-  vitrin: {
-    ust: 'Öne çıkan e-kitap',
-    ek: 'Alışveriş listeleri, pratik ipuçları ve adım adım fotoğraflarla.',
-    incele: 'E-kitabı incele',
-  },
-  blog: {
-    ust: 'Tarif defteri',
-    baslik: 'Tüm tarifler',
-    giris: 'Evde kolayca yapabileceğin, sade malzemelerle hazırlanan ev yemekleri.',
-    seoBaslik: 'Tarifler',
-    seoAciklama:
-      'Naif Mutfak tarif defteri: çorbalar, zeytinyağlılar, ana yemekler ve tatlılar. Evde kolayca yapabileceğin sade ev yemekleri.',
-    tumu: 'Tümü',
-    kategorilerEtiket: 'Kategoriler',
-    bos: 'Bu kategoride henüz tarif yok. Yakında!',
-    kategoriSeoBaslik: '{kategori} Tarifleri',
-    kategoriSeoAciklama: 'Naif Mutfak {kategori} tarifleri: evde kolayca yapabileceğin sade ve lezzetli ev yemekleri.',
-    kategoriGiris: '{kategori} kategorisindeki tüm tarifler.',
-  },
-  tarif: {
-    konum: 'Konum',
-    hazirlik: 'Hazırlık',
-    pisirme: 'Pişirme',
-    toplam: 'Toplam',
-    porsiyon: 'Porsiyon',
-    malzemeler: 'Malzemeler',
-    dk: 'dk',
-    paylas: 'Bu tarifi denedin mi? Fotoğrafını {kullanici} etiketiyle paylaş, hikâyemde paylaşayım!',
-    paylasButon: "Instagram'a git",
-    benzer: 'Bunları da sevebilirsin',
-    mutfak: 'Türk mutfağı',
-  },
-  ekitap: {
-    baslik: 'Naif Mutfak: Evin Tadı', // [DOLDURULACAK]
-    altBaslik: 'Her gün yapılabilecek 40 sade ev yemeği', // [DOLDURULACAK]
-    ust: 'E-kitap · {format} · {sayfa} sayfa',
-    seoBaslik: '{baslik} E-Kitap',
-    seoAciklama: '{altBaslik}. Naif Mutfak e-kitabı, {format} formatında hemen indir.',
-    kapakAlt: '{baslik} e-kitap kapağı',
-    satinAl: 'Satın Al',
-    guvenli: 'Güvenli ödeme sayfasına yönlendirileceksin.',
-    yakinda: 'Satış çok yakında başlıyor!',
-    yasalNot: 'Satın alarak {mesafeli} ve {iade} metinlerini kabul etmiş olursun.',
-    icindekilerUst: 'Neler var?',
-    icindekiler: 'İçindekiler',
-    // [DOLDURULACAK] E-kitabın gerçek içeriğiyle güncelle.
-    bolumler: [
-      { baslik: 'Çorbalar', aciklama: 'Mercimekten tarhanaya, her mevsime 8 çorba.' },
-      { baslik: 'Zeytinyağlılar', aciklama: 'Ertesi gün daha güzel olan 10 klasik.' },
-      { baslik: 'Ana yemekler', aciklama: 'Tencere yemekleri ve fırın lezzetleri.' },
-      { baslik: 'Tatlılar', aciklama: 'Şerbetli, sütlü ve helva çeşitleri.' },
-      { baslik: 'Mutfak ipuçları', aciklama: 'Haftalık alışveriş listeleri ve saklama rehberi.' },
-    ],
-    sssBaslik: 'Sıkça sorulanlar',
-    sss: [
-      { s: 'E-kitap nasıl teslim ediliyor?', c: 'Ödeme sonrasında e-kitap PDF olarak e-posta adresine gönderilir. [DOLDURULACAK]' },
-      { s: 'Telefonda okuyabilir miyim?', c: 'Evet. PDF formatı telefon, tablet ve bilgisayarda açılır.' },
-      { s: 'İade yapılıyor mu?', c: 'Dijital içeriklerde iade koşulları için İade Koşulları sayfasına göz at.' },
-    ],
-    dilNotu: '',
-  },
-  hakkimda: {
-    seoAciklama:
-      "Naif Mutfak'ın arkasındaki hikâye: sade malzemelerle, samimi ev yemekleri pişirmeyi seven bir mutfak tutkunu.",
-    ust: 'Merhaba',
-    baslik: "Naif Mutfak'a hoş geldin",
-    fotoAlt: "Naif Mutfak'ın sahibi mutfakta",
-    // [DOLDURULACAK] Kendi hikâyeni yaz.
-    paragraflar: [
-      "Ben [Adın]. Mutfağa annemin yanında, tezgâha yetişmek için tabureye çıkarak başladım. Naif Mutfak, o günlerden kalan sade ve samimi tarifleri bugünün telaşlı hayatına uyarlama çabam.",
-      'Burada gösterişli sunumlar yerine, her evde bulunan malzemelerle yapılabilen, ölçüleri denenmiş tarifler bulacaksın. Amacım, mutfağa girmeye çekinen herkesin “ben de yapabilirim” demesi.',
-    ],
-    alinti: '“Yemek, paylaşınca çoğalan tek şeydir.”',
-    kapanis: "Her gün yeni bir tarif ve mutfak anısı için Instagram'da buluşalım.",
-  },
-  iletisim: {
-    seoAciklama: 'Naif Mutfak ile iletişime geç: iş birlikleri, sorular ve e-kitap desteği için e-posta veya Instagram.',
-    ust: 'Bir mesaj uzağındayım',
-    baslik: 'İletişim',
-    giris: 'Tariflerle ilgili soruların, iş birliği teklifleri ya da e-kitap siparişinle ilgili destek için bana yazabilirsin.',
-    eposta: 'E-posta',
-    epostaNot: 'İş birlikleri ve e-kitap desteği',
-    dm: 'Instagram DM',
-    dmNot: 'Tarif soruları için en hızlı yol',
-    yanit: 'Genellikle 1-2 iş günü içinde dönüş yapıyorum.',
-  },
-  yasal: {
-    ust: 'Yasal',
-    guncelleme: 'Son güncelleme',
-    uyariBaslik: 'Şablon metin.',
-    uyari:
-      'Bu sayfa henüz doldurulmadı. [DOLDURULACAK] alanları, yayına almadan önce bir hukukçunun kontrol ettiği gerçek metinle değiştirilmelidir.',
-    ceviriNotu: '',
-    digerleri: 'Diğer yasal metinler',
-  },
-  kategoriler: {
-    corbalar: 'Çorbalar',
-    'ana-yemekler': 'Ana Yemekler',
-    zeytinyaglilar: 'Zeytinyağlılar',
-    tatlilar: 'Tatlılar',
-    kahvaltilik: 'Kahvaltılık',
-    'hamur-isleri': 'Hamur İşleri',
-  } satisfies Record<Kategori, string>,
+  ...trGenel,
+  ...trAnasayfa,
+  ...trTarifler,
+  ...trEkitap,
+  ...trHakkimda,
+  ...trIletisim,
+  ...trYasal,
+  kategoriler: kategoriAdlari('tr'),
 };
 
 export type Ceviri = typeof tr;
 
 const en: Ceviri = {
-  site: {
-    slogan: 'Simple, heartfelt home cooking',
-    aciklama: 'Naif Mutfak: simple, heartfelt Turkish home-cooking recipes you can easily make at home, plus tips and an e-book.',
-  },
-  nav: {
-    ana: 'Home',
-    blog: 'Recipes',
-    ekitap: 'E-Book',
-    hakkimda: 'About',
-    iletisim: 'Contact',
-    anaMenu: 'Main menu',
-    menuAc: 'Open menu',
-    icerigeGec: 'Skip to content',
-    anaSayfaya: 'home page',
-    dilSecimi: 'Language',
-  },
-  yasalAdlar: {
-    kvkk: 'Privacy Notice (KVKK)',
-    mesafeli: 'Distance Sales Agreement',
-    iade: 'Refund Policy',
-    cerez: 'Cookie Policy',
-  },
-  altBilgi: {
-    metin: "Let's meet on Instagram for new recipes.",
-    sayfalar: 'Pages',
-    siteHaritasi: 'Site map',
-    yasal: 'Legal',
-    haklar: 'All rights reserved.',
-  },
-  ana: {
-    ustBaslik: 'Hello, welcome!',
-    baslikOnce: 'Simple ingredients,',
-    baslikVurgu: 'heartfelt',
-    baslikSonra: 'recipes',
-    giris: "At Naif Mutfak I share the home-cooked dishes we grew up with, as simple recipes you can easily make yourself.",
-    tarifButon: 'Browse recipes',
-    ekitapButon: 'Discover the e-book',
-    heroAlt: 'A table set with home-cooked dishes from Naif Mutfak',
-    sonUst: 'Fresh from the kitchen',
-    sonBaslik: 'Latest recipes',
-    tumu: 'All recipes →',
-    igBaslik: "Let's cook together on Instagram",
-    igMetin: 'Follow along for daily recipes, short videos and warm moments from the kitchen.',
-    igButon: 'Follow @{kullanici}',
-  },
-  vitrin: {
-    ust: 'Featured e-book',
-    ek: 'With shopping lists, handy tips and step-by-step photos.',
-    incele: 'See the e-book',
-  },
-  blog: {
-    ust: 'Recipe notebook',
-    baslik: 'All recipes',
-    giris: 'Home-cooked dishes made with simple ingredients that you can easily make at home.',
-    seoBaslik: 'Recipes',
-    seoAciklama:
-      'The Naif Mutfak recipe notebook: soups, olive oil dishes, mains and desserts. Simple Turkish home cooking you can easily make at home.',
-    tumu: 'All',
-    kategorilerEtiket: 'Categories',
-    bos: 'No recipes in this category yet. Coming soon!',
-    kategoriSeoBaslik: '{kategori} Recipes',
-    kategoriSeoAciklama: 'Naif Mutfak {kategori} recipes: simple, delicious home cooking you can easily make at home.',
-    kategoriGiris: 'All recipes in the {kategori} category.',
-  },
-  tarif: {
-    konum: 'Breadcrumb',
-    hazirlik: 'Prep',
-    pisirme: 'Cook',
-    toplam: 'Total',
-    porsiyon: 'Serves',
-    malzemeler: 'Ingredients',
-    dk: 'min',
-    paylas: 'Tried this recipe? Share a photo and tag {kullanici}, I’ll repost it in my stories!',
-    paylasButon: 'Go to Instagram',
-    benzer: 'You might also like',
-    mutfak: 'Turkish',
-  },
-  ekitap: {
-    baslik: 'Naif Mutfak: Taste of Home',
-    altBaslik: '40 simple home-cooked dishes for every day',
-    ust: 'E-book · {format} · {sayfa} pages',
-    seoBaslik: '{baslik} E-Book',
-    seoAciklama: '{altBaslik}. The Naif Mutfak e-book, instant {format} download.',
-    kapakAlt: '{baslik} e-book cover',
-    satinAl: 'Buy Now',
-    guvenli: 'You will be redirected to a secure payment page.',
-    yakinda: 'Sales are opening very soon!',
-    yasalNot: 'By purchasing you accept the {mesafeli} and the {iade}.',
-    icindekilerUst: "What's inside?",
-    icindekiler: 'Contents',
-    bolumler: [
-      { baslik: 'Soups', aciklama: 'From lentil soup to tarhana: 8 soups for every season.' },
-      { baslik: 'Olive oil dishes', aciklama: '10 classics that taste even better the next day.' },
-      { baslik: 'Main dishes', aciklama: 'One-pot stews and oven favourites.' },
-      { baslik: 'Desserts', aciklama: 'Syrup-soaked sweets, milk puddings and helva.' },
-      { baslik: 'Kitchen tips', aciklama: 'Weekly shopping lists and a storage guide.' },
-    ],
-    sssBaslik: 'Frequently asked questions',
-    sss: [
-      { s: 'How is the e-book delivered?', c: 'After payment, the e-book is sent to your email address as a PDF. [TO BE COMPLETED]' },
-      { s: 'Can I read it on my phone?', c: 'Yes. The PDF opens on phones, tablets and computers.' },
-      { s: 'Can I get a refund?', c: 'For digital content, please see the Refund Policy page.' },
-    ],
-    dilNotu: 'Note: the e-book itself is written in Turkish.', // [DOLDURULACAK] İngilizce sürüm olursa güncelle
-  },
-  hakkimda: {
-    seoAciklama: 'The story behind Naif Mutfak: a home cook who loves making simple, heartfelt dishes with everyday ingredients.',
-    ust: 'Hello',
-    baslik: 'Welcome to Naif Mutfak',
-    fotoAlt: 'The person behind Naif Mutfak in the kitchen',
-    paragraflar: [
-      'I’m [Your name]. I started cooking next to my mother, standing on a stool to reach the counter. Naif Mutfak is my way of bringing the simple, heartfelt recipes of those days into today’s busy life.',
-      'Instead of fancy presentations, you’ll find tested recipes made with ingredients found in every home. My goal is for anyone who feels shy in the kitchen to say “I can do this too”.',
-    ],
-    alinti: '“Food is the only thing that multiplies when shared.”',
-    kapanis: "Let's meet on Instagram for a new recipe and a kitchen story every day.",
-  },
-  iletisim: {
-    seoAciklama: 'Get in touch with Naif Mutfak by email or Instagram for collaborations, questions and e-book support.',
-    ust: "I'm just a message away",
-    baslik: 'Contact',
-    giris: 'Write to me with questions about recipes, collaboration offers or help with your e-book order.',
-    eposta: 'Email',
-    epostaNot: 'Collaborations and e-book support',
-    dm: 'Instagram DM',
-    dmNot: 'The fastest way for recipe questions',
-    yanit: 'I usually reply within 1–2 business days.',
-  },
-  yasal: {
-    ust: 'Legal',
-    guncelleme: 'Last updated',
-    uyariBaslik: 'Template text.',
-    uyari: 'This page has not been completed yet. The [TO BE COMPLETED] fields must be replaced with final text reviewed by a lawyer before going live.',
-    ceviriNotu: 'This translation is provided for information only. In case of any discrepancy, the Turkish version prevails.',
-    digerleri: 'Other legal documents',
-  },
-  kategoriler: {
-    corbalar: 'Soups',
-    'ana-yemekler': 'Main Dishes',
-    zeytinyaglilar: 'Olive Oil Dishes',
-    tatlilar: 'Desserts',
-    kahvaltilik: 'Breakfast',
-    'hamur-isleri': 'Pastries',
-  },
+  ...enGenel,
+  ...enAnasayfa,
+  ...enTarifler,
+  ...enEkitap,
+  ...enHakkimda,
+  ...enIletisim,
+  ...enYasal,
+  kategoriler: kategoriAdlari('en'),
 };
 
 const ar: Ceviri = {
-  site: {
-    slogan: 'أطباق منزلية بسيطة ودافئة',
-    aciklama: 'Naif Mutfak: وصفات تركية منزلية بسيطة ودافئة يمكنك تحضيرها بسهولة في البيت، مع نصائح وكتاب إلكتروني.',
-  },
-  nav: {
-    ana: 'الرئيسية',
-    blog: 'الوصفات',
-    ekitap: 'الكتاب الإلكتروني',
-    hakkimda: 'من أنا',
-    iletisim: 'تواصل معي',
-    anaMenu: 'القائمة الرئيسية',
-    menuAc: 'فتح القائمة',
-    icerigeGec: 'انتقل إلى المحتوى',
-    anaSayfaya: 'الصفحة الرئيسية',
-    dilSecimi: 'اللغة',
-  },
-  yasalAdlar: {
-    kvkk: 'إشعار حماية البيانات الشخصية',
-    mesafeli: 'عقد البيع عن بُعد',
-    iade: 'سياسة الاسترداد',
-    cerez: 'سياسة ملفات تعريف الارتباط',
-  },
-  altBilgi: {
-    metin: 'لنلتقِ على إنستغرام لوصفات جديدة.',
-    sayfalar: 'الصفحات',
-    siteHaritasi: 'خريطة الموقع',
-    yasal: 'قانوني',
-    haklar: 'جميع الحقوق محفوظة.',
-  },
-  ana: {
-    ustBaslik: 'أهلًا وسهلًا!',
-    baslikOnce: 'مكونات بسيطة، ووصفات',
-    baslikVurgu: 'من القلب',
-    baslikSonra: '',
-    giris: 'أشارك في «Naif Mutfak» أطباق البيت التي ورثناها عن أمهاتنا، بوصفات بسيطة يمكنك تحضيرها بسهولة.',
-    tarifButon: 'تصفّح الوصفات',
-    ekitapButon: 'اكتشف الكتاب الإلكتروني',
-    heroAlt: 'مائدة عامرة بأطباق منزلية من Naif Mutfak',
-    sonUst: 'طازج من المطبخ',
-    sonBaslik: 'أحدث الوصفات',
-    tumu: '← كل الوصفات',
-    igBaslik: 'لنطبخ معًا على إنستغرام',
-    igMetin: 'تابعني لوصفات يومية وفيديوهات قصيرة ولحظات دافئة من المطبخ.',
-    igButon: 'تابع ‎@{kullanici}',
-  },
-  vitrin: {
-    ust: 'الكتاب الإلكتروني المميز',
-    ek: 'مع قوائم تسوّق ونصائح عملية وصور خطوة بخطوة.',
-    incele: 'تعرّف على الكتاب',
-  },
-  blog: {
-    ust: 'دفتر الوصفات',
-    baslik: 'كل الوصفات',
-    giris: 'أطباق منزلية بمكونات بسيطة يمكنك تحضيرها بسهولة في البيت.',
-    seoBaslik: 'الوصفات',
-    seoAciklama: 'دفتر وصفات Naif Mutfak: شوربات وأطباق بزيت الزيتون وأطباق رئيسية وحلويات. طبخ تركي منزلي بسيط.',
-    tumu: 'الكل',
-    kategorilerEtiket: 'التصنيفات',
-    bos: 'لا توجد وصفات في هذا التصنيف بعد. قريبًا!',
-    kategoriSeoBaslik: 'وصفات {kategori}',
-    kategoriSeoAciklama: 'وصفات {kategori} من Naif Mutfak: أطباق منزلية بسيطة ولذيذة يمكنك تحضيرها بسهولة.',
-    kategoriGiris: 'كل الوصفات في تصنيف {kategori}.',
-  },
-  tarif: {
-    konum: 'مسار التنقل',
-    hazirlik: 'التحضير',
-    pisirme: 'الطهي',
-    toplam: 'المجموع',
-    porsiyon: 'الحصص',
-    malzemeler: 'المكونات',
-    dk: 'دقيقة',
-    paylas: 'هل جرّبت هذه الوصفة؟ شارك صورتك مع الإشارة إلى {kullanici} وسأعيد نشرها في قصصي!',
-    paylasButon: 'اذهب إلى إنستغرام',
-    benzer: 'قد يعجبك أيضًا',
-    mutfak: 'المطبخ التركي',
-  },
-  ekitap: {
-    baslik: 'Naif Mutfak: طعم البيت',
-    altBaslik: '40 طبقًا منزليًا بسيطًا لكل يوم',
-    ust: 'كتاب إلكتروني · {format} · {sayfa} صفحة',
-    seoBaslik: 'الكتاب الإلكتروني {baslik}',
-    seoAciklama: '{altBaslik}. كتاب Naif Mutfak الإلكتروني بصيغة {format}، تنزيل فوري.',
-    kapakAlt: 'غلاف الكتاب الإلكتروني {baslik}',
-    satinAl: 'اشترِ الآن',
-    guvenli: 'سيتم تحويلك إلى صفحة دفع آمنة.',
-    yakinda: 'البيع يبدأ قريبًا جدًا!',
-    yasalNot: 'بإتمام الشراء فإنك توافق على {mesafeli} و{iade}.',
-    icindekilerUst: 'ماذا يوجد في الداخل؟',
-    icindekiler: 'المحتويات',
-    bolumler: [
-      { baslik: 'الشوربات', aciklama: 'من شوربة العدس إلى الطرحنة: 8 شوربات لكل المواسم.' },
-      { baslik: 'أطباق زيت الزيتون', aciklama: '10 أطباق كلاسيكية تصبح ألذ في اليوم التالي.' },
-      { baslik: 'الأطباق الرئيسية', aciklama: 'أطباق القِدر ومأكولات الفرن.' },
-      { baslik: 'الحلويات', aciklama: 'حلويات بالشيرة وبالحليب وأنواع الحلاوة.' },
-      { baslik: 'نصائح المطبخ', aciklama: 'قوائم تسوّق أسبوعية ودليل للتخزين.' },
-    ],
-    sssBaslik: 'أسئلة شائعة',
-    sss: [
-      { s: 'كيف يصلني الكتاب الإلكتروني؟', c: 'بعد الدفع يُرسل الكتاب بصيغة PDF إلى بريدك الإلكتروني. [يُستكمل لاحقًا]' },
-      { s: 'هل يمكنني قراءته على الهاتف؟', c: 'نعم. ملف PDF يفتح على الهاتف والجهاز اللوحي والحاسوب.' },
-      { s: 'هل يمكن استرداد المبلغ؟', c: 'للمحتوى الرقمي، يُرجى الاطلاع على صفحة سياسة الاسترداد.' },
-    ],
-    dilNotu: 'ملاحظة: الكتاب الإلكتروني مكتوب باللغة التركية.',
-  },
-  hakkimda: {
-    seoAciklama: 'القصة وراء Naif Mutfak: شغف بتحضير أطباق منزلية بسيطة ودافئة بمكونات يومية.',
-    ust: 'مرحبًا',
-    baslik: 'أهلًا بك في Naif Mutfak',
-    fotoAlt: 'في مطبخ Naif Mutfak',
-    paragraflar: [
-      'أنا [اسمك]. بدأت الطبخ بجانب أمي، وكنت أصعد على كرسي صغير لأصل إلى سطح المطبخ. «Naif Mutfak» هو محاولتي لنقل وصفات تلك الأيام البسيطة والدافئة إلى حياتنا المزدحمة اليوم.',
-      'بدلًا من التقديم المتكلّف، ستجد هنا وصفات مجرّبة بمكونات موجودة في كل بيت. هدفي أن يقول كل من يتردد في دخول المطبخ: «أنا أيضًا أستطيع».',
-    ],
-    alinti: '«الطعام هو الشيء الوحيد الذي يزداد حين نتقاسمه.»',
-    kapanis: 'لنلتقِ على إنستغرام كل يوم لوصفة جديدة وذكرى من المطبخ.',
-  },
-  iletisim: {
-    seoAciklama: 'تواصل مع Naif Mutfak عبر البريد الإلكتروني أو إنستغرام للتعاون والأسئلة ودعم الكتاب الإلكتروني.',
-    ust: 'على بُعد رسالة',
-    baslik: 'تواصل معي',
-    giris: 'راسلني لأسئلتك عن الوصفات أو عروض التعاون أو للمساعدة في طلب الكتاب الإلكتروني.',
-    eposta: 'البريد الإلكتروني',
-    epostaNot: 'التعاون ودعم الكتاب الإلكتروني',
-    dm: 'رسالة على إنستغرام',
-    dmNot: 'أسرع طريقة لأسئلة الوصفات',
-    yanit: 'عادةً أردّ خلال يوم إلى يومي عمل.',
-  },
-  yasal: {
-    ust: 'قانوني',
-    guncelleme: 'آخر تحديث',
-    uyariBaslik: 'نص نموذجي.',
-    uyari: 'لم تُستكمل هذه الصفحة بعد. يجب استبدال الحقول [يُستكمل لاحقًا] بنص نهائي يراجعه محامٍ قبل النشر.',
-    ceviriNotu: 'هذه الترجمة للعلم فقط، وفي حال وجود أي اختلاف يُعتمد النص التركي.',
-    digerleri: 'مستندات قانونية أخرى',
-  },
-  kategoriler: {
-    corbalar: 'الشوربات',
-    'ana-yemekler': 'الأطباق الرئيسية',
-    zeytinyaglilar: 'أطباق زيت الزيتون',
-    tatlilar: 'الحلويات',
-    kahvaltilik: 'الفطور',
-    'hamur-isleri': 'المعجنات',
-  },
+  ...arGenel,
+  ...arAnasayfa,
+  ...arTarifler,
+  ...arEkitap,
+  ...arHakkimda,
+  ...arIletisim,
+  ...arYasal,
+  kategoriler: kategoriAdlari('ar'),
 };
 
 const ceviriler: Record<Dil, Ceviri> = { tr, en, ar };

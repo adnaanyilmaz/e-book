@@ -2,8 +2,13 @@
 baslik: Annemin Mercimek Çorbası
 aciklama: Kış akşamlarının vazgeçilmezi, kadife kıvamında, limonla servis edilen klasik kırmızı mercimek çorbası.
 tarih: 2026-11-04
-kapak: ../../../assets/tarifler/mercimek-corbasi.jpg
+kapak: "@/assets/tarifler/mercimek-corbasi.jpg"
 kapakAlt: Kasede limon dilimiyle servis edilmiş kırmızı mercimek çorbası
+kapakKaynak:
+  yazar: E4024
+  url: https://commons.wikimedia.org/wiki/File:Red_lentil_soup_from_Turkey.jpg
+  lisans: CC BY-SA 4.0
+  lisansUrl: https://creativecommons.org/licenses/by-sa/4.0/
 kategori: corbalar
 hazirlamaSuresi: 10
 pisirmeSuresi: 30

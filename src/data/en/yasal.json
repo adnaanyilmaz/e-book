@@ -1,0 +1,133 @@
+{
+  "yasal": {
+    "sablonUyarisi": true,
+    "ust": "Legal",
+    "guncelleme": "Last updated",
+    "uyariBaslik": "Template text.",
+    "uyari": "This page has not been completed yet. The [TO BE COMPLETED] fields must be replaced with final text reviewed by a lawyer before going live.",
+    "ceviriNotu": "This translation is provided for information only. In case of any discrepancy, the Turkish version prevails.",
+    "digerleri": "Other legal documents"
+  },
+  "yasalMetinler": {
+    "kvkk": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Naif Mutfak privacy notice on the processing of personal data under Turkish Personal Data Protection Law No. 6698 (KVKK).",
+      "bolumler": [
+        {
+          "baslik": "1. Data controller",
+          "metin": "[TO BE COMPLETED]: Name / business name, address, contact email, VERBİS registration if any"
+        },
+        {
+          "baslik": "2. Personal data processed",
+          "metin": "[TO BE COMPLETED]: Identity, contact, customer transaction and transaction security data, etc."
+        },
+        {
+          "baslik": "3. Purposes of processing",
+          "metin": "[TO BE COMPLETED]: Selling and delivering the e-book, answering enquiries, legal obligations, etc."
+        },
+        {
+          "baslik": "4. Legal grounds and collection methods",
+          "metin": "[TO BE COMPLETED]: Legal grounds under Article 5 of KVKK; email, payment provider and other channels"
+        },
+        {
+          "baslik": "5. Transfer of personal data",
+          "metin": "[TO BE COMPLETED]: Payment providers (Shopier; for international sales the US-based Gumroad, i.e. a transfer abroad), hosting, email service"
+        },
+        {
+          "baslik": "6. Retention period",
+          "metin": "[TO BE COMPLETED]"
+        },
+        {
+          "baslik": "7. Your rights (KVKK Article 11)",
+          "metin": "[TO BE COMPLETED]: List of rights and how to apply"
+        }
+      ]
+    },
+    "mesafeli": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Distance sales agreement for Naif Mutfak e-book purchases.",
+      "bolumler": [
+        {
+          "baslik": "Article 1.1: Seller",
+          "metin": "[TO BE COMPLETED]: Business name, address, phone, email, tax office / number, MERSİS no. (if any)"
+        },
+        {
+          "baslik": "Article 1.2: Buyer",
+          "metin": "[TO BE COMPLETED]: Details provided by the buyer when ordering"
+        },
+        {
+          "baslik": "Article 2: Subject",
+          "metin": "[TO BE COMPLETED]"
+        },
+        {
+          "baslik": "Article 3: Product",
+          "metin": "[TO BE COMPLETED]: Product name (digital e-book), format, price (VAT included), payment method"
+        },
+        {
+          "baslik": "Article 4: Delivery",
+          "metin": "[TO BE COMPLETED]: Digital delivery method and time (Shopier: personalised PDF by email within 24 hours; Gumroad: automatic download link)"
+        },
+        {
+          "baslik": "Article 4.1: Licence and copyright",
+          "metin": "[TO BE COMPLETED]: All intellectual property rights in the e-book belong to the seller (Turkish Law No. 5846 on Intellectual and Artistic Works). The buyer receives a personal, non-transferable licence only. Copying, sharing, reselling, publishing online or using the content commercially is prohibited. Each copy is marked with the buyer’s email address. The seller reserves all legal rights in case of infringement."
+        },
+        {
+          "baslik": "Article 5: Right of withdrawal",
+          "metin": "[TO BE COMPLETED]: Exception for intangible goods delivered instantly under Article 15 of the Distance Contracts Regulation, and the buyer’s consent"
+        },
+        {
+          "baslik": "Article 6: Dispute resolution",
+          "metin": "[TO BE COMPLETED]: Consumer arbitration committees and consumer courts"
+        },
+        {
+          "baslik": "Article 7: Entry into force",
+          "metin": "[TO BE COMPLETED]"
+        }
+      ]
+    },
+    "iade": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Refund and withdrawal terms for Naif Mutfak digital products (e-book).",
+      "bolumler": [
+        {
+          "baslik": "Right of withdrawal for digital products",
+          "metin": "[TO BE COMPLETED]: Exception to the right of withdrawal for digital content and the buyer’s prior consent"
+        },
+        {
+          "baslik": "When a refund is possible",
+          "metin": "[TO BE COMPLETED]: E.g. the file was never delivered, a corrupt / unreadable file, duplicate payment"
+        },
+        {
+          "baslik": "How to request a refund",
+          "metin": "[TO BE COMPLETED]: Contact email, required details, response time"
+        },
+        {
+          "baslik": "Refund of payment",
+          "metin": "[TO BE COMPLETED]: Refund time and method"
+        }
+      ]
+    },
+    "cerez": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Information about cookies used on the Naif Mutfak website and your cookie choices.",
+      "bolumler": [
+        {
+          "baslik": "What is a cookie?",
+          "metin": "[TO BE COMPLETED]"
+        },
+        {
+          "baslik": "Cookies used on this site",
+          "metin": "This site currently uses no cookies; all files, including fonts, are served from our own server. [TO BE COMPLETED]: If analytics or advertising tools are added, this section must be updated and a cookie consent banner added."
+        },
+        {
+          "baslik": "How to manage cookies",
+          "metin": "[TO BE COMPLETED]: Deleting / blocking cookies in your browser settings"
+        },
+        {
+          "baslik": "Contact",
+          "metin": "[TO BE COMPLETED]"
+        }
+      ]
+    }
+  }
+}

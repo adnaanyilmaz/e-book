@@ -1,0 +1,24 @@
+{
+  "ana": {
+    "ustBaslik": "Merhaba, hoş geldin!",
+    "baslikOnce": "Sade malzemeler,",
+    "baslikVurgu": "samimi",
+    "baslikSonra": "tarifler",
+    "giris": "Naif Mutfak'ta annelerimizden kalma ev yemeklerini, kolayca yapabileceğin sade tariflerle paylaşıyorum.",
+    "tarifButon": "Tariflere göz at",
+    "ekitapButon": "E-kitabı keşfet",
+    "heroAlt": "Sahanda yumurta, peynirler ve meyvelerle kurulmuş bir kahvaltı sofrası",
+    "sonUst": "Mutfaktan yeni çıktı",
+    "sonBaslik": "Son tarifler",
+    "tumu": "Tüm tarifler →",
+    "igBaslik": "Instagram'da birlikte pişirelim",
+    "igMetin": "Günlük tarifler, kısa videolar ve mutfaktan sıcak anlar için takipte kal.",
+    "igButon": "@{kullanici} hesabını takip et",
+    "heroGorsel": "@/assets/hero.jpg"
+  },
+  "vitrin": {
+    "ust": "Öne çıkan e-kitap",
+    "ek": "Alışveriş listeleri, pratik ipuçları ve adım adım fotoğraflarla.",
+    "incele": "E-kitabı incele"
+  }
+}

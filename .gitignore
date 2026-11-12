@@ -5,3 +5,7 @@ dist/
 .env.*
 .DS_Store
 Thumbs.db
+
+# E-kitap dosyaları ve damga kayıtları asla repoya girmesin
+*.pdf
+damga-kaydi.csv

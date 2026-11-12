@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import TemelLayout from '@/layouts/TemelLayout.astro';
 import TarifKarti from '@/components/TarifKarti.astro';
 import EkitapVitrin from '@/components/EkitapVitrin.astro';
-import hero from '@/assets/hero.jpg';
+import { gorsel } from '@/lib/gorsel';
 import { site } from '@/site.config';
 import { dilBilgisi, type Dil } from '@/i18n/diller';
 import { ceviri, doldur } from '@/i18n/ceviriler';
@@ -16,6 +16,7 @@ interface Props {
 }
 const { dil, alternatifler } = Astro.props;
 const t = ceviri(dil);
+const hero = gorsel(t.ana.heroGorsel);
 const sonTarifler = (await yayindakiTarifler(dil)).slice(0, 3);
 
 const jsonLd = {

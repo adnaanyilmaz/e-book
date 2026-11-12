@@ -31,10 +31,11 @@ export const dilOneki = (dil: Dil) => (dil === varsayilanDil ? '' : `/${dil}`);
 export const tarihBicimle = (dil: Dil, d: Date) =>
   new Intl.DateTimeFormat(dilBilgisi[dil].intl, { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
 
-export const fiyatBicimle = (dil: Dil, tl: number) =>
+export const fiyatBicimle = (dil: Dil, tutar: number, paraBirimi: 'TRY' | 'USD' = 'TRY') =>
   new Intl.NumberFormat(dilBilgisi[dil].intl, {
     style: 'currency',
-    currency: 'TRY',
-    currencyDisplay: 'narrowSymbol', // her dilde ₺ (Arapçada aksi halde "TRY" yazar)
-    maximumFractionDigits: 0,
-  }).format(tl);
+    currency: paraBirimi,
+    currencyDisplay: 'narrowSymbol', // her dilde ₺ / $ (Arapçada aksi halde "TRY" yazar)
+    minimumFractionDigits: 0, // 249 → ₺249, 9.99 → $9.99
+    maximumFractionDigits: 2,
+  }).format(tutar);

@@ -1,0 +1,133 @@
+{
+  "yasal": {
+    "sablonUyarisi": true,
+    "ust": "Yasal",
+    "guncelleme": "Son güncelleme",
+    "uyariBaslik": "Şablon metin.",
+    "uyari": "Bu sayfa henüz doldurulmadı. [DOLDURULACAK] alanları, yayına almadan önce bir hukukçunun kontrol ettiği gerçek metinle değiştirilmelidir.",
+    "ceviriNotu": "",
+    "digerleri": "Diğer yasal metinler"
+  },
+  "yasalMetinler": {
+    "kvkk": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Naif Mutfak, 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında kişisel verilerin işlenmesine ilişkin aydınlatma metni.",
+      "bolumler": [
+        {
+          "baslik": "1. Veri sorumlusu",
+          "metin": "[DOLDURULACAK]: Ad soyad / unvan, adres, iletişim e-postası, varsa VERBİS bilgisi"
+        },
+        {
+          "baslik": "2. İşlenen kişisel veriler",
+          "metin": "[DOLDURULACAK]: Kimlik, iletişim, müşteri işlem, işlem güvenliği verileri vb."
+        },
+        {
+          "baslik": "3. Kişisel verilerin işlenme amaçları",
+          "metin": "[DOLDURULACAK]: E-kitap satışı ve teslimi, iletişim taleplerinin yanıtlanması, yasal yükümlülükler vb."
+        },
+        {
+          "baslik": "4. Hukuki sebepler ve toplama yöntemi",
+          "metin": "[DOLDURULACAK]: KVKK m.5 kapsamındaki hukuki sebepler; e-posta, ödeme sağlayıcısı vb. kanallar"
+        },
+        {
+          "baslik": "5. Kişisel verilerin aktarılması",
+          "metin": "[DOLDURULACAK]: Ödeme sağlayıcıları (Shopier; yurt dışı satışlarda ABD merkezli Gumroad, yani yurt dışına aktarım), barındırma hizmeti, e-posta servisi"
+        },
+        {
+          "baslik": "6. Saklama süresi",
+          "metin": "[DOLDURULACAK]"
+        },
+        {
+          "baslik": "7. İlgili kişinin hakları (KVKK m.11)",
+          "metin": "[DOLDURULACAK]: Haklar listesi ve başvuru yöntemi"
+        }
+      ]
+    },
+    "mesafeli": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Naif Mutfak e-kitap satışlarına ilişkin mesafeli satış sözleşmesi.",
+      "bolumler": [
+        {
+          "baslik": "Madde 1.1: Satıcı",
+          "metin": "[DOLDURULACAK]: Unvan, adres, telefon, e-posta, vergi dairesi / numarası, MERSİS no (varsa)"
+        },
+        {
+          "baslik": "Madde 1.2: Alıcı",
+          "metin": "[DOLDURULACAK]: Sipariş sırasında alıcının bildirdiği bilgiler"
+        },
+        {
+          "baslik": "Madde 2: Konu",
+          "metin": "[DOLDURULACAK]"
+        },
+        {
+          "baslik": "Madde 3: Sözleşme konusu ürün",
+          "metin": "[DOLDURULACAK]: Ürün adı (dijital e-kitap), format, satış fiyatı (KDV dahil), ödeme şekli"
+        },
+        {
+          "baslik": "Madde 4: Teslimat",
+          "metin": "[DOLDURULACAK]: Dijital teslim yöntemi ve süresi (Shopier: kişiye özel işaretli PDF e-postayla, en geç 24 saat; Gumroad: otomatik indirme linki)"
+        },
+        {
+          "baslik": "Madde 4.1: Kullanım lisansı ve telif hakkı",
+          "metin": "[DOLDURULACAK]: E-kitabın tüm fikrî hakları satıcıya aittir (5846 sayılı FSEK). Alıcıya yalnızca kişisel, devredilemez kullanım hakkı verilir. Kopyalama, paylaşma, yeniden satma, internette yayımlama ve içeriği ticari amaçla kullanma yasaktır. Her kopya alıcının e-posta adresiyle işaretlenir. İhlal hâlinde satıcının yasal hakları saklıdır."
+        },
+        {
+          "baslik": "Madde 5: Cayma hakkı",
+          "metin": "[DOLDURULACAK]: Mesafeli Sözleşmeler Yönetmeliği m.15 kapsamında, tüketiciye anında teslim edilen gayrimaddi mallara ilişkin istisna ve alıcının onayı"
+        },
+        {
+          "baslik": "Madde 6: Uyuşmazlıkların çözümü",
+          "metin": "[DOLDURULACAK]: Tüketici hakem heyetleri ve tüketici mahkemeleri"
+        },
+        {
+          "baslik": "Madde 7: Yürürlük",
+          "metin": "[DOLDURULACAK]"
+        }
+      ]
+    },
+    "iade": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Naif Mutfak dijital ürün (e-kitap) iade ve cayma koşulları.",
+      "bolumler": [
+        {
+          "baslik": "Dijital ürünlerde cayma hakkı",
+          "metin": "[DOLDURULACAK]: Dijital içeriklerde cayma hakkının istisnası ve alıcının satın alma öncesi onayı"
+        },
+        {
+          "baslik": "İade yapılabilecek durumlar",
+          "metin": "[DOLDURULACAK]: Örn. dosyanın hiç teslim edilmemesi, bozuk / açılamayan dosya, mükerrer ödeme"
+        },
+        {
+          "baslik": "İade talebi nasıl yapılır?",
+          "metin": "[DOLDURULACAK]: Başvuru e-postası, gerekli bilgiler, yanıt süresi"
+        },
+        {
+          "baslik": "Ödemenin iadesi",
+          "metin": "[DOLDURULACAK]: İade süresi ve yöntemi"
+        }
+      ]
+    },
+    "cerez": {
+      "guncelleme": "2026-11-11",
+      "aciklama": "Naif Mutfak web sitesinde kullanılan çerezler ve çerez tercihleri hakkında bilgilendirme.",
+      "bolumler": [
+        {
+          "baslik": "Çerez nedir?",
+          "metin": "[DOLDURULACAK]"
+        },
+        {
+          "baslik": "Sitemizde kullanılan çerezler",
+          "metin": "Bu site şu anda çerez kullanmamaktadır; yazı tipleri dahil tüm dosyalar kendi sunucumuzdan yüklenir. [DOLDURULACAK]: Analitik veya reklam araçları eklenirse bu bölüm güncellenmeli ve bir çerez onay bandı eklenmelidir."
+        },
+        {
+          "baslik": "Çerezleri nasıl yönetebilirsiniz?",
+          "metin": "[DOLDURULACAK]: Tarayıcı ayarlarından çerezleri silme / engelleme"
+        },
+        {
+          "baslik": "İletişim",
+          "metin": "[DOLDURULACAK]"
+        }
+      ]
+    }
+  }
+}

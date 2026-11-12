@@ -1,0 +1,15 @@
+{
+  "hakkimda": {
+    "seoAciklama": "The story behind Naif Mutfak: a home cook who loves making simple, heartfelt dishes with everyday ingredients.",
+    "ust": "Hello",
+    "baslik": "Welcome to Naif Mutfak",
+    "fotoAlt": "Hands kneading dough on a floured counter",
+    "paragraflar": [
+      "I’m [Your name]. I started cooking next to my mother, standing on a stool to reach the counter. Naif Mutfak is my way of bringing the simple, heartfelt recipes of those days into today’s busy life.",
+      "Instead of fancy presentations, you’ll find tested recipes made with ingredients found in every home. My goal is for anyone who feels shy in the kitchen to say “I can do this too”."
+    ],
+    "alinti": "“Food is the only thing that multiplies when shared.”",
+    "kapanis": "Let's meet on Instagram for a new recipe and a kitchen story every day.",
+    "foto": "@/assets/hakkimda.jpg"
+  }
+}

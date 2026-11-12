@@ -1,5 +1,5 @@
 import { dilOneki, type Dil } from './diller';
-import type { Kategori } from '@/site.config';
+import { kategoriListesi, type Kategori } from '@/site.config';
 
 /**
  * Her sayfanın her dildeki adresi. URL'ler burada tanımlanır; başka yerde elle yazılmaz.
@@ -23,14 +23,10 @@ export type YasalAnahtar = (typeof yasalAnahtarlar)[number];
 
 const kategoriBolumu: Record<Dil, string> = { tr: 'kategori', en: 'category', ar: 'category' };
 
-export const kategoriSluglari: Record<Kategori, Record<Dil, string>> = {
-  corbalar: { tr: 'corbalar', en: 'soups', ar: 'soups' },
-  'ana-yemekler': { tr: 'ana-yemekler', en: 'main-dishes', ar: 'main-dishes' },
-  zeytinyaglilar: { tr: 'zeytinyaglilar', en: 'olive-oil-dishes', ar: 'olive-oil-dishes' },
-  tatlilar: { tr: 'tatlilar', en: 'desserts', ar: 'desserts' },
-  kahvaltilik: { tr: 'kahvaltilik', en: 'breakfast', ar: 'breakfast' },
-  'hamur-isleri': { tr: 'hamur-isleri', en: 'pastries', ar: 'pastries' },
-};
+/** Kategori adresleri src/data/kategoriler.json'dan: tr = anahtar, en/ar = urlEn (Latin harfli) */
+export const kategoriSluglari: Record<Kategori, Record<Dil, string>> = Object.fromEntries(
+  kategoriListesi.map((k) => [k.anahtar, { tr: k.anahtar, en: k.urlEn, ar: k.urlEn }]),
+);
 
 const birlestir = (dil: Dil, ...parcalar: string[]) => {
   const yol = [dilOneki(dil), ...parcalar.filter(Boolean)].join('/').replace(/\/+/g, '/');

@@ -3,7 +3,6 @@ import TemelLayout from './TemelLayout.astro';
 import { tarihBicimle, type Dil } from '@/i18n/diller';
 import { ceviri } from '@/i18n/ceviriler';
 import { sayfaYolu, yasalAnahtarlar, type Alternatifler, type YasalAnahtar } from '@/i18n/yollar';
-import { yasalGuncelleme, yasalMetinler } from '@/i18n/yasal';
 
 interface Props {
   dil: Dil;
@@ -12,9 +11,10 @@ interface Props {
 }
 const { dil, anahtar, alternatifler } = Astro.props;
 const t = ceviri(dil);
-const metin = yasalMetinler[anahtar][dil];
+// Metinler src/data/<dil>/yasal.json'da (panel → Yasal metinler). Bağlayıcı metin Türkçedir.
+const metin = t.yasalMetinler[anahtar];
 const baslik = t.yasalAdlar[anahtar];
-const guncelleme = yasalGuncelleme[anahtar];
+const guncelleme = metin.guncelleme;
 ---
 
 <TemelLayout dil={dil} baslik={baslik} aciklama={metin.aciklama} alternatifler={alternatifler}>
@@ -23,10 +23,12 @@ const guncelleme = yasalGuncelleme[anahtar];
       <span class="ust-baslik">{t.yasal.ust}</span>
       <h1>{baslik}</h1>
       <p class="tarih">{t.yasal.guncelleme}: <time datetime={guncelleme}>{tarihBicimle(dil, new Date(guncelleme))}</time></p>
-      <aside class="uyari" role="note">
-        <strong>{t.yasal.uyariBaslik}</strong> {t.yasal.uyari}
-        {t.yasal.ceviriNotu && <p class="uyari__ceviri">{t.yasal.ceviriNotu}</p>}
-      </aside>
+      {(t.yasal.sablonUyarisi || t.yasal.ceviriNotu) && (
+        <aside class="uyari" role="note">
+          {t.yasal.sablonUyarisi && <><strong>{t.yasal.uyariBaslik}</strong> {t.yasal.uyari}</>}
+          {t.yasal.ceviriNotu && <p class="uyari__ceviri">{t.yasal.ceviriNotu}</p>}
+        </aside>
+      )}
       <div class="icerik">
         {metin.bolumler.map((b) => (
           <>

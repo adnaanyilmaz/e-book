@@ -66,7 +66,7 @@ const jsonLd = {
       </p>
     </header>
 
-    <div class="kapsayici">
+    <figure class="kapsayici tarif__sekil">
       <Image
         src={d.kapak}
         alt={d.kapakAlt}
@@ -76,7 +76,16 @@ const jsonLd = {
         loading="eager"
         fetchpriority="high"
       />
-    </div>
+      {d.kapakKaynak && (
+        <figcaption class="tarif__kaynak">
+          {parcala(t.tarif.fotoKaynak).map((p) =>
+            'metin' in p ? p.metin
+            : p.anahtar === 'yazar' ? <a href={d.kapakKaynak!.url} target="_blank" rel="noopener" dir="ltr">{d.kapakKaynak!.yazar}</a>
+            : <a href={d.kapakKaynak!.lisansUrl} target="_blank" rel="noopener license" dir="ltr">{d.kapakKaynak!.lisans}</a>,
+          )}
+        </figcaption>
+      )}
+    </figure>
 
     <div class="kapsayici">
       <dl class="bilgi">
@@ -130,6 +139,11 @@ const jsonLd = {
     margin-inline: auto; max-width: 65rem;
   }
   @media (min-width: 760px) { .tarif__kapak { aspect-ratio: 16 / 9; } }
+  .tarif__sekil { margin-block: 0; }
+  .tarif__kaynak {
+    max-width: 65rem; margin: 0.4rem auto 0; font-size: 0.8rem; color: var(--metin-soluk); text-align: end;
+  }
+  .tarif__kaynak a { color: inherit; }
 
   .bilgi {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr)); gap: 0.5rem;

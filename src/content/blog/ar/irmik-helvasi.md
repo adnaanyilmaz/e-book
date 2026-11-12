@@ -3,8 +3,13 @@ baslik: حلاوة السميد بالحليب
 urlAdi: semolina-helva
 aciklama: حلاوة سميد تركية تقليدية بالصنوبر، حبّاتها منفصلة ورائحتها تملأ البيت.
 tarih: 2026-10-08
-kapak: ../../../assets/tarifler/irmik-helvasi.jpg
-kapakAlt: حلاوة السميد مزيّنة بالصنوبر
+kapak: "@/assets/tarifler/irmik-helvasi.jpg"
+kapakAlt: حلاوة السميد مقدّمة في وعاء زجاجي
+kapakKaynak:
+  yazar: Maderibeyza
+  url: https://commons.wikimedia.org/wiki/File:%C4%B0rmik_helvas%C4%B1.JPG
+  lisans: CC BY-SA 3.0
+  lisansUrl: https://creativecommons.org/licenses/by-sa/3.0/
 kategori: tatlilar
 hazirlamaSuresi: 5
 pisirmeSuresi: 25

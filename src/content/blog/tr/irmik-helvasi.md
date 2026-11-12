@@ -2,8 +2,13 @@
 baslik: Sütlü İrmik Helvası
 aciklama: Çam fıstıklı, tane tane, evin her yerini mis gibi kokutan geleneksel sütlü irmik helvası.
 tarih: 2026-10-08
-kapak: ../../../assets/tarifler/irmik-helvasi.jpg
-kapakAlt: Üzeri çam fıstığıyla süslenmiş sütlü irmik helvası
+kapak: "@/assets/tarifler/irmik-helvasi.jpg"
+kapakAlt: Cam kasede servis edilmiş irmik helvası
+kapakKaynak:
+  yazar: Maderibeyza
+  url: https://commons.wikimedia.org/wiki/File:%C4%B0rmik_helvas%C4%B1.JPG
+  lisans: CC BY-SA 3.0
+  lisansUrl: https://creativecommons.org/licenses/by-sa/3.0/
 kategori: tatlilar
 hazirlamaSuresi: 5
 pisirmeSuresi: 25

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Naif Mutfak · Yönetim</title>
+    <link rel="icon" href="/favicon-48.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <!--
+      Sveltia CMS (git tabanlı yönetim paneli). Ayarlar config.yml'de; o dosya `npm run panel` ile üretilir.
+      Kullanım: CLAUDE.md → "Yönetim paneli".
+      Sürüm sabitlendi; yükseltirken https://github.com/sveltia/sveltia-cms/releases notlarını oku.
+    -->
+    <script src="https://unpkg.com/@sveltia/cms@0.253.2/dist/sveltia-cms.js"></script>
+    <script>
+      // Tarif önizlemesi sitedeki gibi görünsün (renkler, yazı tipleri, Arapça için sağdan sola)
+      window.CMS?.registerPreviewStyle('/admin/onizleme.css');
+    </script>
+  </body>
+</html>

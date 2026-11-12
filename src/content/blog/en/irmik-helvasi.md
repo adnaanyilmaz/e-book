@@ -3,8 +3,13 @@ baslik: Semolina Helva with Milk
 urlAdi: semolina-helva
 aciklama: Traditional Turkish semolina helva with pine nuts, fluffy and fragrant enough to fill the whole house.
 tarih: 2026-10-08
-kapak: ../../../assets/tarifler/irmik-helvasi.jpg
-kapakAlt: Semolina helva topped with pine nuts
+kapak: "@/assets/tarifler/irmik-helvasi.jpg"
+kapakAlt: Semolina helva served in a glass bowl
+kapakKaynak:
+  yazar: Maderibeyza
+  url: https://commons.wikimedia.org/wiki/File:%C4%B0rmik_helvas%C4%B1.JPG
+  lisans: CC BY-SA 3.0
+  lisansUrl: https://creativecommons.org/licenses/by-sa/3.0/
 kategori: tatlilar
 hazirlamaSuresi: 5
 pisirmeSuresi: 25

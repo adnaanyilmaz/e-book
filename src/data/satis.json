@@ -1,0 +1,13 @@
+{
+  "sayfaSayisi": 96,
+  "turkiye": {
+    "fiyat": 249,
+    "eskiFiyat": null,
+    "link": "#shopier-linki-yakinda"
+  },
+  "yurtdisi": {
+    "fiyat": 9,
+    "eskiFiyat": null,
+    "link": "#gumroad-linki-yakinda"
+  }
+}

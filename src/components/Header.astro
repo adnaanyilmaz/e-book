@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/logo.png';
 import { site } from '@/site.config';
 import type { Dil } from '@/i18n/diller';
 import { ceviri } from '@/i18n/ceviriler';
@@ -29,7 +29,7 @@ const aktif = (l: (typeof menu)[number]) => (l.ana ? yol === l.href : yol === l.
 <header class="ust">
   <div class="kapsayici ust__ic">
     <a href={sayfaYolu(dil, 'ana')} class="ust__logo" aria-label={`${site.ad} ${t.nav.anaSayfaya}`}>
-      <Image src={logo} alt="" width={176} height={45} loading="eager" />
+      <Image src={logo} alt="" width={56} height={56} densities={[1, 2, 3]} loading="eager" />
     </a>
 
     <div class="ust__sag">
@@ -79,8 +79,8 @@ const aktif = (l: (typeof menu)[number]) => (l.ana ? yol === l.href : yol === l.
     border-bottom: 1px solid var(--cizgi);
   }
   .ust__ic { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; min-height: 64px; }
-  .ust__logo { display: flex; padding-block: 0.5rem; flex-shrink: 0; }
-  .ust__logo img { width: 136px; height: auto; }
+  .ust__logo { display: flex; padding-block: 0.4rem; flex-shrink: 0; border-radius: 50%; }
+  .ust__logo img { width: 52px; height: 52px; border-radius: 50%; box-shadow: 0 2px 8px -3px rgb(91 58 41 / 0.35); }
   .ust__sag { display: flex; align-items: center; gap: 0.25rem; }
 
   .menu-dugme {
@@ -116,7 +116,7 @@ const aktif = (l: (typeof menu)[number]) => (l.ana ? yol === l.href : yol === l.
   .menu .menu__instagram { font-family: var(--font-metin); font-size: 1rem; font-weight: 700; color: var(--terakota-koyu); border: 0; justify-content: flex-end; }
   :global([dir='ltr']) .menu .menu__instagram { justify-content: flex-start; }
 
-  @media (min-width: 380px) { .ust__logo img { width: 150px; } }
+  @media (min-width: 960px) { .ust__logo img { width: 56px; height: 56px; } }
 
   @media (min-width: 960px) {
     .ust__ic { flex-wrap: nowrap; }

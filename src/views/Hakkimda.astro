@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import TemelLayout from '@/layouts/TemelLayout.astro';
-import foto from '@/assets/hakkimda.jpg';
+import { gorsel } from '@/lib/gorsel';
 import { site } from '@/site.config';
 import type { Dil } from '@/i18n/diller';
 import { ceviri } from '@/i18n/ceviriler';
@@ -13,6 +13,7 @@ interface Props {
 }
 const { dil, alternatifler } = Astro.props;
 const t = ceviri(dil).hakkimda;
+const foto = gorsel(t.foto);
 ---
 
 <TemelLayout dil={dil} alternatifler={alternatifler} baslik={ceviri(dil).nav.hakkimda} aciklama={t.seoAciklama} ogGorsel={foto}>
